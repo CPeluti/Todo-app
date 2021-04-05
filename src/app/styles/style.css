@@ -1,0 +1,17 @@
+.navbar{
+    -fx-background-color: #ECECEC;
+}
+.bg{
+    -fx-background-color: linear-gradient(to bottom, #C49AE6,#5A7CF5);
+}
+.addTaskBtn{
+    -fx-background-color: #71CCFF;
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-border-radius: 50 50 50 50;
+    -fx-background-radius: 50 50 50 50;
+    -fx-font-weight: bold;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
+    -fx-alignment: center;
+}
