@@ -15,6 +15,7 @@
          <children>
             <Label fx:id="btnNewCategory" layoutX="3.0" layoutY="514.0" onMouseClicked="#btnMakeCategory" onMouseEntered="#showMsgMakeCategory" styleClass="addCategoryBtn" text="+" />
          </children></AnchorPane>
+
       <Label layoutX="701.0" layoutY="517.0" styleClass="addTaskBtn" text="+" />
       <AnchorPane layoutX="211.0" layoutY="135.0" prefHeight="330.0" prefWidth="379.0" />
       <Label fx:id="lbMsgMakeCategory" layoutX="31.0" layoutY="523.0" styleClass="msgNewCategory" text="Criar Nova Categoria" visible="false" />
@@ -37,5 +38,6 @@
             </DropShadow>
          </effect>
       </AnchorPane>
+
    </children>
 </AnchorPane>

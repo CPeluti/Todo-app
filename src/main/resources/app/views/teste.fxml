@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+
+<Pane layoutX="209.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red" />
+
