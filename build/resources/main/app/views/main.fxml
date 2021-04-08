@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.UserController">
+   <children>
+      <AnchorPane prefHeight="600.0" prefWidth="42.0" styleClass="navbar">
+         <children>
+            <Label fx:id="btnNewCategory" layoutX="3.0" layoutY="514.0" onMouseClicked="#btnMakeCategory" onMouseEntered="#showMsgMakeCategory" styleClass="addCategoryBtn" text="+" />
+         </children></AnchorPane>
+      <Label layoutX="701.0" layoutY="517.0" styleClass="addTaskBtn" text="+" />
+      <AnchorPane layoutX="211.0" layoutY="135.0" prefHeight="330.0" prefWidth="379.0" />
+      <Label fx:id="lbMsgMakeCategory" layoutX="31.0" layoutY="523.0" styleClass="msgNewCategory" text="Criar Nova Categoria" visible="false" />
+      <AnchorPane fx:id="pnNewCategory" layoutX="66.0" layoutY="366.0" prefHeight="201.0" prefWidth="304.0" styleClass="newCategoryPane">
+         <children>
+            <TextField fx:id="txtCategoryName" layoutX="26.0" layoutY="44.0" promptText="Nome" />
+            <Label layoutX="26.0" layoutY="14.0" text="Crie uma nova categoria" textFill="#f8f6f6">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="txtCategoryDescription" layoutX="26.0" layoutY="87.0" prefHeight="89.0" prefWidth="200.0" promptText="Descrição" />
+            <Button fx:id="btnSaveNewCategory" layoutX="238.0" layoutY="151.0" mnemonicParsing="false" onAction="#saveNewCategory" styleClass="btnSaveCategory" text="Salvar" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

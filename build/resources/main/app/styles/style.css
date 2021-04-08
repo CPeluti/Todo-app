@@ -1,0 +1,56 @@
+.navbar{
+    -fx-background-color: #ECECEC;
+}
+.bg{
+    -fx-background-color: linear-gradient(to bottom, #C49AE6,#5A7CF5);
+}
+.addTaskBtn{
+    -fx-background-color: #71CCFF;
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-border-radius: 50 50 50 50;
+    -fx-background-radius: 50 50 50 50;
+    -fx-font-weight: bold;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
+    -fx-alignment: center;
+}
+
+.addCategoryBtn{
+    -fx-background-color: #9747b6;
+    -fx-text-fill: white;
+    -fx-border-radius: 20 20 20 20;
+    -fx-background-radius: 20 20 20 20;
+    -fx-pref-height: 36;
+    -fx-pref-width: 36;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+.msgNewCategory{
+    -fx-background-color: #9747b6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-pref-width: 140;
+    -fx-pref-width: 140;
+    -fx-border-radius: 20 20 20 20;
+    -fx-background-radius: 20 90 90 20;
+}
+
+.newCategoryPane{
+    -fx-background-color: #9747b6;
+    -fx-background-radius: 20 20 20 20;
+    -fx-border-radius: 20 20 20 20;
+
+
+}
+
+.btnSaveCategory{
+    -fx-background-color: #e757ce;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20 20 20 20;
+}
+
