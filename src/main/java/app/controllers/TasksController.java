@@ -32,9 +32,10 @@ public class TasksController {
 
     public void saveTask(ActionEvent actionEvent) {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate date = dateId.getValue();
+        LocalDate datetmp = dateId.getValue();
         String timeofthistask = time.getText();
-        String datentimeofthistask = date.format(dateFormat) + " " + timeofthistask;
+        String date = datetmp.format(dateFormat);
+        String datentimeofthistask = date + " " + timeofthistask;
         String titleofthistask = taskId.getText();
         String categoryofthistask = categoryId.getText();
         String descriptionofthistask = descriptionId.getText();
