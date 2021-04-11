@@ -48,9 +48,14 @@
 }
 
 .btnSaveCategory{
-    -fx-background-color: #e757ce;
+    -fx-background-color: #7724a3;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 20 20 20 20;
 }
 
+.btnCancelCategory{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-color:  #ac7feb;
+}
