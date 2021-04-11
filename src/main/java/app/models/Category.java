@@ -9,5 +9,6 @@ public abstract class Category{
     private User user;
 
 
-
+    public Category(String type, String icon, String description) {
+    }
 }
