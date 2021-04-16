@@ -10,15 +10,13 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.UserController">
+<AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.UserController">
    <children>
       <AnchorPane prefHeight="600.0" prefWidth="42.0" styleClass="navbar">
          <children>
             <Label fx:id="btnNewCategory" layoutX="3.0" layoutY="514.0" onMouseClicked="#btnMakeCategory" onMouseEntered="#showMsgMakeCategory" onMouseExited="#notShowMsgMakeCategory" styleClass="addCategoryBtn" text="+" />
             <ScrollPane fx:id="spCategories" hbarPolicy="NEVER" layoutX="4.0" layoutY="68.0" prefHeight="436.0" prefWidth="36.0" style="-fx-background-color: #ECECEC;" />
          </children></AnchorPane>
-
-      <Label layoutX="701.0" layoutY="517.0" styleClass="addTaskBtn" text="+" />
       <AnchorPane layoutX="211.0" layoutY="135.0" prefHeight="330.0" prefWidth="379.0" />
       <Label fx:id="lbMsgMakeCategory" layoutX="31.0" layoutY="523.0" styleClass="msgNewCategory" text="Criar Nova Categoria" visible="false" />
       <AnchorPane fx:id="pnNewCategory" layoutX="300.0" layoutY="200.0" prefHeight="234.0" prefWidth="250.0" style="-fx-background-color: #ac7feb;" styleClass="newCategoryPane">
@@ -43,6 +41,11 @@
             </DropShadow>
          </effect>
       </AnchorPane>
+      <Button fx:id="addNewTask" onAction="#openNewTaskBox" layoutX="704.0" layoutY="517.0" mnemonicParsing="false" style="-fx-background-radius: 50px; -fx-background-color: #71CCFF; -fx-border-radius: 50px; -fx-max-height: 50px; -fx-min-height: 50px; -fx-min-width: 50px; -fx-max-width: 50px;" text="+" textFill="WHITE">
+         <font>
+            <Font name="Consolas Bold" size="24.0" />
+         </font>
+      </Button>
 
    </children>
 </AnchorPane>

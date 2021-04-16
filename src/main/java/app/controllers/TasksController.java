@@ -1,8 +1,10 @@
 package app.controllers;
 
 import app.models.Tasks;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -14,20 +16,18 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import static app.controllers.UserController.listUserCategories;
+
 public class TasksController {
     public DatePicker dateId;
     public TextField taskId;
-    public TextField categoryId;
     public AnchorPane taskCreator;
-    public Button addNEW; //adding new Task (opens up a new box with the addTask)
     public Button savingTask;
     public TextField descriptionId;
     public AnchorPane bg;
     public TextField time;
-
-    public void newTaskBoxOpen(ActionEvent actionEvent) {
-        taskCreator.setVisible(true);
-    }
+    public ComboBox categoryId = new ComboBox(FXCollections.observableArrayList(listUserCategories));
+    public Button closeTaskCreator;
 
 
     public void saveTask(ActionEvent actionEvent) {
@@ -37,7 +37,7 @@ public class TasksController {
         String date = datetmp.format(dateFormat);
         String datentimeofthistask = date + " " + timeofthistask;
         String titleofthistask = taskId.getText();
-        String categoryofthistask = categoryId.getText();
+        String categoryofthistask = String.valueOf(categoryId.getValue());
         String descriptionofthistask = descriptionId.getText();
         Tasks task = new Tasks(titleofthistask, categoryofthistask, false, false, datentimeofthistask, descriptionofthistask);
         ArrayList<String> newTaskArray = new ArrayList<String>();
@@ -57,6 +57,10 @@ public class TasksController {
             e.printStackTrace();
         }
 
+        taskCreator.setVisible(false);
+    }
+
+    public void closeTaskTab(ActionEvent actionEvent) {
         taskCreator.setVisible(false);
     }
 }
