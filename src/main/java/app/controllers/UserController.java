@@ -1,32 +1,31 @@
 package app.controllers;
 
-import app.Main;
 import app.models.UserCategory;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class UserController {
     public static ArrayList<UserCategory> listUserCategories = new ArrayList<UserCategory>();
     public ScrollPane spCategories;
+    public Button addNewTask;
+    public AnchorPane main;
 
     @FXML
     private Label btnNewCategory;
+
+    @FXML
+    private TasksController TasksController ;
 
     @FXML
     private Label lbMsgMakeCategory;
@@ -158,5 +157,11 @@ public class UserController {
             this.txtIcon.setText(file.toString());
             URIImage = file.toURI().toString();
         }
+    }
+
+    public void openNewTaskBox(ActionEvent actionEvent) throws IOException {
+        AnchorPane taskTabtmp = FXMLLoader.load(getClass().getResource("/app/views/tasksViews.fxml"));
+        main.getChildren().addAll(taskTabtmp);
+
     }
 }
