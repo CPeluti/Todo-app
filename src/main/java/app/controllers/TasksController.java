@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import static app.controllers.UserController.listUserCategories;
+import static app.controllers.CategoriesController.listUserCategories;
 
 public class TasksController {
     public DatePicker dateId;
