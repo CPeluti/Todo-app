@@ -13,11 +13,9 @@ public class Main extends Application {
     public static void main(String[] args){launch(args);}
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/app/views/Main.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/app/views/login.fxml"));
         Parent root = loader.load();
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
     }
-
-
 }
