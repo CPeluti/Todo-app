@@ -1,6 +1,9 @@
 package app.controllers;
 
 import app.models.UserCategory;
+import de.jensd.fx.glyphs.GlyphIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,10 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.stage.FileChooser;
 import org.json.JSONObject;
-
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -123,6 +123,7 @@ public class CategoriesController {
     @FXML
     void saveNewCategory(ActionEvent event) {
 
+
         // checks if any of the text fields are empty
         if(txtCategoryName.getText().equals("") || txtIcon.getText().equals("") || txtCategoryDescription.getText().equals("")){
 
@@ -191,5 +192,10 @@ public class CategoriesController {
 
         pnIcons.setVisible(true);
 
+
+        GlyphIcon<FontAwesomeIcon> selectedIcon1 = new FontAwesomeIconView(FontAwesomeIcon.TOGGLE_ON);
+        selectedIcon1.setSize("1.5em");
+        GlyphIcon<FontAwesomeIcon> notSelectedIcon1 = new FontAwesomeIconView(FontAwesomeIcon.TOGGLE_OFF);
+        notSelectedIcon1.setSize("1.5em");
     }
 }
