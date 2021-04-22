@@ -1,6 +1,6 @@
 package app.controllers;
 
-import app.models.Tasks;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -8,15 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
-import java.util.Date;
 
 public class TasksController {
     public DatePicker dateId;
@@ -32,6 +24,7 @@ public class TasksController {
     public void initialize() {
         categoryId.getItems().addAll(FXCollections.observableArrayList(list));
     }
+    /*
     private JSONObject newTaskObject = new JSONObject();
 
     public TasksController() throws FileNotFoundException {
@@ -74,8 +67,12 @@ public class TasksController {
             e.printStackTrace();
         }
 
+
+
         taskCreator.setVisible(false);
     }
+
+     */
 
     public void closeTaskTab(ActionEvent actionEvent) {
         taskCreator.setVisible(false);

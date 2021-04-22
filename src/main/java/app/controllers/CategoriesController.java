@@ -4,21 +4,20 @@ import app.models.UserCategory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.shape.SVGPath;
-import org.json.JSONObject;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class CategoriesController {
-    public static ArrayList<UserCategory> listUserCategories = new ArrayList<UserCategory>();
+
+    private Singleton singleton = Singleton.getInstance();
+
     public ScrollPane spCategories;
 
     @FXML
@@ -103,7 +102,7 @@ public class CategoriesController {
         int column = 0;
 
 
-        for(UserCategory usercategory : listUserCategories){
+        for(UserCategory usercategory : singleton.getListUserCategories()){
 
 
             SVGPath selectedIcon = iconSvg;
@@ -144,9 +143,10 @@ public class CategoriesController {
 
             // create a new UserCategory object and put it in the list of categories
             app.models.UserCategory newCategory = new UserCategory(nameCategory, icon, descriptionCategory);
-            listUserCategories.add(newCategory);
+            singleton.addToCategoryArray(newCategory);
 
             // create a new JSON object to put the new category in the JSON archive
+            /*
             JSONObject newCategory2Json = new JSONObject();
 
             FileWriter file = null;
@@ -163,6 +163,7 @@ public class CategoriesController {
             catch (IOException e){
                 e.printStackTrace();
             }
+            */
 
             // calls the method to show the categories on the screen
             displayCategories();
