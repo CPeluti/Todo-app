@@ -32,23 +32,6 @@
                 <Button fx:id="btnCancelNewCategory" layoutX="217.0" layoutY="12.0" mnemonicParsing="false" onAction="#cancelNewCategory" styleClass="btnCancelCategory" text="X" />
                 <Button fx:id="btsSelectIcon" layoutX="26.0" layoutY="197.0" mnemonicParsing="false" onAction="#selectIcon" style="-fx-background-color: #571da8;" styleClass="btnSaveCategory" text="Escolher ícone" />
                 <TextField fx:id="txtIcon" layoutX="26.0" layoutY="157.0" prefHeight="25.0" prefWidth="205.0" promptText="Icon File" />
-            <AnchorPane fx:id="pnIcons" prefHeight="234.0" prefWidth="250.0" style="-fx-background-color: #571da8;" styleClass="newCategoryPane">
-               <children>
-                  <Label layoutX="66.0" layoutY="15.0" prefHeight="20.0" prefWidth="118.0" text="Escolha um ícone " textAlignment="CENTER" textFill="#f8f6f6">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="btnCancelNewCategory1" layoutX="217.0" layoutY="12.0" mnemonicParsing="false" onAction="#cancelNewCategory" style="-fx-background-color: #571da8;" styleClass="btnCancelCategory" text="X" />
-               </children>
-               <effect>
-                  <DropShadow height="89.2" radius="50.03" width="112.92">
-                     <color>
-                        <Color opacity="0.5130434632301331" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </AnchorPane>
             </children>
             <effect>
                 <DropShadow height="89.2" radius="50.03" width="112.92">
@@ -58,6 +41,24 @@
                 </DropShadow>
             </effect>
         </AnchorPane>
+      <AnchorPane fx:id="pnIcons" layoutX="250.0" layoutY="150.0" prefHeight="344.0" prefWidth="379.0" style="-fx-background-color: #571da8;" styleClass="newCategoryPane">
+         <children>
+            <Label layoutX="131.0" layoutY="16.0" prefHeight="20.0" prefWidth="118.0" text="Escolha um ícone " textAlignment="CENTER" textFill="#f8f6f6">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnCancelIcon" layoutX="341.0" layoutY="13.0" mnemonicParsing="false" onAction="#cancelIcon" style="-fx-background-color: #571da8;" styleClass="btnCancelCategory" text="X" />
+            <ScrollPane fx:id="spIcons" layoutX="11.0" layoutY="51.0" prefHeight="278.0" prefWidth="358.0" />
+         </children>
+         <effect>
+            <DropShadow height="89.2" radius="50.03" width="112.92">
+               <color>
+                  <Color opacity="0.5130434632301331" />
+               </color>
+            </DropShadow>
+         </effect>
+      </AnchorPane>
 
     </children>
 </AnchorPane>
