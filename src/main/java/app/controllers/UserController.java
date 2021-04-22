@@ -20,7 +20,7 @@ public class UserController {
     public ScrollPane spCategories;
     public Button addNewTask;
     public AnchorPane main;
-
+    public Label newTaskLabel;
     @FXML
     private Label btnNewCategory;
 
@@ -162,6 +162,13 @@ public class UserController {
     public void openNewTaskBox(ActionEvent actionEvent) throws IOException {
         AnchorPane taskTabtmp = FXMLLoader.load(getClass().getResource("/app/views/tasksViews.fxml"));
         main.getChildren().addAll(taskTabtmp);
+    }
 
+    public void messageNewTask(MouseEvent mouseEvent) {
+        newTaskLabel.setVisible(true);
+    }
+
+    public void messaNewTaskout(MouseEvent mouseEvent) {
+        newTaskLabel.setVisible(false);
     }
 }
