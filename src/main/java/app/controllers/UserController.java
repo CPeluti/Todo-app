@@ -19,7 +19,7 @@ public class UserController {
 
     public Button addNewTask;
     public AnchorPane main;
-
+    public Label newTaskLabel;
     @FXML
     private TasksController TasksController ;
 
@@ -27,6 +27,13 @@ public class UserController {
     public void openNewTaskBox(ActionEvent actionEvent) throws IOException {
         AnchorPane taskTabtmp = FXMLLoader.load(getClass().getResource("/app/views/tasksViews.fxml"));
         main.getChildren().addAll(taskTabtmp);
+    }
 
+    public void messageNewTask(MouseEvent mouseEvent) {
+        newTaskLabel.setVisible(true);
+    }
+
+    public void messaNewTaskout(MouseEvent mouseEvent) {
+        newTaskLabel.setVisible(false);
     }
 }

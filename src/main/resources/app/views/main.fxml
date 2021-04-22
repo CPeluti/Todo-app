@@ -41,11 +41,17 @@
             </DropShadow>
          </effect>
       </AnchorPane>
+      <Button fx:id="addNewTask" layoutX="704.0" layoutY="517.0" mnemonicParsing="false" onAction="#openNewTaskBox" onMouseEntered="#messageNewTask" onMouseExited="#messaNewTaskout" style="-fx-background-radius: 50px; -fx-background-color: #71CCFF; -fx-border-radius: 50px; -fx-max-height: 50px; -fx-min-height: 50px; -fx-min-width: 50px; -fx-max-width: 50px;" text="+" textFill="WHITE">
+      <fx:include  source="categories.fxml" />
       <Button fx:id="addNewTask" onAction="#openNewTaskBox" layoutX="704.0" layoutY="517.0" mnemonicParsing="false" style="-fx-background-radius: 50px; -fx-background-color: #71CCFF; -fx-border-radius: 50px; -fx-max-height: 50px; -fx-min-height: 50px; -fx-min-width: 50px; -fx-max-width: 50px;" text="+" textFill="WHITE">
          <font>
             <Font name="Consolas Bold" size="24.0" />
          </font>
       </Button>
-
+      <Label fx:id="newTaskLabel" alignment="CENTER" layoutX="574.0" layoutY="532.0" style="-fx-background-color: #71CCFF; -fx-background-radius: 50 50 50 50;" styleClass="msgNewCategory" text="Criar Nova Tarefa" textAlignment="RIGHT" textFill="WHITE" visible="false">
+         <font>
+            <Font name="System Bold" size="11.773585319519043" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

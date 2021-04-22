@@ -6,20 +6,24 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;   
 
 public class Tasks {
+	public int id;
 	public String title;//antigo conteudo
 	public String category;//antiga categoria
 	public boolean done = false;//antiga completada
 	public boolean favourite = false;//antigo favorito
 	public String deadline;//antiga data formato da data vai ser dd/mm/aaaa ou dd/MM/yyyy HH:mm:ss
 	public String description;// antiga descricao
+	public boolean deleted = false;
 	
-	public Tasks(String title, String category, boolean done, boolean favourite, String deadline, String description) {
+	public Tasks(int id, String title, String category, boolean done, boolean favourite, String deadline, String description, boolean deleted) {
+		this.id = id;
 		this.title = title;
 		this.category = category;
 		this.done = done;
 		this.favourite = favourite;
 		this.deadline = deadline;
 		this.description = description;
+		this.deleted = deleted;
 	}
 	
 	
@@ -27,7 +31,7 @@ public class Tasks {
 		LocalDateTime now = LocalDateTime.now();
 		Date timeEnd = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(deadline);
 		Instant instant = now.toInstant(ZoneOffset.UTC); //essas duas linhas pega o formato LocalDateTime para o Date
-	    	Date timeNow = Date.from(instant);
+		Date timeNow = Date.from(instant);
 		
 		long timeLeft = timeEnd.getTime() - timeNow.getTime();
 		long daysLeft = timeLeft/(60*60*24*1000);
