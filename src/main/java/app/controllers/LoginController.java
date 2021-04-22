@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class LoginController {
+
+    private Singleton singleton = Singleton.getInstance();
     public TextField userField;
     public TextField passwordField;
     public Button LoginBtn;
@@ -16,7 +18,7 @@ public class LoginController {
 
         User user = User.validateLogin(username,password);
         if(user != null){
-            System.out.println(user.getSessionToken());
+            singleton.setUser(user);
         }
 
     }
