@@ -16,7 +16,11 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    implementation 'org.json:json:20210307'
+
+    implementation 'com.konghq:unirest-java:3.11.09'
+
+    implementation 'com.google.code.gson:gson'
+
     compile 'de.jensd:fontawesomefx-emojione:2.2.7-2'
     compile 'de.jensd:fontawesomefx-fontawesome:4.7.0-5'
     compile 'de.jensd:fontawesomefx-icons525:3.0.0-4'
