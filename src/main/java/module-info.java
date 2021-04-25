@@ -6,5 +6,6 @@ module Todo.app.main {
     requires com.google.gson;
 
     exports app;
+
     opens app.controllers to javafx.fxml;
 }
