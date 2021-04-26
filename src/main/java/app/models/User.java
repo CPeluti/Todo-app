@@ -1,10 +1,9 @@
 package app.models;
 
 
-import com.google.gson.JsonObject;
+import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
-import kong.unirest.HttpResponse;
 import kong.unirest.json.JSONObject;
 
 import java.net.URI;
@@ -18,15 +17,20 @@ public class User{
     String timeZone;
     String imageUrl;
     String sessionToken;
+    String id;
 
-    public User(String name, String lastName, String email,String timeZone, String imageUrl, String sessionToken) {
+
+    public User(String name, String lastName, String email, String timeZone, String imageUrl, String sessionToken, String id) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.imageUrl = imageUrl;
         this.sessionToken = sessionToken;
         this.timeZone = timeZone;
+        this.id = id;
     }
+
+
 
     public static User validateLogin(String name, String password){
         try {
@@ -73,7 +77,8 @@ public class User{
                     json.getString("email"),
                     json.getString("image"),
                     json.getString("jwt"),
-                    json.getString("timezone")
+                    json.getString("timezone"),
+                    json.getString("id")
             );
             return user;
         }catch (Exception e){
@@ -134,4 +139,8 @@ public class User{
     public void setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
     }
+
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
 }
