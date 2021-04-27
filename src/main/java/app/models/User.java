@@ -12,6 +12,7 @@ import java.net.URI;
 
 
 public class User{
+    String id;
     String name;
     String lastName;
     String email;
@@ -34,30 +35,7 @@ public class User{
 
     public static User validateLogin(String name, String password){
         try {
-            /*URL url = new URL("https://api-todo-unb.herokuapp.com/login");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
-
-            String jsonString = "{\"name\": "+"\""+name+"\""+", \"passwd\": "+"\""+password+"\"}";
-            System.out.println(jsonString);
-
-            OutputStream outputStream = connection.getOutputStream();
-            byte[] input = jsonString.getBytes(StandardCharsets.UTF_8);
-            outputStream.write(input,0, input.length);
-
-            BufferedReader buffer = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-            StringBuilder res = new StringBuilder();
-            String resLine = null;
-            while((resLine = buffer.readLine()) != null){
-                res.append(resLine.trim());
-            }
-            System.out.println(res.toString());
-            */
-
-
-            String resString = "{\"email\":\""+name+"\",\"passwd\":\""+password+"\"}";
+                        String resString = "{\"email\":\""+name+"\",\"passwd\":\""+password+"\"}";
             System.out.println(resString);
             HttpResponse<JsonNode> res = Unirest.post("https://api-todo-unb.herokuapp.com/login")
                     .header("Content-Type","application/json")
@@ -71,7 +49,7 @@ public class User{
                 return null;
             }
 
-            User user = new User(
+            return new User(
                     json.getString("name"),
                     json.getString("lastname"),
                     json.getString("email"),
@@ -80,7 +58,7 @@ public class User{
                     json.getString("timezone"),
                     json.getString("id")
             );
-            return user;
+
         }catch (Exception e){
             e.printStackTrace();
         }
