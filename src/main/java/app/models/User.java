@@ -19,7 +19,7 @@ public class User{
     String timeZone;
     String imageUrl;
     String sessionToken;
-    String id;
+
 
     public User(String name, String lastName, String email,String timeZone, String imageUrl, String sessionToken, String id) {
         this.name = name;
@@ -56,7 +56,7 @@ public class User{
                     json.getString("image"),
                     json.getString("jwt"),
                     json.getString("timezone"),
-                    json.getString("id")
+                    json.getString("userId")
             );
 
         }catch (Exception e){
