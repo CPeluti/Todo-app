@@ -1,15 +1,12 @@
 package app.models;
 
 
-import com.google.gson.JsonObject;
+import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
-import kong.unirest.HttpResponse;
 import kong.unirest.json.JSONObject;
 
 import java.net.URI;
-
-
 
 public class User{
     String id;
@@ -19,6 +16,7 @@ public class User{
     String timeZone;
     String imageUrl;
     String sessionToken;
+
 
 
     public User(String name, String lastName, String email,String timeZone, String imageUrl, String sessionToken, String id) {
@@ -33,9 +31,10 @@ public class User{
 
 
 
+
     public static User validateLogin(String name, String password){
         try {
-                        String resString = "{\"email\":\""+name+"\",\"passwd\":\""+password+"\"}";
+            String resString = "{\"email\":\""+name+"\",\"passwd\":\""+password+"\"}";
             System.out.println(resString);
             HttpResponse<JsonNode> res = Unirest.post("https://api-todo-unb.herokuapp.com/login")
                     .header("Content-Type","application/json")

@@ -14,7 +14,8 @@ public class Singleton {
 
     private ArrayList<UserCategory> listUserCategories = new ArrayList<UserCategory>();
 
-    private ArrayList<Tasks> listTasks = new ArrayList<>();
+    protected ArrayList<Tasks> listTasks = new ArrayList<>();
+    private Tasks tasks;
 
     public User getUser() {
         return user;
@@ -46,12 +47,16 @@ public class Singleton {
 
 
 
-    private Singleton(){}
+    protected Singleton(){}
 
     public static Singleton getInstance(){
         if(instance == null){
             instance = new Singleton();
         }
         return instance;
+    }
+
+    public void setTasks(Tasks tasks) {
+        this.tasks = tasks;
     }
 }
