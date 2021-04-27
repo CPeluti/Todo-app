@@ -226,7 +226,7 @@ public class CategoriesController {
             System.out.println(json);*/
 
             // Send to API
-            //UserCategory.create(newCategory, singleton);
+            UserCategory.create(newCategory, singleton);
 
             // calls the method to show the categories on the screen
             displayCategories();
