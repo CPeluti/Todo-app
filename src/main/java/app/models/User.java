@@ -53,9 +53,9 @@ public class User{
                     json.getString("name"),
                     json.getString("lastname"),
                     json.getString("email"),
+                    json.getString("timezone"),
                     json.getString("image"),
                     json.getString("jwt"),
-                    json.getString("timezone"),
                     json.getString("userId")
             );
 

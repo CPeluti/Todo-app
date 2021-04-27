@@ -32,6 +32,7 @@ public class UserCategory extends Category {
     public static void create(UserCategory obj, Singleton singleton) {
         User user = singleton.getUser();
 
+        System.out.println(user.sessionToken);
         Map<String, String> header = new HashMap<>();
         header.put("Content-Type","application/json");
         header.put("Authorization", "bearer " + user.sessionToken);
