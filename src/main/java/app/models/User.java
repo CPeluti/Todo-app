@@ -20,6 +20,7 @@ public class User{
     String imageUrl;
     String sessionToken;
 
+
     public User(String name, String lastName, String email,String timeZone, String imageUrl, String sessionToken, String id) {
         this.name = name;
         this.lastName = lastName;
@@ -29,6 +30,8 @@ public class User{
         this.timeZone = timeZone;
         this.id = id;
     }
+
+
 
     public static User validateLogin(String name, String password){
         try {
@@ -50,10 +53,10 @@ public class User{
                     json.getString("name"),
                     json.getString("lastname"),
                     json.getString("email"),
+                    json.getString("timezone"),
                     json.getString("image"),
                     json.getString("jwt"),
-                    json.getString("timezone"),
-                    json.getString("id")
+                    json.getString("userId")
             );
 
         }catch (Exception e){
