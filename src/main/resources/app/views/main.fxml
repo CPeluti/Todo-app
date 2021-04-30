@@ -2,22 +2,15 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.UserController">
 
       <AnchorPane prefHeight="600.0" prefWidth="42.0" styleClass="navbar">
-         <fx:include source="categories.fxml"/>
-<!--
-      <Button fx:id="addNewTask" layoutX="704.0" layoutY="517.0" mnemonicParsing="false" onAction="#openNewTaskBox" onMouseEntered="#messageNewTask" onMouseExited="#messaNewTaskout" style="-fx-background-radius: 50px; -fx-background-color: #71CCFF; -fx-border-radius: 50px; -fx-max-height: 50px; -fx-min-height: 50px; -fx-min-width: 50px; -fx-max-width: 50px;" text="+" textFill="WHITE">
-      <fx:include  source="categories.fxml" />
-      <Button fx:id="addNewTask" onAction="#openNewTaskBox" layoutX="704.0" layoutY="517.0" mnemonicParsing="false" style="-fx-background-radius: 50px; -fx-background-color: #71CCFF; -fx-border-radius: 50px; -fx-max-height: 50px; -fx-min-height: 50px; -fx-min-width: 50px; -fx-max-width: 50px;" text="+" textFill="WHITE">
+         <fx:include source="categories.fxml" />
+          <fx:include source="tasksViews.fxml"/>
+      <Button fx:id="addNewTask" layoutX="704.0" layoutY="517.0" mnemonicParsing="false" onAction="#openNewTaskBox" onMouseEntered="#messageNewTask" onMouseExited="#messageNewTaskout" style="-fx-background-radius: 50px; -fx-background-color: #71CCFF; -fx-border-radius: 50px; -fx-max-height: 50px; -fx-min-height: 50px; -fx-min-width: 50px; -fx-max-width: 50px;" text="+" textFill="WHITE">
          <font>
             <Font name="Consolas Bold" size="24.0" />
          </font>
@@ -27,6 +20,10 @@
             <Font name="System Bold" size="11.773585319519043" />
          </font>
       </Label>
--->
+      <Button fx:id="tmp" onAction="#openNewTaskList" layoutX="750.0" layoutY="8.0" mnemonicParsing="false" style="-fx-background-radius: 50px; -fx-background-color: #71CCFF; -fx-border-radius: 50px; -fx-max-height: 50px; -fx-min-height: 50px; -fx-min-width: 50px; -fx-max-width: 50px;" text="+" textFill="WHITE">
+         <font>
+            <Font name="Consolas Bold" size="24.0" />
+         </font>
+      </Button>
       </AnchorPane>
 </AnchorPane>

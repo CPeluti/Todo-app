@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="taskBoxAP" fx:controller="app.controllers.TasksController" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane fx:id="listofTasksGrid" prefHeight="36.0" prefWidth="591.0" style="-fx-background-color: white; -fx-background-radius: 10 10 10 10;">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0000157096541" minWidth="10.0" prefWidth="61.84907576824784" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.2075352409041" minWidth="10.0" prefWidth="44.358489696900705" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="86.01887557293534" minWidth="10.0" prefWidth="86.01887557293534" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.88676497723225" minWidth="10.0" prefWidth="97.54716536785725" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.999985192076" minWidth="10.0" prefWidth="59.50944564129475" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label fx:id="taskTitle" prefHeight="39.0" prefWidth="524.0" text="Tarefa Exemplo" GridPane.columnIndex="2" GridPane.columnSpan="4">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="taskDeadline" prefHeight="45.0" prefWidth="158.0" text="DD/MM/YY HH:MM:SS" GridPane.columnIndex="6" GridPane.columnSpan="2">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <RadioButton fx:id="doneButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="31.0" style="-fx-alignment: center; -fx-background-color: white; -fx-background-radius: black; -fx-border-width: 1px;" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </RadioButton>
+            <Button fx:id="openTaskInfo" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="24.0" prefWidth="28.0" style="-fx-background-radius: 50 50 50 50; -fx-background-color: yellow;" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

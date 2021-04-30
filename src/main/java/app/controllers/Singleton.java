@@ -12,7 +12,7 @@ public class Singleton {
 
     private User user;
 
-    private ArrayList<UserCategory> listUserCategories = new ArrayList<UserCategory>();
+    protected ArrayList<UserCategory> listUserCategories = new ArrayList<UserCategory>();
 
     protected ArrayList<Tasks> listTasks = new ArrayList<>();
     private Tasks tasks;

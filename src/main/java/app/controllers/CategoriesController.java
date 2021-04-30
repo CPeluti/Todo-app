@@ -3,23 +3,23 @@ package app.controllers;
 import app.models.UserCategory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
+import kong.unirest.json.JSONObject;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.google.gson.JsonObject;
-import kong.unirest.json.JSONException;
-import kong.unirest.json.JSONObject;
-
-public class CategoriesController {
+public class CategoriesController<main> {
 
     private static final double REQUIRED_WIDTH = 32.0;
     private static final double REQUIRED_HEIGHT = 32.0;
+    public AnchorPane main;
 
     private Singleton singleton = Singleton.getInstance();
     ArrayList<String> iconsList = new ArrayList<>();
@@ -96,7 +96,7 @@ public class CategoriesController {
     }
 
 
-    private void displayCategories(){
+    private void displayCategories() {
 
         GridPane gpNavBar = new GridPane();
         gpNavBar.setVgap(10);
@@ -107,7 +107,7 @@ public class CategoriesController {
         int column = 0;
 
 
-        for(UserCategory usercategory : singleton.getListUserCategories()){
+        for (UserCategory usercategory : singleton.getListUserCategories()) {
 
 
             SVGPath selectedIcon = new SVGPath();
@@ -119,28 +119,25 @@ public class CategoriesController {
             rgNavBar.setStyle("-fx-background-color: gray;");
 
             //icons bookmark(1), clipboard(5), lightbulb(15), award(30), bolt(47), brush(55), burn(56), dna(64), dollar sign(66)
-            if(path.equals(iconsList.get(1)) || path.equals(iconsList.get(5)) || path.equals(iconsList.get(15)) || path.equals(iconsList.get(30)) || path.equals(iconsList.get(47)) || path.equals(iconsList.get(55)) || path.equals(iconsList.get(56)) || path.equals(iconsList.get(64)) || path.equals(iconsList.get(66))){
+            if (path.equals(iconsList.get(1)) || path.equals(iconsList.get(5)) || path.equals(iconsList.get(15)) || path.equals(iconsList.get(30)) || path.equals(iconsList.get(47)) || path.equals(iconsList.get(55)) || path.equals(iconsList.get(56)) || path.equals(iconsList.get(64)) || path.equals(iconsList.get(66))) {
                 rgNavBar.setMinSize(25, REQUIRED_HEIGHT);
                 rgNavBar.setPrefSize(25, REQUIRED_HEIGHT);
                 rgNavBar.setMaxSize(25, REQUIRED_HEIGHT);
-            }
-            else if(path.equals(iconsList.get(12))) { // icon hourglass(12)
+            } else if (path.equals(iconsList.get(12))) { // icon hourglass(12)
                 rgNavBar.setMinSize(23, REQUIRED_HEIGHT);
                 rgNavBar.setPrefSize(23, REQUIRED_HEIGHT);
                 rgNavBar.setMaxSize(23, REQUIRED_HEIGHT);
-            }
-            else if(path.equals(iconsList.get(9))){  //icon football(9)
+            } else if (path.equals(iconsList.get(9))) {  //icon football(9)
                 rgNavBar.setMinSize(REQUIRED_WIDTH, 28);
                 rgNavBar.setPrefSize(REQUIRED_WIDTH, 28);
                 rgNavBar.setMaxSize(REQUIRED_WIDTH, 28);
             }
             // icon keyboard(13), money bill(16), bed(38), bicycle(41), bone(49), camera(57), camera retro(58), dumbbell(69)
-            else if(path.equals(iconsList.get(13)) || path.equals(iconsList.get(16)) || path.equals(iconsList.get(38)) || path.equals(iconsList.get(41)) || path.equals(iconsList.get(49)) || path.equals(iconsList.get(57)) || path.equals(iconsList.get(58)) || path.equals(iconsList.get(69))){
+            else if (path.equals(iconsList.get(13)) || path.equals(iconsList.get(16)) || path.equals(iconsList.get(38)) || path.equals(iconsList.get(41)) || path.equals(iconsList.get(49)) || path.equals(iconsList.get(57)) || path.equals(iconsList.get(58)) || path.equals(iconsList.get(69))) {
                 rgNavBar.setMinSize(REQUIRED_WIDTH, 23);
                 rgNavBar.setPrefSize(REQUIRED_WIDTH, 23);
                 rgNavBar.setMaxSize(REQUIRED_WIDTH, 23);
-            }
-            else{
+            } else {
                 rgNavBar.setMinSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
                 rgNavBar.setPrefSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
                 rgNavBar.setMaxSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
@@ -148,8 +145,17 @@ public class CategoriesController {
 
 
             // event that occurs when the icon is clicked
+            // when selected it calls for another function so it can find which category this icon belongs to
             selectedIcon.setOnMouseClicked((e) -> {
-                // show the tasks of the respective category
+                System.out.println("selected");
+                AnchorPane taskTabtmp1 = null;
+                try {
+                    //configure each taskTab so it can retrieve the exact tasks of the category in specific
+                    taskTabtmp1 = FXMLLoader.load(getClass().getResource("/app/views/showTasks.fxml"));
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                main.getChildren().addAll(taskTabtmp1);
             });
 
             gpNavBar.add(rgNavBar, column, row);
@@ -169,10 +175,9 @@ public class CategoriesController {
 
 
         // checks if any of the text fields are empty
-        if(txtCategoryName.getText().equals("") || txtCategoryDescription.getText().equals("") || iconSvg == null){
+        if (txtCategoryName.getText().equals("") || txtCategoryDescription.getText().equals("") || iconSvg == null) {
 
-        }
-        else{
+        } else {
 
 
             // take data from the text fields
@@ -186,11 +191,9 @@ public class CategoriesController {
             newCategory.type = nameCategory;
             newCategory.icon = icon;
             newCategory.description = descriptionCategory;
-            newCategory.id = (int) (new Date().getTime()/1000);
+            newCategory.id = (int) (new Date().getTime() / 1000);
             newCategory.user = singleton.getUser();
-
             singleton.addToCategoryArray(newCategory);
-
 
             // create a new JSON object to put the new category in the JSON archive
 
@@ -199,13 +202,12 @@ public class CategoriesController {
             newCategory2Json.put("type", nameCategory);
             newCategory2Json.put("icon", icon);
             newCategory2Json.put("description", descriptionCategory);
-            try{
+            try {
 
                 file.write(newCategory2Json.toString());
                 file.close();
 
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -237,9 +239,7 @@ public class CategoriesController {
         rgIconSelected.setShape(new SVGPath());
 
         pnNewCategory.setVisible(false);
-
-
-
+        pnNewCategory.setDisable(false);
 
     }
 
@@ -250,6 +250,7 @@ public class CategoriesController {
         txtCategoryDescription.clear();
         txtCategoryName.clear();
         pnNewCategory.setVisible(false);
+        pnNewCategory.setDisable(false);
     }
 
     @FXML
@@ -270,9 +271,9 @@ public class CategoriesController {
         int row = 0;
         int column = 0;
 
-        for(String path : iconsList){
+        for (String path : iconsList) {
 
-            if(column == 7){
+            if (column == 7) {
                 column = 0;
                 row++;
             }
@@ -284,7 +285,7 @@ public class CategoriesController {
             rgIcon.setShape(icon);
             rgIcon.setStyle("-fx-background-color: gray;");
             // icons bookmark(1), clipboard(5), lightbulb(15), award(30), bolt(47), brush(55), burn(56), dna(64), dollar sign(66)
-            if(path.equals(iconsList.get(1)) || path.equals(iconsList.get(5)) || path.equals(iconsList.get(15)) || path.equals(iconsList.get(30)) || path.equals(iconsList.get(47)) || path.equals(iconsList.get(55)) || path.equals(iconsList.get(56)) || path.equals(iconsList.get(64)) || path.equals(iconsList.get(66))){
+            if (path.equals(iconsList.get(1)) || path.equals(iconsList.get(5)) || path.equals(iconsList.get(15)) || path.equals(iconsList.get(30)) || path.equals(iconsList.get(47)) || path.equals(iconsList.get(55)) || path.equals(iconsList.get(56)) || path.equals(iconsList.get(64)) || path.equals(iconsList.get(66))) {
                 rgIcon.setMinSize(25, REQUIRED_HEIGHT);
                 rgIcon.setPrefSize(25, REQUIRED_HEIGHT);
                 rgIcon.setMaxSize(25, REQUIRED_HEIGHT);
@@ -299,8 +300,7 @@ public class CategoriesController {
                     rgIconSelected.setMaxSize(25, REQUIRED_HEIGHT);
                     rgIconSelected.setStyle("-fx-background-color: gray;");
                 });
-            }
-            else if(path.equals(iconsList.get(12))){ // icon hourglass(12)
+            } else if (path.equals(iconsList.get(12))) { // icon hourglass(12)
                 rgIcon.setMinSize(23, REQUIRED_HEIGHT);
                 rgIcon.setPrefSize(23, REQUIRED_HEIGHT);
                 rgIcon.setMaxSize(23, REQUIRED_HEIGHT);
@@ -317,7 +317,7 @@ public class CategoriesController {
                 });
             }
             // icon football(9)
-            else if(path.equals(iconsList.get(9)) ){
+            else if (path.equals(iconsList.get(9))) {
                 rgIcon.setMinSize(REQUIRED_WIDTH, 28);
                 rgIcon.setPrefSize(REQUIRED_WIDTH, 28);
                 rgIcon.setMaxSize(REQUIRED_WIDTH, 28);
@@ -334,7 +334,7 @@ public class CategoriesController {
                 });
             }
             // icon keyboard(13), money bill(16), bed(38), bicycle(41), bone(49), camera(57), camera retro(58), dumbbell(69)
-            else if(path.equals(iconsList.get(13)) || path.equals(iconsList.get(16)) || path.equals(iconsList.get(38)) || path.equals(iconsList.get(41)) || path.equals(iconsList.get(49)) || path.equals(iconsList.get(57)) || path.equals(iconsList.get(58)) || path.equals(iconsList.get(69))){
+            else if (path.equals(iconsList.get(13)) || path.equals(iconsList.get(16)) || path.equals(iconsList.get(38)) || path.equals(iconsList.get(41)) || path.equals(iconsList.get(49)) || path.equals(iconsList.get(57)) || path.equals(iconsList.get(58)) || path.equals(iconsList.get(69))) {
                 rgIcon.setMinSize(REQUIRED_WIDTH, 23);
                 rgIcon.setPrefSize(REQUIRED_WIDTH, 23);
                 rgIcon.setMaxSize(REQUIRED_WIDTH, 23);
@@ -349,8 +349,7 @@ public class CategoriesController {
                     rgIconSelected.setMaxSize(REQUIRED_WIDTH, 23);
                     rgIconSelected.setStyle("-fx-background-color: gray;");
                 });
-            }
-            else{
+            } else {
                 rgIcon.setMinSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
                 rgIcon.setPrefSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
                 rgIcon.setMaxSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
@@ -367,7 +366,7 @@ public class CategoriesController {
                 });
             }
 
-            gpIcons.add(rgIcon,column,row);
+            gpIcons.add(rgIcon, column, row);
             column++;
 
 
@@ -386,7 +385,7 @@ public class CategoriesController {
 
     }
 
-    public void initialize(){
+    public void initialize() {
         pnNewCategory.setVisible(false);
         pnIcons.setVisible(false);
 

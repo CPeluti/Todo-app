@@ -31,9 +31,8 @@ public class LoginController{
         }catch (Exception err){
             err.printStackTrace();
         }
-
-
     }
+
     private void changeScene() throws Exception{
         Stage stage = (Stage) loginButton.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/main.fxml"));
