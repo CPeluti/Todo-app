@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="app.controllers.MainController" prefHeight="20.0" prefWidth="800.0" style="-fx-background-color: #DBC3F1FF;">
+    <children>
+        <Label layoutX="777.0" layoutY="2.0" onMouseClicked="#btnCloseApp" prefHeight="13.0" prefWidth="15.0" style="-fx-background-radius: 20 20 20 20; -fx-background-color: red; -fx-border-radius: 20 20 20 20; -fx-alignment: center;" text="X" textAlignment="CENTER" />
+    </children>
+</AnchorPane>
