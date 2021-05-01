@@ -24,26 +24,7 @@ public class Singleton {
         this.user = user;
     }
 
-    public ArrayList<UserCategory> getListUserCategories() {
-        return this.listUserCategories;
-    }
-    public void setListUserCategories(ArrayList<UserCategory> listUserCategories) {
-        this.listUserCategories = listUserCategories;
-    }
-    public void addToCategoryArray(UserCategory element){
-        this.listUserCategories.add(element);
-    }
 
-
-    public ArrayList<Tasks> getListTasks() {
-        return listTasks;
-    }
-    public void setListTasks(ArrayList<Tasks> listTasks) {
-        this.listTasks = listTasks;
-    }
-    public void addToTaskArray(Tasks element){
-        this.listTasks.add(element);
-    }
 
 
 

@@ -11,18 +11,11 @@ import java.util.Map;
 
 public class UserCategory extends Category {
 
-    public UserCategory() {
-        super();
-    }
-
     public UserCategory(String type, String icon, String description, int id) {
         super(type, icon, description, id);
     }
 
-    public String getIcon(){
-        return this.icon;
-    }
-    public String getType(){ return this.type; }
+
 
 
     public static void create(UserCategory obj, Singleton singleton) {

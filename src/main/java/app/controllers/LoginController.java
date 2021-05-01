@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -25,12 +26,24 @@ public class LoginController{
         User user = User.validateLogin(username,password);
         if(user != null){
             singleton.setUser(user);
+            try{
+                changeScene();
+            }catch (Exception err){
+                err.printStackTrace();
+            }
+        }else{
+            System.out.println("e-mail ou senha incorreto");
         }
-        try{
-            changeScene();
-        }catch (Exception err){
-            err.printStackTrace();
-        }
+
+    }
+
+    public void signInBtn(MouseEvent e) throws Exception{
+        Stage stage = (Stage) loginButton.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/signIn.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void changeScene() throws Exception{

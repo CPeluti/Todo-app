@@ -1,8 +1,11 @@
 package app.controllers;
 
+import app.models.Category;
 import app.models.Tasks;
 import app.models.UserCategory;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +25,7 @@ import java.util.Date;
 public class TasksController {
     public Button addNewTask;
     public Label newTaskLabel;
-    public AnchorPane addTasksPane;
+
     private Singleton singleton = Singleton.getInstance();
     public DatePicker dateId;
     public TextField taskId;
@@ -30,30 +33,18 @@ public class TasksController {
     public Button savingTask;
     public TextField descriptionId;
     public TextField time;
-    public Button closeTaskCreator;
     public ComboBox categoryId;
-
-    public Button infoBoxButton;
     public GridPane listofTasksGrid;
-
-    ArrayList<String> tmpList = new ArrayList<>();
-    public static ArrayList<String> lookForNames(ArrayList<String> comboBoxList, ArrayList<UserCategory> list) {
-        for (UserCategory find: list) {
-            comboBoxList.add(find.getType());
-            System.out.println("its working");
-        }
-        return comboBoxList;
-    }
-    ArrayList<String> comboBoxList = new ArrayList<>(lookForNames(tmpList, singleton.getListUserCategories()));
+    public static int selectedCategory;
 
 
     public void saveTask(ActionEvent actionEvent) {
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         TemporalAccessor timeX = timeFormat.parse(time.getText());
-        String titleofthistask = taskId.getText();
-        String categoryofthistask = String.valueOf(categoryId.getValue());
-        String descriptionofthistask = descriptionId.getText();
+        String taskTitle = taskId.getText();
+        String taskCategory = String.valueOf(categoryId.getValue());
+        String taskDescription = descriptionId.getText();
         int identification = (int) (new Date().getTime() / 1000);
 
         if (!time.getText().equals(timeFormat.format(timeX)) || time.getText().equals("")) {
@@ -73,31 +64,34 @@ public class TasksController {
         }
         else {
             LocalDate datetmp = dateId.getValue();
-            String timeofthistask = time.getText();
+            String taskTime = time.getText();
             String date = datetmp.format(dateFormat);
-            String datentimeofthistask = date + " " + timeofthistask;
-            Tasks tasks = new Tasks(identification, titleofthistask, categoryofthistask, false, false, datentimeofthistask, descriptionofthistask, false);
-            singleton.setTasks(tasks);
+            String taskDate = date + " " + taskTime;
+            Tasks tasks = new Tasks(identification, taskTitle, taskCategory, false, false, taskDate, taskDescription, false);
 
             this.singleton.listTasks.add(tasks);
             Tasks.create(tasks, singleton);
-
             taskCreator.setVisible(false);
             taskCreator.setDisable(false);
         }
     }
 
-    public void messageNewTask(MouseEvent mouseEvent) { newTaskLabel.setVisible(true); }
-
-    public void messageNewTaskout(MouseEvent mouseEvent) { newTaskLabel.setVisible(false); }
-
     public void closeTaskTab(ActionEvent actionEvent) {
         taskCreator.setVisible(false);
-        taskCreator.setDisable(false);
     }
 
     public void onClickBtnAddTask(ActionEvent actionEvent){
-        System.out.println("teste");
+        ArrayList<UserCategory> categories = singleton.getUser().getCategories();
+        taskCreator.setVisible(true);
+
+        if(!categories.isEmpty()){
+            ArrayList<String> categoriesTitle = new ArrayList<>();
+            for(UserCategory category: categories){
+                categoriesTitle.add(category.getType());
+            }
+            categoryId.setItems(FXCollections.observableArrayList(categoriesTitle));
+        }
+
     }
 
 }

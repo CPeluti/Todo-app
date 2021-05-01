@@ -13,7 +13,6 @@
 
     <AnchorPane prefHeight="600.0" prefWidth="42.0" styleClass="navbar">
         <fx:include source="categories.fxml" />
-
     </AnchorPane>
 
 </AnchorPane>

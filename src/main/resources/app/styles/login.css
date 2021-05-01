@@ -1,0 +1,23 @@
+.text-field{
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-background-color: white;
+}
+
+.bg{
+    -fx-background-color: linear-gradient(to bottom, #C49AE6,#5A7CF5);
+}
+.button{
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-background-color: white;
+    -fx-pref-width: 100;
+    -fx-alignment: center;
+}
+.signin{
+    -fx-text-fill: black;
+    -fx-cursor: HAND;
+}
+.signin:hover{
+    -fx-text-fill: blue;
+}
