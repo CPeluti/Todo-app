@@ -12,67 +12,82 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.CategoriesController">
-    <children>
-        <AnchorPane prefHeight="600.0" prefWidth="42.0" styleClass="navbar">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="42.0" stylesheets="@../styles/style.css"
+            xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="app.controllers.CategoriesController">
+    <AnchorPane prefHeight="600.0" prefWidth="42.0" styleClass="navbar">
 
-                <Label fx:id="btnNewCategory" layoutX="3.0" layoutY="514.0" onMouseClicked="#btnMakeCategory" onMouseEntered="#showMsgMakeCategory" onMouseExited="#notShowMsgMakeCategory" styleClass="addCategoryBtn" text="+" />
-                <ScrollPane fx:id="spCategories" hbarPolicy="NEVER" layoutX="4.0" layoutY="68.0" prefHeight="436.0" prefWidth="36.0" style="-fx-background-color: #ECECEC;" />
-            </AnchorPane>
-        <AnchorPane layoutX="211.0" layoutY="135.0" prefHeight="330.0" prefWidth="379.0" />
-        <Label fx:id="lbMsgMakeCategory" layoutX="31.0" layoutY="523.0" styleClass="msgNewCategory" text="Criar Nova Categoria" visible="false" />
-        <AnchorPane fx:id="pnNewCategory" layoutX="300.0" layoutY="200.0" prefHeight="247.0" prefWidth="244.0" style="-fx-background-color: #ac7feb;" styleClass="newCategoryPane">
-            <children>
-                <TextField fx:id="txtCategoryName" layoutX="26.0" layoutY="44.0" promptText="Nome" />
-                <Label layoutX="26.0" layoutY="14.0" text="Crie uma nova categoria" textFill="#f8f6f6">
-                    <font>
-                        <Font name="System Bold" size="14.0" />
-                    </font>
-                </Label>
-                <Button fx:id="btnSaveNewCategory" layoutX="162.0" layoutY="205.0" mnemonicParsing="false" onAction="#saveNewCategory" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #571da8;" styleClass="btnSaveCategory" text="Salvar" />
-                <TextArea fx:id="txtCategoryDescription" layoutX="26.0" layoutY="76.0" prefHeight="73.0" prefWidth="186.0" promptText="Descrição" />
-                <Button fx:id="btnCancelNewCategory" layoutX="210.0" layoutY="12.0" mnemonicParsing="false" onAction="#cancelNewCategory" styleClass="btnCancelCategory" text="X" />
-                <Button fx:id="btsSelectIcon" layoutX="26.0" layoutY="210.0" mnemonicParsing="false" onAction="#selectIcon" style="-fx-background-color: #571da8;" styleClass="btnSaveCategory" text="Escolher ícone" />
-            <Label layoutX="26.0" layoutY="165.0" text="Ícone: " textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Pane layoutX="75.0" layoutY="156.0" prefHeight="38.0" prefWidth="38.0" style="-fx-background-color: #ECECEC; -fx-background-radius: 10;">
-               <children>
-                  <Region fx:id="rgIconSelected" layoutX="4.0" layoutY="4.0" prefHeight="30.0" prefWidth="30.0" />
-               </children>
-            </Pane>
-            </children>
-            <effect>
-                <DropShadow height="89.2" radius="50.03" width="112.92">
-                    <color>
-                        <Color opacity="0.5130434632301331" />
-                    </color>
-                </DropShadow>
-            </effect>
-        </AnchorPane>
-      <AnchorPane fx:id="pnIcons" layoutX="250.0" layoutY="150.0" prefHeight="344.0" prefWidth="379.0" style="-fx-background-color: #ECECEC;" styleClass="newCategoryPane" visible="false">
-         <children>
-            <Label layoutX="131.0" layoutY="16.0" prefHeight="20.0" prefWidth="118.0" text="Escolha um ícone " textAlignment="CENTER" textFill="#222020">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Button fx:id="btnCancelIcon" layoutX="341.0" layoutY="13.0" mnemonicParsing="false" onAction="#cancelIcon" style="-fx-background-color: #ECECEC;" text="X" textFill="#1e1d1d">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font></Button>
-            <ScrollPane fx:id="spIcons" layoutX="21.0" layoutY="53.0" prefHeight="268.0" prefWidth="339.0" style="-fx-background-color: #ECECEC;" />
-         </children>
-         <effect>
+        <Label fx:id="btnNewCategory" layoutX="3.0" layoutY="514.0" onMouseClicked="#btnMakeCategory"
+               onMouseEntered="#showMsgMakeCategory" onMouseExited="#notShowMsgMakeCategory" styleClass="addCategoryBtn"
+               text="+" style="-fx-cursor: HAND"/>
+        <ScrollPane fx:id="spCategories" hbarPolicy="NEVER" layoutX="4.0" layoutY="68.0" prefHeight="436.0"
+                    prefWidth="36.0" style="-fx-background-color: #ECECEC;"/>
+    </AnchorPane>
+    <AnchorPane layoutX="211.0" layoutY="135.0" prefHeight="330.0" prefWidth="379.0"/>
+    <Label fx:id="lbMsgMakeCategory" layoutX="31.0" layoutY="523.0" styleClass="msgNewCategory"
+           text="Criar Nova Categoria" visible="false"/>
+    <AnchorPane fx:id="pnNewCategory" layoutX="300.0" layoutY="200.0" prefHeight="247.0" prefWidth="244.0"
+                style="-fx-background-color: #ac7feb;" styleClass="newCategoryPane">
+        <effect>
             <DropShadow height="89.2" radius="50.03" width="112.92">
-               <color>
-                  <Color opacity="0.5130434632301331" />
-               </color>
+                <color>
+                    <Color opacity="0.5130434632301331"/>
+                </color>
             </DropShadow>
-         </effect>
-      </AnchorPane>
+        </effect>
+        <TextField fx:id="txtCategoryName" layoutX="26.0" layoutY="44.0" promptText="Nome"/>
+        <Label layoutX="26.0" layoutY="14.0" text="Crie uma nova categoria" textFill="#f8f6f6">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Label>
+        <Button fx:id="btnSaveNewCategory" layoutX="162.0" layoutY="205.0" mnemonicParsing="false"
+                onAction="#saveNewCategory" prefHeight="30.0" prefWidth="60.0"
+                style="-fx-background-color: #571da8;" styleClass="btnSaveCategory" text="Salvar"/>
+        <TextArea fx:id="txtCategoryDescription" layoutX="26.0" layoutY="76.0" prefHeight="73.0" prefWidth="186.0"
+                  promptText="Descrição"/>
+        <Button fx:id="btnCancelNewCategory" layoutX="210.0" layoutY="12.0" mnemonicParsing="false"
+                onAction="#cancelNewCategory" styleClass="btnCancelCategory" text="X"/>
+        <Button fx:id="btsSelectIcon" layoutX="26.0" layoutY="210.0" mnemonicParsing="false" onAction="#selectIcon"
+                style="-fx-background-color: #571da8;" styleClass="btnSaveCategory" text="Escolher ícone"/>
+        <Label layoutX="26.0" layoutY="165.0" text="Ícone: " textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Label>
+        <Pane layoutX="75.0" layoutY="156.0" prefHeight="38.0" prefWidth="38.0"
+              style="-fx-background-color: #ECECEC; -fx-background-radius: 10;">
+            <children>
+                <Region fx:id="rgIconSelected" layoutX="4.0" layoutY="4.0" prefHeight="30.0" prefWidth="30.0"/>
+            </children>
+        </Pane>
+    </AnchorPane>
+    <AnchorPane fx:id="pnIcons" layoutX="250.0" layoutY="150.0" prefHeight="344.0" prefWidth="379.0"
+                style="-fx-background-color: #ECECEC;" styleClass="newCategoryPane" visible="false">
+        <children>
+          <Label layoutX="131.0" layoutY="16.0" prefHeight="20.0" prefWidth="118.0" text="Escolha um ícone "
+                 textAlignment="CENTER" textFill="#222020">
+              <font>
+                  <Font name="System Bold" size="14.0"/>
+              </font>
+          </Label>
+          <Button fx:id="btnCancelIcon" layoutX="341.0" layoutY="13.0" mnemonicParsing="false" onAction="#cancelIcon"
+                  style="-fx-background-color: #ECECEC;" text="X" textFill="#1e1d1d">
+              <font>
+                  <Font name="System Bold" size="12.0"/>
+              </font>
+          </Button>
+          <ScrollPane fx:id="spIcons" layoutX="21.0" layoutY="53.0" prefHeight="268.0" prefWidth="339.0"
+                      style="-fx-background-color: #ECECEC;"/>
+        </children>
+        <effect>
+          <DropShadow height="89.2" radius="50.03" width="112.92">
+              <color>
+                  <Color opacity="0.5130434632301331"/>
+              </color>
+          </DropShadow>
+        </effect>
+    </AnchorPane>
 
-    </children>
 </AnchorPane>

@@ -14,6 +14,7 @@
     -fx-pref-width: 50px;
     -fx-pref-height: 50px;
     -fx-alignment: center;
+    -fx-cursor: HAND;
 }
 
 .addCategoryBtn{

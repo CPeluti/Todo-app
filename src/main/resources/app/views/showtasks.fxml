@@ -15,114 +15,132 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="listViewTasksFXML" layoutX="90.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="746.0" style="-fx-background-color: transparent;" styleClass="bg" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.TasksController">
-   <GridPane fx:id="MainGrid" layoutX="17.0" layoutY="1.0" prefHeight="447.0" prefWidth="603.0">
-     <columnConstraints>
-       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-     </columnConstraints>
-     <rowConstraints>
-         <RowConstraints maxHeight="84.05662172398311" minHeight="10.0" prefHeight="64.43396668588626" vgrow="SOMETIMES" />
-         <RowConstraints maxHeight="65.96225161635613" minHeight="10.0" prefHeight="31.509435912390686" vgrow="SOMETIMES" />
-         <RowConstraints maxHeight="65.96225161635613" minHeight="10.0" prefHeight="36.94340788914924" vgrow="SOMETIMES" />
-         <RowConstraints maxHeight="112.9245102238342" minHeight="10.0" prefHeight="100.3396160632278" vgrow="SOMETIMES" />
-         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="41.264194660994804" minHeight="0.0" prefHeight="16.81134431919793" vgrow="SOMETIMES" />
-         <RowConstraints maxHeight="60.792453938338554" minHeight="0.0" prefHeight="43.981109619140625" vgrow="SOMETIMES" />
-         <RowConstraints maxHeight="47.792453938338554" minHeight="5.4339599609375" prefHeight="47.792453938338554" />
-     </rowConstraints>
-      <children>
-         <Label fx:id="categoryTitle" prefHeight="26.0" prefWidth="358.0" text="Category Name" textFill="WHITE" GridPane.columnIndex="4" GridPane.columnSpan="6">
-            <font>
-               <Font name="System Bold" size="32.0" />
-            </font>
-         </Label>
-         <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="88.0" prefWidth="110.0" style="-fx-background-color: transparent; -fx-background-radius: 10;" GridPane.columnIndex="1">
-            <children>
-               <Region fx:id="rgIconSelected" layoutX="3.0" layoutY="-5.0" />
-               <SVGPath fx:id="iconOFCategory" content="M40,60 C42,48 44,30 25,32" layoutX="22.0" layoutY="13.0" />
-            </children>
-         </Pane>
-         <ScrollPane fx:id="scrollforTasks" hbarPolicy="NEVER" prefHeight="341.0" prefWidth="600.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" styleClass="viewport" vmax="2.5" GridPane.columnSpan="12" GridPane.rowIndex="3" GridPane.rowSpan="8">
-            <content>
-               <AnchorPane fx:id="tasksShowSpace" prefHeight="321.0" prefWidth="592.0">
-                  <children>
-                     <GridPane prefHeight="316.0" prefWidth="584.0">
-                       <columnConstraints>
-                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                       </columnConstraints>
-                       <rowConstraints>
-                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                       </rowConstraints>
-                        <children>
-                           <AnchorPane fx:id="taskBoxAP">
-                              <children>
-                                 <GridPane fx:id="listofTasksGrid" prefHeight="36.0" prefWidth="591.0" style="-fx-background-color: white; -fx-background-radius: 10 10 10 10;">
-                                    <columnConstraints>
-                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0000157096541" minWidth="10.0" prefWidth="61.84907576824784" />
-                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.2075352409041" minWidth="10.0" prefWidth="44.358489696900705" />
-                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="86.01887557293534" minWidth="10.0" prefWidth="86.01887557293534" />
-                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.88676497723225" minWidth="10.0" prefWidth="97.54716536785725" />
-                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.999985192076" minWidth="10.0" prefWidth="59.50944564129475" />
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    </rowConstraints>
-                                    <children>
-                                       <Label fx:id="taskTitle" prefHeight="39.0" prefWidth="524.0" text="Tarefa Exemplo" GridPane.columnIndex="2" GridPane.columnSpan="4">
-                                          <font>
-                                             <Font size="22.0" />
-                                          </font>
-                                       </Label>
-                                       <Label fx:id="taskDeadline" prefHeight="45.0" prefWidth="158.0" text="DD/MM/YY HH:MM:SS" GridPane.columnIndex="6" GridPane.columnSpan="2">
-                                          <font>
-                                             <Font size="15.0" />
-                                          </font>
-                                       </Label>
-                                       <RadioButton fx:id="doneButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="31.0" style="-fx-alignment: center; -fx-background-color: white; -fx-background-radius: black; -fx-border-width: 1px;" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                          <font>
-                                             <Font size="20.0" />
-                                          </font>
-                                       </RadioButton>
-                                       <Button fx:id="infoBoxButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#openTaskInfoBox" prefHeight="25.0" prefWidth="28.0" style="-fx-background-radius: 25 25 25 25; -fx-background-color: YELLOW;" textAlignment="CENTER" GridPane.columnIndex="8">
-                                          <font>
-                                             <Font size="6.0" />
-                                          </font>
-                                       </Button>
-                                    </children>
-                                 </GridPane>
-                              </children>
-                           </AnchorPane>
-                        </children>
-                     </GridPane>
-                  </children>
-               </AnchorPane>
-            </content>
-         </ScrollPane>
-         <Label fx:id="descriptionofCategory" alignment="CENTER" prefHeight="62.0" prefWidth="402.0" text="description description description description description description description description description description description description description description description description description description description description description description " textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.columnSpan="8" GridPane.rowIndex="1" GridPane.rowSpan="2">
-            <font>
-               <Font name="System Italic" size="13.0" />
-            </font>
-         </Label>
-      </children>
-   </GridPane>
+    <GridPane fx:id="MainGrid" layoutX="17.0" layoutY="1.0" prefHeight="447.0" prefWidth="603.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="84.05662172398311" minHeight="10.0" prefHeight="64.43396668588626"
+                            vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="65.96225161635613" minHeight="10.0" prefHeight="31.509435912390686"
+                            vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="65.96225161635613" minHeight="10.0" prefHeight="36.94340788914924"
+                            vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="112.9245102238342" minHeight="10.0" prefHeight="100.3396160632278"
+                            vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="41.264194660994804" minHeight="0.0" prefHeight="16.81134431919793"
+                            vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="60.792453938338554" minHeight="0.0" prefHeight="43.981109619140625"
+                            vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="47.792453938338554" minHeight="5.4339599609375" prefHeight="47.792453938338554"/>
+        </rowConstraints>
+        <Label fx:id="categoryTitle" prefHeight="26.0" prefWidth="358.0" text="Category Name" textFill="WHITE"
+               GridPane.columnIndex="4" GridPane.columnSpan="6">
+           <font>
+               <Font name="System Bold" size="32.0"/>
+           </font>
+        </Label>
+        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="88.0"
+              prefWidth="110.0" style="-fx-background-color: transparent; -fx-background-radius: 10;"
+              GridPane.columnIndex="1">
+            <Region fx:id="rgIconSelected" layoutX="3.0" layoutY="-5.0"/>
+            <SVGPath fx:id="iconOFCategory" content="M40,60 C42,48 44,30 25,32" layoutX="22.0" layoutY="13.0"/>
+        </Pane>
+        <ScrollPane fx:id="scrollforTasks" hbarPolicy="NEVER" prefHeight="341.0" prefWidth="600.0"
+                    style="-fx-background-color: transparent; -fx-border-color: transparent;" styleClass="viewport"
+                    vmax="2.5" GridPane.columnSpan="12" GridPane.rowIndex="3" GridPane.rowSpan="8">
+            <AnchorPane fx:id="tasksShowSpace" prefHeight="321.0" prefWidth="592.0">
+                <GridPane prefHeight="316.0" prefWidth="584.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <AnchorPane fx:id="taskBoxAP">
+                        <GridPane fx:id="listofTasksGrid" prefHeight="36.0" prefWidth="591.0"
+                                  style="-fx-background-color: white; -fx-background-radius: 10 10 10 10;">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0000157096541"
+                                                   minWidth="10.0" prefWidth="61.84907576824784"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.2075352409041"
+                                                   minWidth="10.0" prefWidth="44.358489696900705"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="86.01887557293534"
+                                                   minWidth="10.0" prefWidth="86.01887557293534"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.88676497723225"
+                                                   minWidth="10.0" prefWidth="97.54716536785725"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.999985192076"
+                                                   minWidth="10.0" prefWidth="59.50944564129475"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <Label fx:id="taskTitle" prefHeight="39.0" prefWidth="524.0"
+                                   text="Tarefa Exemplo" GridPane.columnIndex="2"
+                                   GridPane.columnSpan="4">
+                                <font>
+                                    <Font size="22.0"/>
+                                </font>
+                            </Label>
+                            <Label fx:id="taskDeadline" prefHeight="45.0" prefWidth="158.0"
+                                   text="DD/MM/YY HH:MM:SS" GridPane.columnIndex="6"
+                                   GridPane.columnSpan="2">
+                                <font>
+                                    <Font size="15.0"/>
+                                </font>
+                            </Label>
+                            <RadioButton fx:id="doneButton" contentDisplay="CENTER"
+                                         mnemonicParsing="false" prefHeight="40.0" prefWidth="31.0"
+                                         style="-fx-alignment: center; -fx-background-color: white; -fx-background-radius: black; -fx-border-width: 1px;"
+                                         textAlignment="CENTER" GridPane.halignment="CENTER"
+                                         GridPane.valignment="CENTER">
+                                <font>
+                                    <Font size="20.0"/>
+                                </font>
+                            </RadioButton>
+                            <Button fx:id="infoBoxButton" alignment="CENTER" contentDisplay="CENTER"
+                                    mnemonicParsing="false" onAction="#openTaskInfoBox"
+                                    prefHeight="25.0" prefWidth="28.0"
+                                    style="-fx-background-radius: 25 25 25 25; -fx-background-color: YELLOW;"
+                                    textAlignment="CENTER" GridPane.columnIndex="8">
+                                <font>
+                                    <Font size="6.0"/>
+                                </font>
+                            </Button>
+                        </GridPane>
+                    </AnchorPane>
+                </GridPane>
+            </AnchorPane>
+        </ScrollPane>
+        <Label fx:id="descriptionofCategory" alignment="CENTER" prefHeight="62.0" prefWidth="402.0"
+               text="description description description description description description description description description description description description description description description description description description description description description description "
+               textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.columnSpan="8"
+               GridPane.rowIndex="1" GridPane.rowSpan="2">
+           <font>
+               <Font name="System Italic" size="13.0"/>
+           </font>
+        </Label>
+    </GridPane>
    <padding>
       <Insets top="10.0" />
    </padding>

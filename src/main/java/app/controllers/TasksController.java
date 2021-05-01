@@ -29,15 +29,11 @@ public class TasksController {
     public AnchorPane taskCreator;
     public Button savingTask;
     public TextField descriptionId;
-    public AnchorPane bg;
     public TextField time;
     public Button closeTaskCreator;
     public ComboBox categoryId;
 
     public Button infoBoxButton;
-    public Button EXITButton;
-    public AnchorPane main;
-    public Button tmp;
     public GridPane listofTasksGrid;
 
     ArrayList<String> tmpList = new ArrayList<>();
@@ -49,12 +45,9 @@ public class TasksController {
         return comboBoxList;
     }
     ArrayList<String> comboBoxList = new ArrayList<>(lookForNames(tmpList, singleton.getListUserCategories()));
-    public void initialize() {
-        boolean b = categoryId.getItems().addAll((FXCollections.observableArrayList(comboBoxList)));
-    }
 
 
-    public void saveTask(ActionEvent actionEvent) throws Exception {
+    public void saveTask(ActionEvent actionEvent) {
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         TemporalAccessor timeX = timeFormat.parse(time.getText());
@@ -89,14 +82,9 @@ public class TasksController {
             this.singleton.listTasks.add(tasks);
             Tasks.create(tasks, singleton);
 
-            addTasksPane.setDisable(false);
             taskCreator.setVisible(false);
             taskCreator.setDisable(false);
         }
-    }
-
-    public void openNewTaskBox(ActionEvent actionEvent) throws IOException { //it shows the creation environment for a new TASK
-        addTasksPane.setVisible(false);
     }
 
     public void messageNewTask(MouseEvent mouseEvent) { newTaskLabel.setVisible(true); }
@@ -104,14 +92,12 @@ public class TasksController {
     public void messageNewTaskout(MouseEvent mouseEvent) { newTaskLabel.setVisible(false); }
 
     public void closeTaskTab(ActionEvent actionEvent) {
-        addTasksPane.setDisable(false);
         taskCreator.setVisible(false);
         taskCreator.setDisable(false);
     }
 
-    @FXML
-    private void openNewTaskList(ActionEvent actionEvent)  throws IOException { //it loads new Tasks from a specific Category
-        AnchorPane task= FXMLLoader.load(getClass().getResource("/app/views/showtasks.fxml"));
-        main.getChildren().addAll(task);
+    public void onClickBtnAddTask(ActionEvent actionEvent){
+        System.out.println("teste");
     }
+
 }
