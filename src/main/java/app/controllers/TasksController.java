@@ -1,23 +1,28 @@
 package app.controllers;
 
 import app.models.Tasks;
+import app.models.UserCategory;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
 import java.util.Date;
 
 
-
-
 public class TasksController {
+    public Button addNewTask;
+    public Label newTaskLabel;
+    public AnchorPane addTasksPane;
     private Singleton singleton = Singleton.getInstance();
     public DatePicker dateId;
     public TextField taskId;
@@ -27,12 +32,27 @@ public class TasksController {
     public AnchorPane bg;
     public TextField time;
     public Button closeTaskCreator;
-    String[] list = {"TP1", "MUSIC", "CN"};
     public ComboBox categoryId;
 
-    public void initialize() {
-        categoryId.getItems().addAll(FXCollections.observableArrayList(list));
+    public Button infoBoxButton;
+    public Button EXITButton;
+    public AnchorPane main;
+    public Button tmp;
+    public GridPane listofTasksGrid;
+
+    ArrayList<String> tmpList = new ArrayList<>();
+    public static ArrayList<String> lookForNames(ArrayList<String> comboBoxList, ArrayList<UserCategory> list) {
+        for (UserCategory find: list) {
+            comboBoxList.add(find.getType());
+            System.out.println("its working");
+        }
+        return comboBoxList;
     }
+    ArrayList<String> comboBoxList = new ArrayList<>(lookForNames(tmpList, singleton.getListUserCategories()));
+    public void initialize() {
+        boolean b = categoryId.getItems().addAll((FXCollections.observableArrayList(comboBoxList)));
+    }
+
 
     public void saveTask(ActionEvent actionEvent) throws Exception {
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -68,11 +88,30 @@ public class TasksController {
 
             this.singleton.listTasks.add(tasks);
             Tasks.create(tasks, singleton);
+
+            addTasksPane.setDisable(false);
             taskCreator.setVisible(false);
+            taskCreator.setDisable(false);
         }
     }
 
+    public void openNewTaskBox(ActionEvent actionEvent) throws IOException { //it shows the creation environment for a new TASK
+        addTasksPane.setVisible(false);
+    }
+
+    public void messageNewTask(MouseEvent mouseEvent) { newTaskLabel.setVisible(true); }
+
+    public void messageNewTaskout(MouseEvent mouseEvent) { newTaskLabel.setVisible(false); }
+
     public void closeTaskTab(ActionEvent actionEvent) {
+        addTasksPane.setDisable(false);
         taskCreator.setVisible(false);
+        taskCreator.setDisable(false);
+    }
+
+    @FXML
+    private void openNewTaskList(ActionEvent actionEvent)  throws IOException { //it loads new Tasks from a specific Category
+        AnchorPane task= FXMLLoader.load(getClass().getResource("/app/views/showtasks.fxml"));
+        main.getChildren().addAll(task);
     }
 }

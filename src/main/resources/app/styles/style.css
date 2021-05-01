@@ -47,6 +47,7 @@
 
 }
 
+.
 .btnSaveCategory{
     -fx-background-color: #7724a3;
     -fx-text-fill: white;
@@ -58,4 +59,37 @@
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-color:  #ac7feb;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.radio-button .radio {
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-background-color: white;
+    -fx-background-image: null;
+    -fx-border-radius: 15px;
+    -fx-padding: 4px;
+}
+.radio-button .radio:selected {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:armed {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:determinate {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:indeterminate {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button .dot {
+    -fx-background-radius: 15px;
+    -fx-padding: 8px;
 }

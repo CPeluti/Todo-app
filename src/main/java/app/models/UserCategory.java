@@ -1,16 +1,11 @@
 package app.models;
 
 import app.controllers.Singleton;
-import app.models.Category;
-import app.models.User;
-import kong.unirest.HttpRequest;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +22,7 @@ public class UserCategory extends Category {
     public String getIcon(){
         return this.icon;
     }
+    public String getType(){ return this.type; }
 
 
     public static void create(UserCategory obj, Singleton singleton) {
