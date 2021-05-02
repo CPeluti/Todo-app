@@ -23,12 +23,12 @@ public class User{
     String timeZone;
     String imageUrl;
     String sessionToken;
-    ArrayList<UserCategory> categories= new ArrayList<>();
+    ArrayList<Category> categories= new ArrayList<>();
     ArrayList<Tasks> tasks = new ArrayList<>();
 
 
 
-    public User(String name, String lastName, String email,String timeZone, String imageUrl, String sessionToken, String id,ArrayList<Tasks> tasks,ArrayList<UserCategory> categories) {
+    public User(String name, String lastName, String email,String timeZone, String imageUrl, String sessionToken, String id,ArrayList<Tasks> tasks,ArrayList<Category> categories) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
@@ -81,9 +81,10 @@ public class User{
                 return null;
             }
 
-            ArrayList<UserCategory> categoriesRes = new ArrayList<>();
+            ArrayList<Category> categoriesRes = new ArrayList<>();
             JSONArray jsonArray = json.getJSONArray("categories");
             System.out.println(jsonArray.toString());
+            System.out.println(jsonArray.length());
             if (!jsonArray.isEmpty()) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject category = jsonArray.getJSONObject(i);
@@ -101,14 +102,14 @@ public class User{
 
             ArrayList<Tasks> tasks = new ArrayList<>();
             JSONArray jsonArrayTasks = json.getJSONArray("tasks");
-
+            System.out.println(jsonArrayTasks.toString());
             if(!jsonArrayTasks.isEmpty()){
-                for(int i = 0; i<jsonArray.length();i++){
+                for(int i = 0; i<jsonArrayTasks.length();i++){
                     JSONObject task = jsonArrayTasks.getJSONObject(i);
                     Tasks userTasks = new Tasks(
                             Integer.parseInt(task.getString("id")),
                             task.getString("title"),
-                            task.getString("category"),
+                            Integer.parseInt(task.getString("category")),
                             Boolean.parseBoolean(task.getString("done")),
                             Boolean.parseBoolean(task.getString("favourite")),
                             task.getString("deadline"),
@@ -199,11 +200,11 @@ public class User{
         this.id = id;
     }
 
-    public ArrayList<UserCategory> getCategories() {
+    public ArrayList<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(ArrayList<UserCategory> categories) {
+    public void setCategories(ArrayList<Category> categories) {
         this.categories = categories;
     }
 

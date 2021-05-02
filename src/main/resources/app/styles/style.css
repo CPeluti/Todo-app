@@ -1,13 +1,4 @@
-.navbar{
-    -fx-background-color: #ECECEC;
-}
-.bg{
-    -fx-background-color: linear-gradient(to bottom, #C49AE6,#5A7CF5);
-}
 
-.scroll-pane .viewport {
-    -fx-background-color: transparent;
-}
 
 .radio-button .radio {
     -fx-border-width: 1px;
@@ -37,4 +28,18 @@
     -fx-background-radius: 15px;
     -fx-padding: 8px;
 
+}
+
+.closeButton{
+    -fx-background-radius: 50;
+    -fx-background-color: red;
+    -fx-border-radius: 50;
+    -fx-alignment: center;
+    -fx-cursor: HAND;
+}
+.closeButton:hover{
+    -fx-background-color: #ef5555;
+}
+.closeBar{
+    -fx-background-color: #DBC3F1FF;
 }

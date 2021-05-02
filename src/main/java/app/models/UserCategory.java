@@ -29,10 +29,10 @@ public class UserCategory extends Category {
         //String url = "" + user.id;
         String dataString =
                 "{" +
-                    "\"id\":\""+obj.id+"\"," +
-                    "\"type\":\""+obj.type+"\"," +
-                    "\"icon\":\""+obj.icon+"\"," +
-                    "\"description\":\""+obj.description+"\"" +
+                    "\"id\":\""+obj.getId()+"\"," +
+                    "\"type\":\""+obj.getType()+"\"," +
+                    "\"icon\":\""+obj.getIcon()+"\"," +
+                    "\"description\":\""+obj.getDescription()+"\"" +
                 "}";
 
         System.out.println(dataString);
@@ -67,7 +67,7 @@ public class UserCategory extends Category {
     public void update(UserCategory obj, Singleton singleton) {
         User user = singleton.getUser();
         String url = "https://api-todo-unb.herokuapp.com/category/" + user.id;
-        String dataString = "{\"type\":\""+obj.type+"\",\"icon\":\""+obj.icon+"\",\"description\":\""+obj.description+"\"}";
+        String dataString = "{\"type\":\""+obj.getType()+"\",\"icon\":\""+obj.getIcon()+"\",\"description\":\""+obj.getDescription()+"\"}";
 
         HttpResponse<JsonNode> data = Unirest.put(url)
                 .header("Content-Type","application/json")

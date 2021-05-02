@@ -47,3 +47,14 @@
 .iconSelected{
     -fx-background-color: gray;
 }
+
+.navbar{
+    -fx-background-color: #ECECEC;
+}
+.bg{
+    -fx-background-color: linear-gradient(to bottom, #C49AE6,#5A7CF5);
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}

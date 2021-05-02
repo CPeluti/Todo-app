@@ -16,10 +16,4 @@
     <Label layoutX="321.0" layoutY="338.0" text="Confirme sua senha" />
     <PasswordField fx:id="passwdConfirm" layoutX="319.0" layoutY="356.0" promptText="Confirme sua senha" />
     <Button fx:id="signInButton" layoutX="350.0" layoutY="401.0" mnemonicParsing="false" onAction="#createUser" text="Cadastrar" />
-
-
-
-
-
-
 </AnchorPane>

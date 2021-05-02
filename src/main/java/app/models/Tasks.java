@@ -14,14 +14,14 @@ import java.util.*;
 
 
 public class Tasks{
-	public int id;
-	public String title;//conteudo
-	public String category;//categoria
-	public  boolean done = false;//completada
-	public  boolean favourite = false;// favorito
-	public String deadline;//data formato da data vai ser dd/mm/aaaa ou dd/MM/yyyy HH:mm:ss
-	public String description;// descricao
-	public boolean deleted = false;//tarefa deletada?
+	private int id;
+	private String title;//conteudo
+	private int category;//categoria
+	private  boolean done = false;//completada
+	private  boolean favourite = false;// favorito
+	private String deadline;//data formato da data vai ser dd/mm/aaaa ou dd/MM/yyyy HH:mm:ss
+	private String description;// descricao
+	private boolean deleted = false;//tarefa deletada?
 
 	public double getId() { return id; }
 
@@ -29,7 +29,7 @@ public class Tasks{
 		return title;
 	}
 
-	public  String getCategory() {
+	public  int getCategory() {
 		return category;
 	}
 
@@ -53,8 +53,7 @@ public class Tasks{
 		return deleted;
 	}
 
-	public Tasks(int id, String title, String category, boolean done, boolean favourite, String deadline, String description, boolean deleted) {
-		super();
+	public Tasks(int id, String title, int category, boolean done, boolean favourite, String deadline, String description, boolean deleted) {
 		this.id = id;
 		this.title = title;
 		this.category = category;
