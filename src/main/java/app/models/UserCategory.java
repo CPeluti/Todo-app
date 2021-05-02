@@ -67,7 +67,12 @@ public class UserCategory extends Category {
     public void update(UserCategory obj, Singleton singleton) {
         User user = singleton.getUser();
         String url = "https://api-todo-unb.herokuapp.com/category/" + user.id;
-        String dataString = "{\"type\":\""+obj.getType()+"\",\"icon\":\""+obj.getIcon()+"\",\"description\":\""+obj.getDescription()+"\"}";
+        String dataString =
+                "{\"" +
+                    "type\":\""+obj.getType()+"\",\"" +
+                    "icon\":\""+obj.getIcon()+"\",\"" +
+                    "description\":\""+obj.getDescription()+"\"" +
+                "}";
 
         HttpResponse<JsonNode> data = Unirest.put(url)
                 .header("Content-Type","application/json")

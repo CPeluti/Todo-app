@@ -160,7 +160,7 @@
                     </color>
                 </DropShadow>
             </effect>
-            <Label layoutX="131.0" layoutY="16.0" prefHeight="20.0" prefWidth="118.0" text="Escolha um ícone " textAlignment="CENTER" textFill="#222020">
+            <Label layoutX="131.0" layoutY="16.0" prefHeight="20.0" prefWidth="140.0" text="Escolha um ícone " textAlignment="CENTER" textFill="#222020">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
