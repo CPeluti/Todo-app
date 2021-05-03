@@ -21,7 +21,6 @@ public class User{
     private String name;
     private String lastName;
     private String email;
-    private String timeZone;
     private String imageUrl;
     private String sessionToken;
     private ArrayList<Category> categories= new ArrayList<>();
@@ -29,13 +28,12 @@ public class User{
 
 
 
-    public User(String name, String lastName, String email,String timeZone, String imageUrl, String sessionToken, String id,ArrayList<Tasks> tasks,ArrayList<Category> categories) {
+    public User(String name, String lastName, String email, String imageUrl, String sessionToken, String id,ArrayList<Tasks> tasks,ArrayList<Category> categories) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.imageUrl = imageUrl;
         this.sessionToken = sessionToken;
-        this.timeZone = timeZone;
         this.id = id;
         this.tasks = tasks;
         this.categories.add(new DefaultCategory("Tarefas importantes","M528.1 171.5L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6zM388.6 312.3l23.7 138.4L288 385.4l-124.3 65.3 23.7-138.4-100.6-98 139-20.2 62.2-126 62.2 126 139 20.2-100.6 98z","Tarefas marcadas como importante",0));
@@ -47,7 +45,7 @@ public class User{
     }
 
 
-    public static void Create(String email, String password, String name){
+    public static void create(String email, String password, String name){
 
         String dataString =
                 "{" +
@@ -56,7 +54,6 @@ public class User{
                         "\"name\":\""+name+"\","+
                         "\"lastname\":\""+""+"\"," +
                         "\"nickname\":\""+""+"\"," +
-                        "\"timezone\":\""+""+"\"," +
                         "\"image\":\""+""+"\"" +
 
                 "}";
@@ -67,6 +64,25 @@ public class User{
                 .asJson();
 
 
+    }
+
+    public static void update(User user){
+        Map<String, String> header = new HashMap<>();
+        header.put("Content-Type","application/json");
+        header.put("Authorization", "bearer " + user.getSessionToken());
+
+        String dataString =
+                "{" +
+                        "\"id\":\""+user.getId()+"\","+
+                        "\"name\":\""+user.getName()+"\","+
+                        "\"lastname\":\""+user.getLastName()+"\"," +
+                        "\"image\":\""+user.getImageUrl()+"\"" +
+                        "}";
+
+        Unirest.put("https://api-todo-unb.herokuapp.com/users/")
+                .headers(header)
+                .body(dataString)
+                .asJson();
     }
 
     public static User validateLogin(String name, String password){
@@ -132,7 +148,6 @@ public class User{
                     json.getString("name"),
                     json.getString("lastname"),
                     json.getString("email"),
-                    json.getString("timezone"),
                     json.getString("image"),
                     json.getString("jwt"),
                     json.getString("userId"),
@@ -171,14 +186,6 @@ public class User{
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getTimeZone() {
-        return timeZone;
-    }
-
-    public void setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
     }
 
     public String getImageUrl() {

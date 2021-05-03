@@ -20,7 +20,7 @@ public class SignController {
 
     public void createUser(){
         if(passwd.getText().equals(passwdConfirm.getText())){
-            User.Create(email.getText(),passwd.getText(),name.getText());
+            User.create(email.getText(),passwd.getText(),name.getText());
 
             try{
                 Stage stage = (Stage) signInButton.getScene().getWindow();

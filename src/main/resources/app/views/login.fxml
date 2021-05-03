@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="loginAnchor" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/login.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.LoginController">
-    <fx:include source="closeBar.fxml" />
     <TextField fx:id="userField" layoutX="319.0" layoutY="236.0" promptText="digite seu e-mail" />
     <PasswordField fx:id="passwordField" layoutX="319.0" layoutY="287.0" promptText="Digite sua senha" />
     <Button fx:id="loginButton" layoutX="350.0" layoutY="328.0" mnemonicParsing="false" onAction="#onClickLogin" text="Login" />

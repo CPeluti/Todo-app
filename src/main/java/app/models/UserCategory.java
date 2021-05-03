@@ -46,7 +46,7 @@ public class UserCategory extends Category implements Storable {
     public static void delete(int id, Singleton singleton) {
 
         User user = singleton.getUser();
-        String url = "https://api-todo-unb.herokuapp.com/category/" + user.getSessionToken();
+        String url = "https://api-todo-unb.herokuapp.com/category/" + user.getId();
 
         String dataString = "{\"categoryId\":\""+id+"\"}";
 

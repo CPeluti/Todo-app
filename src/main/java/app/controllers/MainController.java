@@ -2,13 +2,19 @@ package app.controllers;
 
 import app.models.Category;
 import app.models.Tasks;
+import app.models.User;
 import app.models.UserCategory;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -21,15 +27,24 @@ import java.util.Date;
 
 public class MainController {
 
+    public Pane userMenu;
+    public Circle userMenuIcon;
+    public TextField userName;
+    public TextField userLastname;
+    public Button updateUser;
+
+    public MainController() throws IOException {
+    }
 
     public TextField editTaskTitle;
     public Region deleteTask;
     public TextField taskDescription;
     public Button btnSaveEditTask;
 
-    public MainController() throws IOException {
-    }
 
+    int idEditing;
+    boolean editing = false;
+    private int selectedCategory=0;
     private static final double REQUIRED_WIDTH = 32.0;
     private static final double REQUIRED_HEIGHT = 32.0;
 
@@ -47,11 +62,12 @@ public class MainController {
     public TextField descriptionId;
     public TextField time;
     public ComboBox<String> categoryId;
-    public int selectedCategory=0;
+
 
 
 
     public AnchorPane main;
+    public Circle userIcon;
     public ScrollPane spCategories;
     public Label lbMsgMakeCategory;
     public AnchorPane pnNewCategory;
@@ -439,6 +455,9 @@ public class MainController {
 
     }
 
+    private void searchImage(){
+        //evento para abrir o buscador de arquivos
+    }
 
 
     public void displayTasks(){
@@ -490,8 +509,7 @@ public class MainController {
 
     }
 
-    int idEditing;
-    boolean editing = false;
+
     public void display(){
 
         for(Category category: singleton.getUser().getCategories()){
@@ -541,12 +559,15 @@ public class MainController {
 
                 lbDeleteCategory.setOnMouseClicked((event) -> {
                     pnEdit.setVisible(false);
+                    if(category.getId()>3){
+                        UserCategory.delete(category.getId(), singleton);
+                        singleton.getUser().getCategories().remove(category);
+                        this.selectedCategory = 0;
+                        displayTasks();
+                        displayCategories();
+                        display();
+                    }
 
-                    UserCategory.delete(category.getId(), singleton);
-                    singleton.getUser().getCategories().remove(category);
-                    displayTasks();
-                    displayCategories();
-                    display();
                 });
 
             }
@@ -629,9 +650,52 @@ public class MainController {
         this.spCategories.setContent(gpNavBar);
     }
 
+    private void displayUserMenu(){
+        if(singleton.getUser().getImageUrl().isEmpty()){
+            userMenuIcon.setFill(new ImagePattern(new Image(this.getClass().getResource("/app/icons/149071.png").toString())));
+        }else{
+            userMenuIcon.setFill(new ImagePattern( new Image(singleton.getUser().getImageUrl())));
+        }
+        userMenu.setTranslateY(-200);
+        TranslateTransition openMenu = new TranslateTransition(new Duration(150),userMenu);
+        TranslateTransition closeMenu = new TranslateTransition(new Duration(150),userMenu);
+        userMenuIcon.setOnMouseClicked(e->{
+            searchImage();
+        });
+        updateUser.setOnAction(e->{
+            if(!userName.getText().equals("")) {
+                singleton.getUser().setName(userName.getText());
+            }
+            if(!userLastname.getText().equals("")){
+                singleton.getUser().setLastName(userLastname.getText());
+            }
+            closeMenu.setToY(-(userMenu.getHeight()));
+            closeMenu.play();
+            User.update(singleton.getUser());
+        });
+        userIcon.setOnMouseClicked(e->{
+            if(userMenu.getTranslateY()!=0){
+                userName.setText(singleton.getUser().getName());
+                userLastname.setText(singleton.getUser().getLastName());
+                openMenu.setToY(0);
+                openMenu.play();
+
+            }else{
+                closeMenu.setToY(-(userMenu.getHeight()));
+                closeMenu.play();
+
+            }
+        });
+    }
+
     public void initialize(){
         pnNewCategory.setVisible(false);
         pnIcons.setVisible(false);
+        if(singleton.getUser().getImageUrl().isEmpty()){
+            userIcon.setFill(new ImagePattern(new Image(this.getClass().getResource("/app/icons/149071.png").toString())));
+        }else{
+            userIcon.setFill(new ImagePattern( new Image(singleton.getUser().getImageUrl())));
+        }
 
 
         //Add icons
@@ -942,6 +1006,7 @@ public class MainController {
         displayCategories();
         display();
         displayTasks();
+        displayUserMenu();
 
 
     }

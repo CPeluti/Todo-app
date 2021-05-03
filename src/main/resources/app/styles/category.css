@@ -69,3 +69,6 @@
     -fx-background-color: #6c6c6c;
     -fx-text-fill: white;
 }
+.userIcon{
+   -fx-background-color: black;
+}
