@@ -157,7 +157,9 @@ public class MainController {
 
                     UserCategory.update(cat, singleton);
 
-
+                    displayTasks();
+                    displayCategories();
+                    display();
                 }
             }
         }
@@ -446,6 +448,7 @@ public class MainController {
                     icon2edit.setContent(category.getIcon());
                     rgIconSelected.setShape(icon2edit);
                     rgIconSelected.setStyle("-fx-background-color: gray");
+                    iconSvg = icon2edit;
 
                     editing = true;
                     idEditing = category.getId();
@@ -456,6 +459,10 @@ public class MainController {
                     pnEdit.setVisible(false);
 
                     UserCategory.delete(category.getId(), singleton);
+                    singleton.getUser().getCategories().remove(category);
+                    displayTasks();
+                    displayCategories();
+                    display();
                 });
 
             }
