@@ -315,9 +315,50 @@ public class MainController {
 
     }
 
+    private void createTask(Tasks task,int row,GridPane gp){
+        String css = this.getClass().getResource("/app/styles/task.css").toExternalForm();
+        AnchorPane ap = new AnchorPane();
+        ap.getStylesheets().add(css);
+        ap.getStyleClass().add("task");
+
+        BorderPane bp = new BorderPane();
+        bp.getStylesheets().add(css);
+        bp.getStyleClass().add("border-pane");
+
+        BorderPane rbp = new BorderPane();
+
+        CheckBox check = new CheckBox();
+        check.setSelected(task.isDone());
+        check.getStylesheets().add(css);
+
+        Label title = new Label();
+        title.setText(task.getTitle());
+        title.getStylesheets().add(css);
+
+        Label deadline = new Label();
+        deadline.setText(task.getDeadline());
+        deadline.getStylesheets().add(css);
+
+        CheckBox favourite = new CheckBox();
+        favourite.setSelected(task.isFavourite());
+        favourite.getStylesheets().add(css);
+
+        bp.setLeft(check);
+        bp.setCenter(title);
+
+        rbp.setCenter(deadline);
+        rbp.setRight(favourite);
+
+        bp.setRight(rbp);
+
+        ap.getChildren().add(bp);
+        gp.add(ap, 0, row);
+
+
+    }
 
     public void displayTasks(){
-        String css = this.getClass().getResource("/app/styles/task.css").toExternalForm();
+
         this.taskScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         this.taskScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         GridPane gp = new GridPane();
@@ -326,49 +367,41 @@ public class MainController {
         cc.setHgrow(Priority.ALWAYS);
         gp.getColumnConstraints().addAll(cc);
         int row = 0;
-
-        for(Tasks task:singleton.getUser().getTasks()) {
-            if (task.getCategory() == selectedCategory) {
-                AnchorPane ap = new AnchorPane();
-                ap.getStylesheets().add(css);
-                ap.getStyleClass().add("task");
-
-                BorderPane bp = new BorderPane();
-                bp.getStylesheets().add(css);
-                bp.getStyleClass().add("border-pane");
-
-                BorderPane rbp = new BorderPane();
-
-                CheckBox check = new CheckBox();
-                check.setSelected(task.isDone());
-                check.getStylesheets().add(css);
-
-                Label title = new Label();
-                title.setText(task.getTitle());
-                title.getStylesheets().add(css);
-
-                Label deadline = new Label();
-                deadline.setText(task.getDeadline());
-                deadline.getStylesheets().add(css);
-
-                CheckBox favourite = new CheckBox();
-                favourite.setSelected(task.isFavourite());
-                favourite.getStylesheets().add(css);
-
-                bp.setLeft(check);
-                bp.setCenter(title);
-
-                rbp.setCenter(deadline);
-                rbp.setRight(favourite);
-
-                bp.setRight(rbp);
-
-                ap.getChildren().add(bp);
-                gp.add(ap, 0, row);
-
-                row++;
-            }
+        switch(selectedCategory){
+            case 0:
+                for(Tasks task:singleton.getUser().getTasks()) {
+                    if (task.isFavourite()) {
+                        createTask(task,row,gp);
+                        row++;
+                    }
+                }
+                break;
+            case 2:
+                for(Tasks task:singleton.getUser().getTasks()) {
+                    if (task.isDone()) {
+                        createTask(task,row,gp);
+                        row++;
+                    }
+                }
+                break;
+            case 3:
+                for(Tasks task:singleton.getUser().getTasks()) {
+                    if (task.isDeleted()) {
+                        createTask(task,row,gp);
+                        row++;
+                    }
+                }
+                break;
+            default:
+                for(Tasks task:singleton.getUser().getTasks()) {
+                    if (task.getCategory() == selectedCategory) {
+                        createTask(task,row,gp);
+                        row++;
+                    }
+                }
+                break;
         }
+
         taskScroll.setContent(gp);
 
     }

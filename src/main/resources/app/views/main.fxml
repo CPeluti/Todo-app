@@ -28,7 +28,7 @@
         </font>
     </Button>
 
-    <ScrollPane fx:id="taskScroll" layoutX="160.0" layoutY="78.0" prefHeight="522.0" prefWidth="530.0" stylesheets="@../styles/tasks.css" />
+    <ScrollPane fx:id="taskScroll" disable="true" layoutX="160.0" layoutY="78.0" prefHeight="522.0" prefWidth="530.0" stylesheets="@../styles/tasks.css" />
 
     <AnchorPane fx:id="taskCreator" layoutX="171.0" layoutY="115.0" prefHeight="370.0" prefWidth="458.0" style="-fx-background-color: #dac9fd; -fx-background-radius: 50px; -fx-border-radius: 50px 55px;" visible="false">
         <effect>
@@ -176,4 +176,12 @@
     </AnchorPane>
 
     <fx:include source="closeBar.fxml" />
+   <AnchorPane layoutX="171.0" layoutY="115.0" prefHeight="209.0" prefWidth="458.0" style="-fx-background-color: #dac9fd; -fx-background-radius: 50;">
+      <children>
+         <TextField alignment="CENTER" layoutX="124.0" layoutY="20.0" prefHeight="26.0" prefWidth="210.0" style="-fx-background-color: transparent;" text="title" />
+         <Region layoutX="394.0" layoutY="154.0" prefHeight="41.0" prefWidth="42.0" style="-fx-background-color: red;" />
+         <TextField alignment="TOP_LEFT" layoutX="111.0" layoutY="69.0" prefHeight="98.0" prefWidth="274.0" style="-fx-background-color: transparent;" text="title" />
+         <Label layoutX="38.0" layoutY="74.0" text="Descrição:" />
+      </children>
+   </AnchorPane>
 </AnchorPane>
