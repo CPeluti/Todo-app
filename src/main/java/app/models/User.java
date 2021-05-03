@@ -17,15 +17,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class User{
-    String id;
-    String name;
-    String lastName;
-    String email;
-    String timeZone;
-    String imageUrl;
-    String sessionToken;
-    ArrayList<Category> categories= new ArrayList<>();
-    ArrayList<Tasks> tasks = new ArrayList<>();
+    private String id;
+    private String name;
+    private String lastName;
+    private String email;
+    private String timeZone;
+    private String imageUrl;
+    private String sessionToken;
+    private ArrayList<Category> categories= new ArrayList<>();
+    private ArrayList<Tasks> tasks = new ArrayList<>();
 
 
 
@@ -49,7 +49,6 @@ public class User{
 
     public static void Create(String email, String password, String name){
 
-        //String url = "" + user.id;
         String dataString =
                 "{" +
                         "\"email\":\""+email+"\"," +
@@ -62,12 +61,11 @@ public class User{
 
                 "}";
 
-        HttpResponse<JsonNode> data = Unirest.post("https://api-todo-unb.herokuapp.com/users/create")
+        Unirest.post("https://api-todo-unb.herokuapp.com/users/create")
                 .header("Content-Type","application/json")
                 .body(dataString)
                 .asJson();
-        JSONObject json = data.getBody().getObject();
-        System.out.println(json);
+
 
     }
 
@@ -84,6 +82,9 @@ public class User{
 
             if(json.has("status") && (json.getString("status").equals("500")||json.getString("status").equals("403"))){
                 System.out.println("usuario ou senha incorretos");
+                return null;
+            }else if(json.has("status") && (json.getString("status").equals("404"))){
+                System.out.println("nao foi possivel se conectar");
                 return null;
             }
 
@@ -146,8 +147,6 @@ public class User{
     }
     public void changeImage(URI newImage){
 
-    }
-    public void changePassword(){
     }
 
     public String getName() {
@@ -225,6 +224,7 @@ public class User{
     public void addTasks(Tasks task){
         this.tasks.add(task);
     }
+
     public void addCategory(Category category){
         this.categories.add(category);
     }

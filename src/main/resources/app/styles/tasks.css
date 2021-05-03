@@ -37,3 +37,11 @@
     -fx-text-fill: white;
 
 }
+.btnSaveTask{
+    -fx-text-fill: white;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+}
+.bordePaneTitle{
+    -fx-padding: 5;
+}

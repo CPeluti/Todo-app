@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -19,7 +20,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="tasks" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/tasks.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.MainController">
+<AnchorPane fx:id="tasks" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/tasks.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.MainController">
 
     <AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
@@ -29,7 +30,7 @@
         </font>
     </Button>
 
-    <ScrollPane fx:id="taskScroll" disable="true" layoutX="160.0" layoutY="78.0" prefHeight="522.0" prefWidth="530.0" stylesheets="@../styles/tasks.css" />
+    <ScrollPane fx:id="taskScroll" layoutX="160.0" layoutY="78.0" prefHeight="522.0" prefWidth="530.0" stylesheets="@../styles/tasks.css" />
 
     <AnchorPane fx:id="taskCreator" layoutX="171.0" layoutY="115.0" prefHeight="370.0" prefWidth="458.0" style="-fx-background-color: #dac9fd; -fx-background-radius: 50px; -fx-border-radius: 50px 55px;" visible="false">
         <effect>
@@ -114,23 +115,32 @@
             </Button>
         </GridPane>
     </AnchorPane>
-      <BorderPane fx:id="bpDisplay" layoutX="145.0" layoutY="28.0" prefHeight="50.0" prefWidth="339.0">
+      <BorderPane fx:id="bpDisplay" layoutX="145.0" layoutY="28.0" prefHeight="50.0" prefWidth="339.0" styleClass="bordePaneTitle" stylesheets="@../styles/tasks.css">
          <center>
           <Label fx:id="categoryTitle" prefHeight="29.0" prefWidth="475.0" styleClass="title" text="Title of the category" BorderPane.alignment="CENTER" />
          </center>
          <left>
-          <Region fx:id="titleIcon" prefHeight="40.0" prefWidth="40.0" BorderPane.alignment="CENTER" />
+          <Region fx:id="titleIcon" prefHeight="40.0" prefWidth="40.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="10.0" />
+               </BorderPane.margin></Region>
          </left>
          <right>
             <Region fx:id="rgThreeDots" maxHeight="25.0" maxWidth="10.0" prefHeight="25.0" prefWidth="10.0" BorderPane.alignment="CENTER" />
          </right>
       </BorderPane>
-      <Pane fx:id="pnEdit" layoutX="484.0" layoutY="67.0" prefHeight="48.0" prefWidth="62.0" style="-fx-background-color: white;">
-         <children>
-            <Label fx:id="lbEditCategory" layoutX="8.0" layoutY="6.0" text="Editar" />
-            <Label fx:id="lbDeleteCategory" layoutX="9.0" layoutY="26.0" text="Excluir" />
-         </children>
-      </Pane>
+        <Pane fx:id="pnEdit" layoutX="484.0" layoutY="67.0" prefHeight="48.0" prefWidth="62.0" style="-fx-background-color: white;" stylesheets="@../styles/category.css" visible="false">
+            <Label fx:id="lbEditCategory" layoutY="-1.0" prefHeight="25.0" prefWidth="63.0" styleClass="buttonCategory" text="Editar">
+                <padding>
+                    <Insets left="5.0" />
+                </padding>
+            </Label>
+            <Label fx:id="lbDeleteCategory" layoutX="-1.0" layoutY="24.0" prefHeight="25.0" prefWidth="63.0" styleClass="buttonCategory" text="Excluir">
+                <padding>
+                    <Insets left="5.0" />
+                </padding>
+            </Label>
+        </Pane>
 
 </AnchorPane>
 
@@ -192,12 +202,16 @@
     </AnchorPane>
 
     <fx:include source="closeBar.fxml" />
-   <AnchorPane layoutX="171.0" layoutY="115.0" prefHeight="209.0" prefWidth="458.0" style="-fx-background-color: #dac9fd; -fx-background-radius: 50;">
-      <children>
-         <TextField alignment="CENTER" layoutX="124.0" layoutY="20.0" prefHeight="26.0" prefWidth="210.0" style="-fx-background-color: transparent;" text="title" />
-         <Region layoutX="394.0" layoutY="154.0" prefHeight="41.0" prefWidth="42.0" style="-fx-background-color: red;" />
-         <TextField alignment="TOP_LEFT" layoutX="111.0" layoutY="69.0" prefHeight="98.0" prefWidth="274.0" style="-fx-background-color: transparent;" text="title" />
-         <Label layoutX="38.0" layoutY="74.0" text="Descrição:" />
-      </children>
-   </AnchorPane>
+    <AnchorPane id="menuTask" fx:id="menuTask" layoutX="171.0" layoutY="115.0" prefHeight="247.0" prefWidth="458.0" style="-fx-background-color: #dac9fd; -fx-background-radius: 50;" stylesheets="@../styles/tasks.css" visible="false">
+        <TextField fx:id="editTaskTitle" alignment="CENTER" layoutX="124.0" layoutY="20.0" prefHeight="26.0" prefWidth="210.0" style="-fx-background-color: transparent;" text="title" />
+        <Region fx:id="deleteTask" layoutX="363.0" layoutY="192.0" prefHeight="41.0" prefWidth="42.0" style="-fx-background-color: red;" />
+        <TextField fx:id="taskDescription" alignment="TOP_LEFT" layoutX="39.0" layoutY="70.0" prefHeight="98.0" prefWidth="391.0" style="-fx-background-color: white;" text="title" />
+        <Label layoutX="39.0" layoutY="46.0" text="Descrição:" />
+        <Button fx:id="btnSaveEditTask" layoutX="41.0" layoutY="198.0" mnemonicParsing="false" onAction="#saveNewCategory" prefHeight="30.0" prefWidth="63.0" style="-fx-background-color: #571da8;" styleClass="btnSaveTask" text="Salvar" />
+      <Button alignment="BOTTOM_RIGHT" layoutX="392.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeEditTask" prefHeight="46.0" prefWidth="30.0" style="-fx-background-color: transparent; -fx-cursor: HAND" styleClass="button" text="X" textAlignment="RIGHT" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Button>
+    </AnchorPane>
 </AnchorPane>

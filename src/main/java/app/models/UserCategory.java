@@ -1,6 +1,7 @@
 package app.models;
 
 import app.controllers.Singleton;
+import app.interfaces.Storable;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
@@ -9,7 +10,7 @@ import kong.unirest.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserCategory extends Category {
+public class UserCategory extends Category implements Storable {
 
     public UserCategory(String type, String icon, String description, int id) {
         super(type, icon, description, id);
@@ -21,12 +22,10 @@ public class UserCategory extends Category {
     public static void create(UserCategory obj, Singleton singleton) {
         User user = singleton.getUser();
 
-        //System.out.println(user.sessionToken);
         Map<String, String> header = new HashMap<>();
         header.put("Content-Type","application/json");
-        header.put("Authorization", "bearer " + user.sessionToken);
+        header.put("Authorization", "bearer " + user.getSessionToken());
 
-        //String url = "" + user.id;
         String dataString =
                 "{" +
                     "\"id\":\""+obj.getId()+"\"," +
@@ -35,42 +34,36 @@ public class UserCategory extends Category {
                     "\"description\":\""+obj.getDescription()+"\"" +
                 "}";
 
-        //System.out.println(dataString);
-        //System.out.println(url);
 
-        HttpResponse<JsonNode> data = Unirest.post("https://api-todo-unb.herokuapp.com/category/{userId}")
-                .routeParam("userId",user.id)
+        Unirest.post("https://api-todo-unb.herokuapp.com/category/{userId}")
+                .routeParam("userId",user.getId())
                 .headers(header)
                 .body(dataString)
                 .asJson();
-        JSONObject json = data.getBody().getObject();
 
     }
 
     public static void delete(int id, Singleton singleton) {
 
         User user = singleton.getUser();
-        String url = "https://api-todo-unb.herokuapp.com/category/" + user.id;
+        String url = "https://api-todo-unb.herokuapp.com/category/" + user.getSessionToken();
 
         String dataString = "{\"categoryId\":\""+id+"\"}";
 
-        HttpResponse<JsonNode> data = Unirest.delete(url)
+        Unirest.delete(url)
                 .header("Content-Type","application/json")
                 .header("Authorization", "bearer " + user.getSessionToken())
                 .body(dataString)
                 .asJson();
-        JSONObject json = data.getBody().getObject();
     }
 
     public static void update(Category obj, Singleton singleton) {
         User user = singleton.getUser();
 
-        //System.out.println(user.sessionToken);
         Map<String, String> header = new HashMap<>();
         header.put("Content-Type","application/json");
-        header.put("Authorization", "bearer " + user.sessionToken);
+        header.put("Authorization", "bearer " + user.getSessionToken());
 
-        //String url = "" + user.id;
         String dataString =
                 "{" +
                         "\"id\":\""+obj.getId()+"\"," +
@@ -79,14 +72,10 @@ public class UserCategory extends Category {
                         "\"description\":\""+obj.getDescription()+"\"" +
                         "}";
 
-        //System.out.println(dataString);
-        //System.out.println(url);
-
-        HttpResponse<JsonNode> data = Unirest.put("https://api-todo-unb.herokuapp.com/category/{userId}")
-                .routeParam("userId",user.id)
+       Unirest.put("https://api-todo-unb.herokuapp.com/category/{userId}")
+                .routeParam("userId",user.getId())
                 .headers(header)
                 .body(dataString)
                 .asJson();
-        JSONObject json = data.getBody().getObject();
     }
 }

@@ -11,8 +11,9 @@
     <TextField fx:id="userField" layoutX="319.0" layoutY="236.0" promptText="digite seu e-mail" />
     <PasswordField fx:id="passwordField" layoutX="319.0" layoutY="287.0" promptText="Digite sua senha" />
     <Button fx:id="loginButton" layoutX="350.0" layoutY="328.0" mnemonicParsing="false" onAction="#onClickLogin" text="Login" />
-    <Label layoutX="361.0" layoutY="361.0" styleClass="signin" text="Cadastrar-se" onMouseClicked="#signInBtn" underline="true" />
+    <Label layoutX="361.0" layoutY="361.0" onMouseClicked="#signInBtn" styleClass="signin" text="Cadastrar-se" underline="true" />
    <Label layoutX="319.0" layoutY="218.0" text="E-mail" />
    <Label layoutX="319.0" layoutY="269.0" text="Senha" />
+   <Label fx:id="labelErrorLogin" layoutX="317.0" layoutY="397.0" text="Email ou senha incorreto(s)" textFill="#ffbdbd" visible="false" />
 
 </AnchorPane>

@@ -16,9 +16,16 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicBoolean;
+
+
 
 public class MainController {
+
+
+    public TextField editTaskTitle;
+    public Region deleteTask;
+    public TextField taskDescription;
+    public Button btnSaveEditTask;
 
     public MainController() throws IOException {
     }
@@ -26,7 +33,7 @@ public class MainController {
     private static final double REQUIRED_WIDTH = 32.0;
     private static final double REQUIRED_HEIGHT = 32.0;
 
-
+    public AnchorPane menuTask;
     public Button addNewTask;
     public Region titleIcon;
     public Label categoryTitle;
@@ -340,6 +347,43 @@ public class MainController {
         spIcons.setDisable(false);
 
     }
+    private void openEditTask(Tasks task){
+        int taskIndex = singleton.getUser().getTasks().indexOf(task);
+        editTaskTitle.setText(task.getTitle());
+        taskDescription.setText(task.getDescription());
+        SVGPath svg = new SVGPath();
+        svg.setContent("M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z");
+        deleteTask.setShape(svg);
+        deleteTask.setStyle("-fx-background-color: red; -fx-pref-width: 25;-fx-pref-height: 25;-fx-cursor: HAND");
+        menuTask.setVisible(true);
+        deleteTask.setOnMouseClicked(e->{
+            if(task.isDeleted()) {
+                Tasks.delete(task.getId(), singleton);
+                singleton.getUser().getTasks().remove(task);
+            }else {
+                task.setDeleted(true);
+            }
+
+            closeEditTask();
+            displayTasks();
+        });
+        btnSaveEditTask.setOnAction(e->{
+
+            if(!editTaskTitle.getText().equals("")){
+                task.setTitle(editTaskTitle.getText());
+            }
+            if(!taskDescription.getText().equals("")){
+                task.setDescription(taskDescription.getText());
+            }
+            Tasks.update(task,singleton);
+            singleton.getUser().getTasks().set(taskIndex,task);
+            closeEditTask();
+            displayTasks();
+        });
+    }
+
+
+    public void closeEditTask(){menuTask.setVisible(false);}
 
     private void createTask(Tasks task,int row,GridPane gp){
         String css = this.getClass().getResource("/app/styles/task.css").toExternalForm();
@@ -356,10 +400,18 @@ public class MainController {
         CheckBox check = new CheckBox();
         check.setSelected(task.isDone());
         check.getStylesheets().add(css);
+        check.setOnAction(e->{
+            task.setDone(check.isSelected());
+            Tasks.update(task,singleton);
+        });
 
         Label title = new Label();
         title.setText(task.getTitle());
         title.getStylesheets().add(css);
+        title.setStyle("-fx-cursor: HAND");
+        title.setOnMouseClicked(e->{
+            openEditTask(task);
+        });
 
         Label deadline = new Label();
         deadline.setText(task.getDeadline());
@@ -368,6 +420,10 @@ public class MainController {
         CheckBox favourite = new CheckBox();
         favourite.setSelected(task.isFavourite());
         favourite.getStylesheets().add(css);
+        favourite.setOnAction(e -> {
+            task.setFavourite(favourite.isSelected());
+            Tasks.update(task,singleton);
+        });
 
         bp.setLeft(check);
         bp.setCenter(title);
@@ -383,6 +439,8 @@ public class MainController {
 
     }
 
+
+
     public void displayTasks(){
 
         this.taskScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -396,7 +454,7 @@ public class MainController {
         switch(selectedCategory){
             case 0:
                 for(Tasks task:singleton.getUser().getTasks()) {
-                    if (task.isFavourite()) {
+                    if (task.isFavourite() && !task.isDeleted()) {
                         createTask(task,row,gp);
                         row++;
                     }
@@ -404,7 +462,7 @@ public class MainController {
                 break;
             case 2:
                 for(Tasks task:singleton.getUser().getTasks()) {
-                    if (task.isDone()) {
+                    if (task.isDone() && !task.isDeleted()) {
                         createTask(task,row,gp);
                         row++;
                     }
@@ -420,7 +478,7 @@ public class MainController {
                 break;
             default:
                 for(Tasks task:singleton.getUser().getTasks()) {
-                    if (task.getCategory() == selectedCategory) {
+                    if (task.getCategory() == selectedCategory && !task.isDeleted()) {
                         createTask(task,row,gp);
                         row++;
                     }
@@ -450,21 +508,14 @@ public class MainController {
                 SVGPath threeDots = new SVGPath();
                 threeDots.setContent("M96 184c39.8 0 72 32.2 72 72s-32.2 72-72 72-72-32.2-72-72 32.2-72 72-72zM24 80c0 39.8 32.2 72 72 72s72-32.2 72-72S135.8 8 96 8 24 40.2 24 80zm0 352c0 39.8 32.2 72 72 72s72-32.2 72-72-32.2-72-72-72-72 32.2-72 72z");
                 rgThreeDots.setShape(threeDots);
-                rgThreeDots.setStyle("-fx-background-color: gray; -fx-pref-width: 20; -fx-pref-height: 30; -fx-cursor: HAND" );
+                rgThreeDots.setStyle("-fx-background-color: white; -fx-pref-width: 20; -fx-pref-height: 30; -fx-cursor: HAND" );
                 pnEdit.setVisible(false);
-
-                lbEditCategory.setStyle("-fx-cursor: HAND");
-                lbDeleteCategory.setStyle("-fx-cursor: HAND");
+                pnEdit.setOnMouseExited(e->{
+                    pnEdit.setVisible(false);
+                });
 
                 rgThreeDots.setOnMouseClicked((e) -> {
-
-                    if(!pnEdit.isVisible()){
-                        pnEdit.setVisible(true);
-                    }
-                    else{
-                        pnEdit.setVisible(false);
-                    }
-
+                    pnEdit.setVisible(true);
                 });
 
                 lbEditCategory.setOnMouseClicked((event) -> {
