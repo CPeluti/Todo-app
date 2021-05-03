@@ -82,7 +82,7 @@ public class MainController {
     public Label lbEditCategory;
     public Label lbDeleteCategory;
 
-    private Singleton singleton = Singleton.getInstance();
+    private UserInstance userInstance = UserInstance.getInstance();
     private ArrayList<String> iconsList = new ArrayList<>();
 
 
@@ -116,15 +116,15 @@ public class MainController {
             String date = datetmp.format(dateFormat);
             String taskDate = date + " " + taskTime;
             int categoryId = 0;
-            for(Category category : singleton.getUser().getCategories()){
+            for(Category category : userInstance.getUser().getCategories()){
                 if(category.getType().equals(taskCategory)){
                     categoryId = category.getId();
                 }
             }
             Tasks tasks = new Tasks(identification, taskTitle, categoryId, false, false, taskDate, taskDescription, false);
 
-            this.singleton.getUser().addTasks(tasks);
-            Tasks.create(tasks, singleton);
+            this.userInstance.getUser().addTasks(tasks);
+            Tasks.create(tasks, userInstance);
             taskCreator.setVisible(false);
             taskCreator.setDisable(false);
             displayTasks();
@@ -136,7 +136,7 @@ public class MainController {
     }
 
     public void onClickBtnAddTask(ActionEvent actionEvent){
-        ArrayList<Category> categories = singleton.getUser().getCategories();
+        ArrayList<Category> categories = userInstance.getUser().getCategories();
         taskCreator.setVisible(true);
 
         if(!categories.isEmpty()){
@@ -167,7 +167,7 @@ public class MainController {
 
         // checks if we are editing the category
         if(editing){
-            for(Category cat : singleton.getUser().getCategories()){
+            for(Category cat : userInstance.getUser().getCategories()){
                 if(idEditing == cat.getId()){
                     String nameCategory = txtCategoryName.getText();
                     String descriptionCategory = txtCategoryDescription.getText();
@@ -176,9 +176,9 @@ public class MainController {
                     cat.setType(nameCategory);
                     cat.setIcon(icon);
                     cat.setDescription(descriptionCategory);
-                    singleton.getUser().getCategories().set(singleton.getUser().getCategories().indexOf(cat), cat);
+                    userInstance.getUser().getCategories().set(userInstance.getUser().getCategories().indexOf(cat), cat);
 
-                    UserCategory.update(cat, singleton);
+                    UserCategory.update(cat, userInstance);
 
                     displayTasks();
                     displayCategories();
@@ -196,13 +196,13 @@ public class MainController {
 
                 // create a new UserCategory object and put it in the list of categories
                 UserCategory newCategory = new UserCategory(nameCategory,icon,descriptionCategory,(int) (new Date().getTime() / 1000));
-                singleton.getUser().addCategory(newCategory);
+                userInstance.getUser().addCategory(newCategory);
 
                 // create a new JSON object to put the new category in the JSON archive
 
 
                 // Send to API
-                UserCategory.create(newCategory, singleton);
+                UserCategory.create(newCategory, userInstance);
 
                 // calls the method to show the categories on the screen
                 displayCategories();
@@ -364,7 +364,7 @@ public class MainController {
 
     }
     private void openEditTask(Tasks task){
-        int taskIndex = singleton.getUser().getTasks().indexOf(task);
+        int taskIndex = userInstance.getUser().getTasks().indexOf(task);
         editTaskTitle.setText(task.getTitle());
         taskDescription.setText(task.getDescription());
         SVGPath svg = new SVGPath();
@@ -374,8 +374,8 @@ public class MainController {
         menuTask.setVisible(true);
         deleteTask.setOnMouseClicked(e->{
             if(task.isDeleted()) {
-                Tasks.delete(task.getId(), singleton);
-                singleton.getUser().getTasks().remove(task);
+                Tasks.delete(task.getId(), userInstance);
+                userInstance.getUser().getTasks().remove(task);
             }else {
                 task.setDeleted(true);
             }
@@ -391,8 +391,8 @@ public class MainController {
             if(!taskDescription.getText().equals("")){
                 task.setDescription(taskDescription.getText());
             }
-            Tasks.update(task,singleton);
-            singleton.getUser().getTasks().set(taskIndex,task);
+            Tasks.update(task, userInstance);
+            userInstance.getUser().getTasks().set(taskIndex,task);
             closeEditTask();
             displayTasks();
         });
@@ -418,7 +418,7 @@ public class MainController {
         check.getStylesheets().add(css);
         check.setOnAction(e->{
             task.setDone(check.isSelected());
-            Tasks.update(task,singleton);
+            Tasks.update(task, userInstance);
         });
 
         Label title = new Label();
@@ -438,7 +438,7 @@ public class MainController {
         favourite.getStylesheets().add(css);
         favourite.setOnAction(e -> {
             task.setFavourite(favourite.isSelected());
-            Tasks.update(task,singleton);
+            Tasks.update(task, userInstance);
         });
 
         bp.setLeft(check);
@@ -472,7 +472,7 @@ public class MainController {
         int row = 0;
         switch(selectedCategory){
             case 0:
-                for(Tasks task:singleton.getUser().getTasks()) {
+                for(Tasks task: userInstance.getUser().getTasks()) {
                     if (task.isFavourite() && !task.isDeleted()) {
                         createTask(task,row,gp);
                         row++;
@@ -480,7 +480,7 @@ public class MainController {
                 }
                 break;
             case 2:
-                for(Tasks task:singleton.getUser().getTasks()) {
+                for(Tasks task: userInstance.getUser().getTasks()) {
                     if (task.isDone() && !task.isDeleted()) {
                         createTask(task,row,gp);
                         row++;
@@ -488,7 +488,7 @@ public class MainController {
                 }
                 break;
             case 3:
-                for(Tasks task:singleton.getUser().getTasks()) {
+                for(Tasks task: userInstance.getUser().getTasks()) {
                     if (task.isDeleted()) {
                         createTask(task,row,gp);
                         row++;
@@ -496,7 +496,7 @@ public class MainController {
                 }
                 break;
             default:
-                for(Tasks task:singleton.getUser().getTasks()) {
+                for(Tasks task: userInstance.getUser().getTasks()) {
                     if (task.getCategory() == selectedCategory && !task.isDeleted()) {
                         createTask(task,row,gp);
                         row++;
@@ -512,7 +512,7 @@ public class MainController {
 
     public void display(){
 
-        for(Category category: singleton.getUser().getCategories()){
+        for(Category category: userInstance.getUser().getCategories()){
             if(selectedCategory == category.getId()){
 
                 SVGPath svg = new SVGPath();
@@ -560,8 +560,8 @@ public class MainController {
                 lbDeleteCategory.setOnMouseClicked((event) -> {
                     pnEdit.setVisible(false);
                     if(category.getId()>3){
-                        UserCategory.delete(category.getId(), singleton);
-                        singleton.getUser().getCategories().remove(category);
+                        UserCategory.delete(category.getId(), userInstance);
+                        userInstance.getUser().getCategories().remove(category);
                         this.selectedCategory = 0;
                         displayTasks();
                         displayCategories();
@@ -588,7 +588,7 @@ public class MainController {
         int column = 0;
 
 
-        for (Category usercategory : singleton.getUser().getCategories()) {
+        for (Category usercategory : userInstance.getUser().getCategories()) {
 
 
             SVGPath selectedIcon = new SVGPath();
@@ -651,10 +651,10 @@ public class MainController {
     }
 
     private void displayUserMenu(){
-        if(singleton.getUser().getImageUrl().isEmpty()){
+        if(userInstance.getUser().getImageUrl().isEmpty()){
             userMenuIcon.setFill(new ImagePattern(new Image(this.getClass().getResource("/app/icons/149071.png").toString())));
         }else{
-            userMenuIcon.setFill(new ImagePattern( new Image(singleton.getUser().getImageUrl())));
+            userMenuIcon.setFill(new ImagePattern( new Image(userInstance.getUser().getImageUrl())));
         }
         userMenu.setTranslateY(-200);
         TranslateTransition openMenu = new TranslateTransition(new Duration(150),userMenu);
@@ -664,19 +664,19 @@ public class MainController {
         });
         updateUser.setOnAction(e->{
             if(!userName.getText().equals("")) {
-                singleton.getUser().setName(userName.getText());
+                userInstance.getUser().setName(userName.getText());
             }
             if(!userLastname.getText().equals("")){
-                singleton.getUser().setLastName(userLastname.getText());
+                userInstance.getUser().setLastName(userLastname.getText());
             }
             closeMenu.setToY(-(userMenu.getHeight()));
             closeMenu.play();
-            User.update(singleton.getUser());
+            User.update(userInstance.getUser());
         });
         userIcon.setOnMouseClicked(e->{
             if(userMenu.getTranslateY()!=0){
-                userName.setText(singleton.getUser().getName());
-                userLastname.setText(singleton.getUser().getLastName());
+                userName.setText(userInstance.getUser().getName());
+                userLastname.setText(userInstance.getUser().getLastName());
                 openMenu.setToY(0);
                 openMenu.play();
 
@@ -691,10 +691,10 @@ public class MainController {
     public void initialize(){
         pnNewCategory.setVisible(false);
         pnIcons.setVisible(false);
-        if(singleton.getUser().getImageUrl().isEmpty()){
+        if(userInstance.getUser().getImageUrl().isEmpty()){
             userIcon.setFill(new ImagePattern(new Image(this.getClass().getResource("/app/icons/149071.png").toString())));
         }else{
-            userIcon.setFill(new ImagePattern( new Image(singleton.getUser().getImageUrl())));
+            userIcon.setFill(new ImagePattern( new Image(userInstance.getUser().getImageUrl())));
         }
 
 

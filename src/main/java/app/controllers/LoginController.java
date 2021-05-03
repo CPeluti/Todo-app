@@ -16,7 +16,7 @@ public class LoginController{
 
     public AnchorPane loginAnchor;
     public Label labelErrorLogin;
-    private Singleton singleton = Singleton.getInstance();
+    private UserInstance userInstance = UserInstance.getInstance();
     public TextField userField;
     public TextField passwordField;
     public Button loginButton;
@@ -26,13 +26,16 @@ public class LoginController{
         String password = passwordField.getText();
 
         User user = User.validateLogin(username,password);
-        if(user != null){
-            singleton.setUser(user);
-            try{
+        if(user != null) {
+            userInstance.setUser(user);
+            try {
                 changeScene();
-            }catch (Exception err){
+            } catch (Exception err) {
                 err.printStackTrace();
             }
+        //}else if(user.getId().isEmpty()){
+
+
         }else{
             labelErrorLogin.setVisible(true);
         }

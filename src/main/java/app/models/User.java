@@ -1,18 +1,18 @@
 package app.models;
 
 
-import app.controllers.Singleton;
-import javafx.concurrent.Task;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 
-import java.net.URI;
-import java.sql.Array;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +24,7 @@ public class User{
     private String imageUrl;
     private String sessionToken;
     private ArrayList<Category> categories= new ArrayList<>();
-    private ArrayList<Tasks> tasks = new ArrayList<>();
+    private ArrayList<Tasks> tasks;
 
 
 
@@ -101,7 +101,7 @@ public class User{
                 return null;
             }else if(json.has("status") && (json.getString("status").equals("404"))){
                 System.out.println("nao foi possivel se conectar");
-                return null;
+                return new User("","","","","","",new ArrayList<>(),new ArrayList<>());
             }
 
             ArrayList<Category> categoriesRes = new ArrayList<>();
@@ -160,8 +160,26 @@ public class User{
         }
         return null;
     }
-    public void changeImage(URI newImage){
 
+    public static void exportToJson(User user,String url){
+
+        try{
+            Gson gson = new Gson();
+            gson.toJson(user,new FileWriter(url));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    public static User importFromJson(String url){
+        Gson gson = new Gson();
+        try {
+            FileReader file = new FileReader(url);
+            JsonReader jsonReader = new JsonReader(file);
+            return gson.fromJson(jsonReader,User.class);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getName() {

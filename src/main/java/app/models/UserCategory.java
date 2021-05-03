@@ -1,11 +1,8 @@
 package app.models;
 
-import app.controllers.Singleton;
+import app.controllers.UserInstance;
 import app.interfaces.Storable;
-import kong.unirest.HttpResponse;
-import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
-import kong.unirest.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,8 +16,8 @@ public class UserCategory extends Category implements Storable {
 
 
 
-    public static void create(UserCategory obj, Singleton singleton) {
-        User user = singleton.getUser();
+    public static void create(UserCategory obj, UserInstance userInstance) {
+        User user = userInstance.getUser();
 
         Map<String, String> header = new HashMap<>();
         header.put("Content-Type","application/json");
@@ -43,9 +40,9 @@ public class UserCategory extends Category implements Storable {
 
     }
 
-    public static void delete(int id, Singleton singleton) {
+    public static void delete(int id, UserInstance userInstance) {
 
-        User user = singleton.getUser();
+        User user = userInstance.getUser();
         String url = "https://api-todo-unb.herokuapp.com/category/" + user.getId();
 
         String dataString = "{\"categoryId\":\""+id+"\"}";
@@ -57,8 +54,8 @@ public class UserCategory extends Category implements Storable {
                 .asJson();
     }
 
-    public static void update(Category obj, Singleton singleton) {
-        User user = singleton.getUser();
+    public static void update(Category obj, UserInstance userInstance) {
+        User user = userInstance.getUser();
 
         Map<String, String> header = new HashMap<>();
         header.put("Content-Type","application/json");

@@ -1,14 +1,10 @@
 package app.controllers;
 
-import app.models.Tasks;
 import app.models.User;
-import app.models.UserCategory;
 
-import java.util.ArrayList;
+public class UserInstance {
 
-public class Singleton {
-
-    private static Singleton instance;
+    private static UserInstance instance;
 
     private User user;
 
@@ -23,11 +19,11 @@ public class Singleton {
 
 
 
-    protected Singleton(){}
+    protected UserInstance(){}
 
-    public static Singleton getInstance(){
+    public static UserInstance getInstance(){
         if(instance == null){
-            instance = new Singleton();
+            instance = new UserInstance();
         }
         return instance;
     }

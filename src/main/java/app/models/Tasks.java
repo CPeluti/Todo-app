@@ -1,16 +1,9 @@
 package app.models;
 
-import app.controllers.Singleton;
+import app.controllers.UserInstance;
 import app.interfaces.Storable;
-import kong.unirest.HttpResponse;
-import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
-import kong.unirest.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.*;
 
 
@@ -96,8 +89,8 @@ public class Tasks implements Storable {
 		this.description = description;
 		this.deleted = deleted;
 	}
-	public static void create(Tasks task, Singleton singleton) {
-	    User user = singleton.getUser();
+	public static void create(Tasks task, UserInstance userInstance) {
+	    User user = userInstance.getUser();
 	    System.out.println(user.getSessionToken());
 	    Map<String, String> header = new HashMap<>();
 	    header.put("Content-Type","application/json");
@@ -116,8 +109,8 @@ public class Tasks implements Storable {
 	    Unirest.post("https://api-todo-unb.herokuapp.com/tasks/{userId}").routeParam("userId",user.getId()).headers(header).body(getTask).asJson();
 	}
 
-	public static void delete(int id, Singleton singleton){
-		User user = singleton.getUser();
+	public static void delete(int id, UserInstance userInstance){
+		User user = userInstance.getUser();
 		String url = "https://api-todo-unb.herokuapp.com/tasks/" + user.getId();
 		String dataString = "{\"taskId\":\""+id+"\"}";
 
@@ -128,8 +121,8 @@ public class Tasks implements Storable {
 				.asJson();
 	}
 
-	public static void update(Tasks taskChanges, Singleton singleton) {
-		User user = singleton.getUser();
+	public static void update(Tasks taskChanges, UserInstance userInstance) {
+		User user = userInstance.getUser();
 		String url = "https://api-todo-unb.herokuapp.com/tasks/" + user.getId();
 		String getTask = "{" +
 				"\"id\":\""+ taskChanges.id+ "\","+

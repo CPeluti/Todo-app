@@ -1,6 +1,6 @@
 package app.interfaces;
 
-import app.controllers.Singleton;
+import app.controllers.UserInstance;
 import app.models.User;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
@@ -8,10 +8,10 @@ import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
 
 public interface Storable {
-    public static void create(Object obj, Singleton singleton){};
+    public static void create(Object obj, UserInstance userInstance){};
 
-    public static void delete(int id, Singleton singleton){
-        User user = singleton.getUser();
+    public static void delete(int id, UserInstance userInstance){
+        User user = userInstance.getUser();
         String url = "https://api-todo-unb.herokuapp.com/tasks/" + user.getId();
         String dataString = "{\"taskId\":\""+id+"\"}";
 
@@ -22,6 +22,6 @@ public interface Storable {
                 .asJson();
         JSONObject json = data.getBody().getObject();
     }
-    public static void update(Object obj, Singleton singleton){};
+    public static void update(Object obj, UserInstance userInstance){};
 
 }
