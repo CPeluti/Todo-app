@@ -1,26 +1,22 @@
 package app.controllers;
 
-import app.Main;
 import app.models.Category;
-import app.models.DefaultCategory;
 import app.models.Tasks;
 import app.models.UserCategory;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
-import kong.unirest.json.JSONObject;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainController {
 
@@ -58,6 +54,10 @@ public class MainController {
     public AnchorPane pnIcons;
     public ScrollPane spIcons;
     public Region rgIconSelected;
+    public Region rgThreeDots;
+    public Pane pnEdit;
+    public Label lbEditCategory;
+    public Label lbDeleteCategory;
 
     private Singleton singleton = Singleton.getInstance();
     private ArrayList<String> iconsList = new ArrayList<>();
@@ -142,35 +142,58 @@ public class MainController {
 
     public void saveNewCategory(ActionEvent event) {
 
+        // checks if we are editing the category
+        if(editing){
+            for(Category cat : singleton.getUser().getCategories()){
+                if(idEditing == cat.getId()){
+                    String nameCategory = txtCategoryName.getText();
+                    String descriptionCategory = txtCategoryDescription.getText();
+                    String icon = iconSvg.getContent();
 
-        // checks if any of the text fields are empty
-        if (!(txtCategoryName.getText().equals("") || txtCategoryDescription.getText().equals("") || iconSvg == null)) {
-            // take data from the text fields
-            String nameCategory = txtCategoryName.getText();
-            String descriptionCategory = txtCategoryDescription.getText();
-            //String icon = txtIcon.getText();
-            String icon = iconSvg.getContent();
+                    cat.setType(nameCategory);
+                    cat.setIcon(icon);
+                    cat.setDescription(descriptionCategory);
+                    singleton.getUser().getCategories().set(singleton.getUser().getCategories().indexOf(cat), cat);
 
-            // create a new UserCategory object and put it in the list of categories
-            UserCategory newCategory = new UserCategory(nameCategory,icon,descriptionCategory,(int) (new Date().getTime() / 1000));
-            singleton.getUser().addCategory(newCategory);
-
-            // create a new JSON object to put the new category in the JSON archive
+                    UserCategory.update(cat, singleton);
 
 
-            // Send to API
-            UserCategory.create(newCategory, singleton);
-
-            // calls the method to show the categories on the screen
-            displayCategories();
+                }
+            }
         }
+        else{
+            // checks if any of the text fields are empty
+            if (!(txtCategoryName.getText().equals("") || txtCategoryDescription.getText().equals("") || iconSvg == null)) {
+                // take data from the text fields
+                String nameCategory = txtCategoryName.getText();
+                String descriptionCategory = txtCategoryDescription.getText();
+                String icon = iconSvg.getContent();
 
+                // create a new UserCategory object and put it in the list of categories
+                UserCategory newCategory = new UserCategory(nameCategory,icon,descriptionCategory,(int) (new Date().getTime() / 1000));
+                singleton.getUser().addCategory(newCategory);
+
+                // create a new JSON object to put the new category in the JSON archive
+
+
+                // Send to API
+                UserCategory.create(newCategory, singleton);
+
+                // calls the method to show the categories on the screen
+                displayCategories();
+            }
+
+
+        }
         txtCategoryDescription.clear();
         txtCategoryName.clear();
         rgIconSelected.setShape(new SVGPath());
 
         pnNewCategory.setVisible(false);
         pnNewCategory.setDisable(false);
+
+
+        editing = false;
 
     }
 
@@ -180,6 +203,7 @@ public class MainController {
         txtCategoryName.clear();
         pnNewCategory.setVisible(false);
         pnNewCategory.setDisable(false);
+        editing = false;
     }
 
     public void cancelIcon(ActionEvent event) {
@@ -373,19 +397,73 @@ public class MainController {
 
     }
 
+    int idEditing;
+    boolean editing = false;
     public void display(){
+
         for(Category category: singleton.getUser().getCategories()){
             if(selectedCategory == category.getId()){
+
                 SVGPath svg = new SVGPath();
                 String path = category.getIcon();
-                System.out.println(path);
+                //System.out.println(path);
                 svg.setContent(path);
                 titleIcon.setShape(svg);
                 titleIcon.setStyle("-fx-background-color: white; -fx-pref-width: 40; -fx-pref-height: 40");
                 categoryTitle.setText(category.getType());
+
+                SVGPath threeDots = new SVGPath();
+                threeDots.setContent("M96 184c39.8 0 72 32.2 72 72s-32.2 72-72 72-72-32.2-72-72 32.2-72 72-72zM24 80c0 39.8 32.2 72 72 72s72-32.2 72-72S135.8 8 96 8 24 40.2 24 80zm0 352c0 39.8 32.2 72 72 72s72-32.2 72-72-32.2-72-72-72-72 32.2-72 72z");
+                rgThreeDots.setShape(threeDots);
+                rgThreeDots.setStyle("-fx-background-color: gray; -fx-pref-width: 20; -fx-pref-height: 30; -fx-cursor: HAND" );
+                pnEdit.setVisible(false);
+
+                lbEditCategory.setStyle("-fx-cursor: HAND");
+                lbDeleteCategory.setStyle("-fx-cursor: HAND");
+
+                rgThreeDots.setOnMouseClicked((e) -> {
+
+                    if(!pnEdit.isVisible()){
+                        pnEdit.setVisible(true);
+                    }
+                    else{
+                        pnEdit.setVisible(false);
+                    }
+
+                });
+
+                lbEditCategory.setOnMouseClicked((event) -> {
+                    pnEdit.setVisible(false);
+
+                    pnNewCategory.setVisible(true);
+                    pnNewCategory.setDisable(false);
+                    txtCategoryName.setDisable(false);
+                    txtCategoryName.setText(category.getType());
+                    txtCategoryName.setDisable(false);
+                    txtCategoryDescription.setText(category.getDescription());
+
+                    SVGPath icon2edit = new SVGPath();
+                    icon2edit.setContent(category.getIcon());
+                    rgIconSelected.setShape(icon2edit);
+                    rgIconSelected.setStyle("-fx-background-color: gray");
+
+                    editing = true;
+                    idEditing = category.getId();
+
+                });
+
+                lbDeleteCategory.setOnMouseClicked((event) -> {
+                    pnEdit.setVisible(false);
+
+                    UserCategory.delete(category.getId(), singleton);
+                });
+
             }
         }
     }
+
+
+
 
     private void displayCategories() {
 

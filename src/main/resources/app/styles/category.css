@@ -58,3 +58,7 @@
 .scroll-pane .viewport {
     -fx-background-color: transparent;
 }
+
+.threeDots {
+    -fx-cursor: HAND;
+}

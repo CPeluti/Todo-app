@@ -48,7 +48,7 @@ public class UserCategory extends Category {
     }
 
 
-    public void delete(int id, Singleton singleton) {
+    public static void delete(int id, Singleton singleton) {
 
         User user = singleton.getUser();
         String url = "https://api-todo-unb.herokuapp.com/category/" + user.id;
@@ -64,11 +64,12 @@ public class UserCategory extends Category {
     }
 
 
-    public void update(UserCategory obj, Singleton singleton) {
+    public static void update(Category obj, Singleton singleton) {
         User user = singleton.getUser();
         String url = "https://api-todo-unb.herokuapp.com/category/" + user.id;
         String dataString =
-                "{\"" +
+                "{" +
+                    "\"id\":\""+obj.getId()+"\"," +
                     "type\":\""+obj.getType()+"\",\"" +
                     "icon\":\""+obj.getIcon()+"\",\"" +
                     "description\":\""+obj.getDescription()+"\"" +
