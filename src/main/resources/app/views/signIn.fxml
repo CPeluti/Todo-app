@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="loginAnchor" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/login.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.SignController">
+    <fx:include source="closeBar.fxml" />
     <Label layoutX="321.0" layoutY="173.0" text="Email" />
     <TextField fx:id="email" layoutX="319.0" layoutY="191.0" promptText="digite seu e-mail" />
     <Label layoutX="321.0" layoutY="227.0" text="Nome" />
