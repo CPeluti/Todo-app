@@ -461,10 +461,6 @@ public class MainController {
 
     }
 
-    private void searchImage(){
-        //evento para abrir o buscador de arquivos
-    }
-
     public void displayTasks(){
 
         this.taskScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -672,9 +668,7 @@ public class MainController {
         userMenu.setTranslateY(-200);
         TranslateTransition openMenu = new TranslateTransition(new Duration(150),userMenu);
         TranslateTransition closeMenu = new TranslateTransition(new Duration(150),userMenu);
-        userMenuIcon.setOnMouseClicked(e->{
-            searchImage();
-        });
+
         updateUser.setOnAction(e->{
             if(!userName.getText().equals("")) {
                 userInstance.getUser().setName(userName.getText());
@@ -711,7 +705,7 @@ public class MainController {
             userInstance.getUser().setImageUrl(image.getUrl());
             User.update(userInstance.getUser());
         } );
-
+        userMenuIcon.setStyle("-fx-cursor: HAND");
     }
 
     public void initialize(){
