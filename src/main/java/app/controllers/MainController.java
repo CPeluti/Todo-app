@@ -527,24 +527,23 @@ public class MainController {
                 lbCategoryDescription.setText(category.getDescription());
                 lbCategoryDescription.setStyle("-fx-text-fill: white");
 
-                if(category.getId()!= 0 && category.getId()!= 1 && category.getId()!= 2 && category.getId()!= 3){
+                if(category.getId()>3){
                     rgThreeDots.setDisable(false);
 
                     SVGPath threeDots = new SVGPath();
                     threeDots.setContent("M96 184c39.8 0 72 32.2 72 72s-32.2 72-72 72-72-32.2-72-72 32.2-72 72-72zM24 80c0 39.8 32.2 72 72 72s72-32.2 72-72S135.8 8 96 8 24 40.2 24 80zm0 352c0 39.8 32.2 72 72 72s72-32.2 72-72-32.2-72-72-72-72 32.2-72 72z");
                     rgThreeDots.setShape(threeDots);
                     rgThreeDots.setStyle("-fx-background-color: white; -fx-pref-width: 20; -fx-pref-height: 30; -fx-cursor: HAND" );
-                    pnEdit.setVisible(false);
+
                     pnEdit.setOnMouseExited(e->{
                         pnEdit.setVisible(false);
-
                     });
 
-                    rgThreeDots.setOnMouseClicked((e) -> {
+                    rgThreeDots.setOnMouseClicked(e -> {
                         pnEdit.setVisible(true);
                     });
 
-                    lbEditCategory.setOnMouseClicked((event) -> {
+                    lbEditCategory.setOnMouseClicked(event -> {
                         pnEdit.setVisible(false);
 
                         pnNewCategory.setVisible(true);
@@ -564,7 +563,7 @@ public class MainController {
                         idEditing = category.getId();
 
                     });
-                    lbDeleteCategory.setOnMouseClicked((event) -> {
+                    lbDeleteCategory.setOnMouseClicked(event -> {
                         pnEdit.setVisible(false);
                         if(category.getId()>3){
                             category.delete(userInstance);

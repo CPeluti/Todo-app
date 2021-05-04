@@ -131,7 +131,9 @@
             <Region fx:id="rgThreeDots" maxHeight="25.0" maxWidth="10.0" prefHeight="25.0" prefWidth="10.0" BorderPane.alignment="CENTER" />
          </right>
       </BorderPane>
+      <Label fx:id="lbCategoryDescription" layoutX="203.0" layoutY="70.0" prefHeight="17.0" prefWidth="379.0" text="Descricao" />
         <Pane fx:id="pnEdit" layoutX="484.0" layoutY="67.0" prefHeight="48.0" prefWidth="62.0" style="-fx-background-color: white;" stylesheets="@../styles/category.css" visible="false">
+            <children>
             <Label fx:id="lbEditCategory" layoutY="-1.0" prefHeight="25.0" prefWidth="63.0" styleClass="buttonCategory" text="Editar">
                 <padding>
                     <Insets left="5.0" />
@@ -142,8 +144,8 @@
                     <Insets left="5.0" />
                 </padding>
             </Label>
+            </children>
         </Pane>
-      <Label fx:id="lbCategoryDescription" layoutX="203.0" layoutY="70.0" prefHeight="17.0" prefWidth="379.0" text="Descricao" />
 
 </AnchorPane>
      <Pane fx:id="userMenu" prefHeight="200.0" prefWidth="413.0" style="-fx-background-color: white;" stylesheets="@../styles/user.css">
