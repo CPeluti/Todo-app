@@ -1,5 +1,6 @@
 package app.models;
 
+import app.controllers.UserInstance;
 import app.models.Category;
 import app.models.User;
 
@@ -10,17 +11,19 @@ public class DefaultCategory extends Category {
     }
 
 
-    public void create() {
+
+    @Override
+    public void create(UserInstance userInstance) {
 
     }
 
-
-    public void delete() {
+    @Override
+    public void delete(UserInstance userInstance) {
 
     }
 
-
-    public void update() {
+    @Override
+    public void update(UserInstance userInstance) {
 
     }
 }

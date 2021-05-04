@@ -22,7 +22,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="tasks" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/tasks.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.MainController">
+<AnchorPane fx:id="tasks" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/tasks.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.MainController">
 
     <AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
@@ -32,7 +32,7 @@
         </font>
     </Button>
 
-    <ScrollPane fx:id="taskScroll" layoutX="160.0" layoutY="78.0" prefHeight="522.0" prefWidth="530.0" stylesheets="@../styles/tasks.css" />
+    <ScrollPane fx:id="taskScroll" layoutX="160.0" layoutY="120.0" prefHeight="480.0" prefWidth="530.0" stylesheets="@../styles/tasks.css" />
 
     <AnchorPane fx:id="taskCreator" layoutX="171.0" layoutY="115.0" prefHeight="370.0" prefWidth="458.0" style="-fx-background-color: #dac9fd; -fx-background-radius: 50px; -fx-border-radius: 50px 55px;" visible="false">
         <effect>
@@ -143,9 +143,10 @@
                 </padding>
             </Label>
         </Pane>
+      <Label fx:id="lbCategoryDescription" layoutX="203.0" layoutY="70.0" prefHeight="17.0" prefWidth="379.0" text="Descricao" />
 
 </AnchorPane>
-     <Pane fx:id="userMenu" prefHeight="200.0" prefWidth="413.0" style="-fx-background-color: white;" stylesheets="@../styles/user.css">
+     <Pane fx:id="userMenu" prefHeight="200.0" prefWidth="413.0" style="-fx-background-color: white;" stylesheets="@../styles/user.css" visible="false">
          <Circle fx:id="userMenuIcon" fill="DODGERBLUE" layoutX="124.0" layoutY="105.0" radius="60.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
          <TextField fx:id="userName" layoutX="207.0" layoutY="74.0" text="nome" />
          <Label layoutX="207.0" layoutY="55.0" prefHeight="18.0" prefWidth="63.0" text="nome" />

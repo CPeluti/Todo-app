@@ -14,9 +14,7 @@ public class UserCategory extends Category implements Storable {
     }
 
 
-
-
-    public static void create(UserCategory obj, UserInstance userInstance) {
+    public void create(UserInstance userInstance) {
         User user = userInstance.getUser();
 
         Map<String, String> header = new HashMap<>();
@@ -25,10 +23,10 @@ public class UserCategory extends Category implements Storable {
 
         String dataString =
                 "{" +
-                    "\"id\":\""+obj.getId()+"\"," +
-                    "\"type\":\""+obj.getType()+"\"," +
-                    "\"icon\":\""+obj.getIcon()+"\"," +
-                    "\"description\":\""+obj.getDescription()+"\"" +
+                    "\"id\":\""+this.getId()+"\"," +
+                    "\"type\":\""+this.getType()+"\"," +
+                    "\"icon\":\""+this.getIcon()+"\"," +
+                    "\"description\":\""+this.getDescription()+"\"" +
                 "}";
 
 
@@ -40,12 +38,12 @@ public class UserCategory extends Category implements Storable {
 
     }
 
-    public static void delete(int id, UserInstance userInstance) {
+    public void delete(UserInstance userInstance) {
 
         User user = userInstance.getUser();
         String url = "https://api-todo-unb.herokuapp.com/category/" + user.getId();
 
-        String dataString = "{\"categoryId\":\""+id+"\"}";
+        String dataString = "{\"categoryId\":\""+this.getId()+"\"}";
 
         Unirest.delete(url)
                 .header("Content-Type","application/json")
@@ -54,7 +52,7 @@ public class UserCategory extends Category implements Storable {
                 .asJson();
     }
 
-    public static void update(Category obj, UserInstance userInstance) {
+    public void update(UserInstance userInstance) {
         User user = userInstance.getUser();
 
         Map<String, String> header = new HashMap<>();
@@ -63,10 +61,10 @@ public class UserCategory extends Category implements Storable {
 
         String dataString =
                 "{" +
-                        "\"id\":\""+obj.getId()+"\"," +
-                        "\"type\":\""+obj.getType()+"\"," +
-                        "\"icon\":\""+obj.getIcon()+"\"," +
-                        "\"description\":\""+obj.getDescription()+"\"" +
+                        "\"id\":\""+this.getId()+"\"," +
+                        "\"type\":\""+this.getType()+"\"," +
+                        "\"icon\":\""+this.getIcon()+"\"," +
+                        "\"description\":\""+this.getDescription()+"\"" +
                         "}";
 
        Unirest.put("https://api-todo-unb.herokuapp.com/category/{userId}")
