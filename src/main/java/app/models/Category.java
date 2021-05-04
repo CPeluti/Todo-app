@@ -1,6 +1,8 @@
 package app.models;
 
-public abstract class Category {
+import app.interfaces.Storable;
+
+public abstract class Category implements Storable {
     private String type;
     private String icon;
     private String description;

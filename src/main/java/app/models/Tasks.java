@@ -89,7 +89,7 @@ public class Tasks implements Storable {
 		this.description = description;
 		this.deleted = deleted;
 	}
-	public static void create(Tasks task, UserInstance userInstance) {
+	public void create(UserInstance userInstance) {
 	    User user = userInstance.getUser();
 	    System.out.println(user.getSessionToken());
 	    Map<String, String> header = new HashMap<>();
@@ -97,22 +97,22 @@ public class Tasks implements Storable {
 	    header.put("Authorization", "bearer " + user.getSessionToken());
 
 	    String getTask = "{" +
-                    "\"id\":\""+ task.id+ "\","+
-                    "\"title\":\""+ task.title+ "\","+
-                    "\"category\":\""+ task.category+ "\","+
-                    "\"done\":\""+ task.done+ "\","+
-                    "\"favourite\":\""+ task.favourite+ "\","+
-                    "\"deadline\":\""+ task.deadline + "\","+
-                    "\"description\":\""+ task.description+ "\","+
-                    "\"deleted\":\""+ task.deleted +"\"" +
+                    "\"id\":\""+ this.id+ "\","+
+                    "\"title\":\""+ this.title+ "\","+
+                    "\"category\":\""+ this.category+ "\","+
+                    "\"done\":\""+ this.done+ "\","+
+                    "\"favourite\":\""+ this.favourite+ "\","+
+                    "\"deadline\":\""+ this.deadline + "\","+
+                    "\"description\":\""+ this.description+ "\","+
+                    "\"deleted\":\""+ this.deleted +"\"" +
                 "}";
 	    Unirest.post("https://api-todo-unb.herokuapp.com/tasks/{userId}").routeParam("userId",user.getId()).headers(header).body(getTask).asJson();
 	}
 
-	public static void delete(int id, UserInstance userInstance){
+	public void delete(UserInstance userInstance){
 		User user = userInstance.getUser();
 		String url = "https://api-todo-unb.herokuapp.com/tasks/" + user.getId();
-		String dataString = "{\"taskId\":\""+id+"\"}";
+		String dataString = "{\"taskId\":\""+this.getId()+"\"}";
 
 		Unirest.delete(url)
 				.header("Content-Type","application/json")
@@ -121,18 +121,18 @@ public class Tasks implements Storable {
 				.asJson();
 	}
 
-	public static void update(Tasks taskChanges, UserInstance userInstance) {
+	public void update(UserInstance userInstance) {
 		User user = userInstance.getUser();
 		String url = "https://api-todo-unb.herokuapp.com/tasks/" + user.getId();
 		String getTask = "{" +
-				"\"id\":\""+ taskChanges.id+ "\","+
-				"\"title\":\""+ taskChanges.title+ "\","+
-				"\"category\":\""+ taskChanges.category+ "\","+
-				"\"done\":\""+ taskChanges.done+ "\","+
-				"\"favourite\":\""+ taskChanges.favourite+ "\","+
-				"\"deadline\":\""+ taskChanges.deadline + "\","+
-				"\"description\":\""+ taskChanges.description+ "\","+
-				"\"deleted\":\""+ taskChanges.deleted +"\"" +
+				"\"id\":\""+ this.id+ "\","+
+				"\"title\":\""+ this.title+ "\","+
+				"\"category\":\""+ this.category+ "\","+
+				"\"done\":\""+ this.done+ "\","+
+				"\"favourite\":\""+ this.favourite+ "\","+
+				"\"deadline\":\""+ this.deadline + "\","+
+				"\"description\":\""+ this.description+ "\","+
+				"\"deleted\":\""+ this.deleted +"\"" +
 				"}";
 		Unirest.put(url)
 				.header("Content-Type","application/json")

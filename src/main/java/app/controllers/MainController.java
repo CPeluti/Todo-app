@@ -14,8 +14,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,7 +27,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
 
-
+import static app.models.User.exportToJson;
 
 public class MainController {
 
@@ -32,6 +36,8 @@ public class MainController {
     public TextField userName;
     public TextField userLastname;
     public Button updateUser;
+    public AnchorPane tasks;
+    public Button exportToAPI;
 
     public MainController() throws IOException {
     }
@@ -81,6 +87,7 @@ public class MainController {
     public Pane pnEdit;
     public Label lbEditCategory;
     public Label lbDeleteCategory;
+    public Label lbCategoryDescription;
 
     private UserInstance userInstance = UserInstance.getInstance();
     private ArrayList<String> iconsList = new ArrayList<>();
@@ -124,7 +131,7 @@ public class MainController {
             Tasks tasks = new Tasks(identification, taskTitle, categoryId, false, false, taskDate, taskDescription, false);
 
             this.userInstance.getUser().addTasks(tasks);
-            Tasks.create(tasks, userInstance);
+            tasks.create(userInstance);
             taskCreator.setVisible(false);
             taskCreator.setDisable(false);
             displayTasks();
@@ -148,7 +155,6 @@ public class MainController {
         }
 
     }
-
 
     public void showMsgMakeCategory(MouseEvent event) {
         lbMsgMakeCategory.setVisible(true);
@@ -178,7 +184,7 @@ public class MainController {
                     cat.setDescription(descriptionCategory);
                     userInstance.getUser().getCategories().set(userInstance.getUser().getCategories().indexOf(cat), cat);
 
-                    UserCategory.update(cat, userInstance);
+                    cat.update(userInstance);
 
                     displayTasks();
                     displayCategories();
@@ -202,7 +208,7 @@ public class MainController {
 
 
                 // Send to API
-                UserCategory.create(newCategory, userInstance);
+                newCategory.create(userInstance);
 
                 // calls the method to show the categories on the screen
                 displayCategories();
@@ -363,6 +369,7 @@ public class MainController {
         spIcons.setDisable(false);
 
     }
+
     private void openEditTask(Tasks task){
         int taskIndex = userInstance.getUser().getTasks().indexOf(task);
         editTaskTitle.setText(task.getTitle());
@@ -374,7 +381,7 @@ public class MainController {
         menuTask.setVisible(true);
         deleteTask.setOnMouseClicked(e->{
             if(task.isDeleted()) {
-                Tasks.delete(task.getId(), userInstance);
+                task.delete(userInstance);
                 userInstance.getUser().getTasks().remove(task);
             }else {
                 task.setDeleted(true);
@@ -391,13 +398,12 @@ public class MainController {
             if(!taskDescription.getText().equals("")){
                 task.setDescription(taskDescription.getText());
             }
-            Tasks.update(task, userInstance);
+            task.update(userInstance);
             userInstance.getUser().getTasks().set(taskIndex,task);
             closeEditTask();
             displayTasks();
         });
     }
-
 
     public void closeEditTask(){menuTask.setVisible(false);}
 
@@ -418,7 +424,7 @@ public class MainController {
         check.getStylesheets().add(css);
         check.setOnAction(e->{
             task.setDone(check.isSelected());
-            Tasks.update(task, userInstance);
+            task.update(userInstance);
         });
 
         Label title = new Label();
@@ -438,7 +444,7 @@ public class MainController {
         favourite.getStylesheets().add(css);
         favourite.setOnAction(e -> {
             task.setFavourite(favourite.isSelected());
-            Tasks.update(task, userInstance);
+            task.update(userInstance);
         });
 
         bp.setLeft(check);
@@ -458,7 +464,6 @@ public class MainController {
     private void searchImage(){
         //evento para abrir o buscador de arquivos
     }
-
 
     public void displayTasks(){
 
@@ -509,73 +514,81 @@ public class MainController {
 
     }
 
-
     public void display(){
+        rgThreeDots.setShape(new SVGPath());
+        rgThreeDots.setDisable(true);
 
         for(Category category: userInstance.getUser().getCategories()){
             if(selectedCategory == category.getId()){
 
                 SVGPath svg = new SVGPath();
                 String path = category.getIcon();
-                //System.out.println(path);
                 svg.setContent(path);
                 titleIcon.setShape(svg);
                 titleIcon.setStyle("-fx-background-color: white; -fx-pref-width: 40; -fx-pref-height: 40");
                 categoryTitle.setText(category.getType());
+                categoryTitle.setStyle("-fx-font-weight: bold");
+                lbCategoryDescription.setText(category.getDescription());
+                lbCategoryDescription.setStyle("-fx-text-fill: white");
 
-                SVGPath threeDots = new SVGPath();
-                threeDots.setContent("M96 184c39.8 0 72 32.2 72 72s-32.2 72-72 72-72-32.2-72-72 32.2-72 72-72zM24 80c0 39.8 32.2 72 72 72s72-32.2 72-72S135.8 8 96 8 24 40.2 24 80zm0 352c0 39.8 32.2 72 72 72s72-32.2 72-72-32.2-72-72-72-72 32.2-72 72z");
-                rgThreeDots.setShape(threeDots);
-                rgThreeDots.setStyle("-fx-background-color: white; -fx-pref-width: 20; -fx-pref-height: 30; -fx-cursor: HAND" );
-                pnEdit.setVisible(false);
-                pnEdit.setOnMouseExited(e->{
+                if(category.getId()!= 0 && category.getId()!= 1 && category.getId()!= 2 && category.getId()!= 3){
+                    rgThreeDots.setDisable(false);
+
+                    SVGPath threeDots = new SVGPath();
+                    threeDots.setContent("M96 184c39.8 0 72 32.2 72 72s-32.2 72-72 72-72-32.2-72-72 32.2-72 72-72zM24 80c0 39.8 32.2 72 72 72s72-32.2 72-72S135.8 8 96 8 24 40.2 24 80zm0 352c0 39.8 32.2 72 72 72s72-32.2 72-72-32.2-72-72-72-72 32.2-72 72z");
+                    rgThreeDots.setShape(threeDots);
+                    rgThreeDots.setStyle("-fx-background-color: white; -fx-pref-width: 20; -fx-pref-height: 30; -fx-cursor: HAND" );
                     pnEdit.setVisible(false);
-                });
+                    pnEdit.setOnMouseExited(e->{
+                        pnEdit.setVisible(false);
 
-                rgThreeDots.setOnMouseClicked((e) -> {
-                    pnEdit.setVisible(true);
-                });
+                    });
 
-                lbEditCategory.setOnMouseClicked((event) -> {
-                    pnEdit.setVisible(false);
+                    rgThreeDots.setOnMouseClicked((e) -> {
+                        pnEdit.setVisible(true);
+                    });
 
-                    pnNewCategory.setVisible(true);
-                    pnNewCategory.setDisable(false);
-                    txtCategoryName.setDisable(false);
-                    txtCategoryName.setText(category.getType());
-                    txtCategoryName.setDisable(false);
-                    txtCategoryDescription.setText(category.getDescription());
+                    lbEditCategory.setOnMouseClicked((event) -> {
+                        pnEdit.setVisible(false);
 
-                    SVGPath icon2edit = new SVGPath();
-                    icon2edit.setContent(category.getIcon());
-                    rgIconSelected.setShape(icon2edit);
-                    rgIconSelected.setStyle("-fx-background-color: gray");
-                    iconSvg = icon2edit;
+                        pnNewCategory.setVisible(true);
+                        pnNewCategory.setDisable(false);
+                        txtCategoryName.setDisable(false);
+                        txtCategoryName.setText(category.getType());
+                        txtCategoryName.setDisable(false);
+                        txtCategoryDescription.setText(category.getDescription());
 
-                    editing = true;
-                    idEditing = category.getId();
+                        SVGPath icon2edit = new SVGPath();
+                        icon2edit.setContent(category.getIcon());
+                        rgIconSelected.setShape(icon2edit);
+                        rgIconSelected.setStyle("-fx-background-color: gray");
+                        iconSvg = icon2edit;
 
-                });
+                        editing = true;
+                        idEditing = category.getId();
 
-                lbDeleteCategory.setOnMouseClicked((event) -> {
-                    pnEdit.setVisible(false);
-                    if(category.getId()>3){
-                        UserCategory.delete(category.getId(), userInstance);
-                        userInstance.getUser().getCategories().remove(category);
-                        this.selectedCategory = 0;
-                        displayTasks();
-                        displayCategories();
-                        display();
-                    }
+                    });
+                    lbDeleteCategory.setOnMouseClicked((event) -> {
+                        pnEdit.setVisible(false);
+                        if(category.getId()>3){
+                            category.delete(userInstance);
+                            userInstance.getUser().getCategories().remove(category);
+                            this.selectedCategory = 0;
+                            displayTasks();
+                            displayCategories();
+                            display();
+                        }
 
-                });
+                    });
+
+
+                }
 
             }
+
         }
+
     }
-
-
-
 
     private void displayCategories() {
 
@@ -686,6 +699,19 @@ public class MainController {
 
             }
         });
+
+        //When the user icon is clicked it opens a file chooser, which you can choose one for your Profile Picture.
+        userMenuIcon.setOnMouseClicked(e ->
+        {
+            FileChooser fileChooser = new FileChooser();
+            File selectImage = fileChooser.showOpenDialog(new Stage());
+            Image image = new Image(selectImage.toURI().toString());
+            userMenuIcon.setFill(new ImagePattern(image));
+            userIcon.setFill(new ImagePattern(image));
+            userInstance.getUser().setImageUrl(image.getUrl());
+            User.update(userInstance.getUser());
+        } );
+
     }
 
     public void initialize(){
@@ -1007,8 +1033,13 @@ public class MainController {
         display();
         displayTasks();
         displayUserMenu();
+    }
 
-
+    public void exportNewInfoToAPI(ActionEvent actionEvent) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectDirectory = directoryChooser.showDialog(new Stage());
+        exportToJson(userInstance.getUser(), String.valueOf(selectDirectory));
+        System.out.println(selectDirectory);
     }
 
 
