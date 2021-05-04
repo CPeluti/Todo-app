@@ -439,13 +439,16 @@ public class MainController {
         deadline.setText(task.getDeadline());
         deadline.getStylesheets().add(css);
 
+
         CheckBox favourite = new CheckBox();
         favourite.setSelected(task.isFavourite());
         favourite.getStylesheets().add(css);
+        favourite.getStyleClass().add("checkFavourite");
         favourite.setOnAction(e -> {
             task.setFavourite(favourite.isSelected());
             task.update(userInstance);
         });
+
 
         bp.setLeft(check);
         bp.setCenter(title);
