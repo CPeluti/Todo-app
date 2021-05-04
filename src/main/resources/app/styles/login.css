@@ -22,3 +22,13 @@
 .signin:hover{
     -fx-text-fill: blue;
 }
+.continueBtn{
+    -fx-cursor: HAND;
+    -fx-background-color: #7724a3;
+    -fx-text-fill: white;
+    -fx-pref-width: 150;
+}
+.pane{
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+}

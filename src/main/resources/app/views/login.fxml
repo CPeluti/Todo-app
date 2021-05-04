@@ -5,6 +5,7 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="loginAnchor" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/login.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.LoginController">
     <TextField fx:id="userField" layoutX="319.0" layoutY="236.0" promptText="digite seu e-mail" />
@@ -14,5 +15,16 @@
    <Label layoutX="319.0" layoutY="218.0" text="E-mail" />
    <Label layoutX="319.0" layoutY="269.0" text="Senha" />
    <Label fx:id="labelErrorLogin" layoutX="317.0" layoutY="397.0" text="Email ou senha incorreto(s)" textFill="#ffbdbd" visible="false" />
+    <AnchorPane fx:id="offline" layoutX="179.0" layoutY="175.0" prefHeight="251.0" prefWidth="485.0"
+                style="-fx-background-color: white;" styleClass="pane" stylesheets="@../styles/login.css"
+                visible="false">
+        <Label layoutX="21.0" layoutY="55.0" text="Não foi possível se conectar ao banco de dados">
+           <font>
+               <Font name="System Bold" size="19.0"/>
+           </font>
+        </Label>
+        <Button fx:id="offlineLogin" layoutX="168.0" layoutY="140.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="167.0"
+                styleClass="continueBtn" text="Continuar offline"/>
+    </AnchorPane>
 
 </AnchorPane>

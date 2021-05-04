@@ -12,33 +12,54 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class LoginController{
 
     public AnchorPane loginAnchor;
     public Label labelErrorLogin;
+    public AnchorPane offline;
+    public Button offlineLogin;
     private UserInstance userInstance = UserInstance.getInstance();
     public TextField userField;
     public TextField passwordField;
     public Button loginButton;
 
-    public void onClickLogin(ActionEvent e) {
-        String username = userField.getText();
-        String password = passwordField.getText();
-
-        User user = User.validateLogin(username,password);
-        if(user != null) {
-            userInstance.setUser(user);
-            try {
+    public void loginOffline(){
+        offline.setVisible(true);
+        userInstance.setUser(new User("","","","","","",new ArrayList<>(),new ArrayList<>()));
+        offlineLogin.setOnAction(event -> {
+            try{
                 changeScene();
-            } catch (Exception err) {
-                err.printStackTrace();
+            }catch (Exception e){
+                e.printStackTrace();
             }
-        //}else if(user.getId().isEmpty()){
 
-
-        }else{
+        });
+    }
+    public void onClickLogin(ActionEvent e) {
+        if (!userField.getText().isEmpty() && !passwordField.getText().isEmpty()){
+            String username = userField.getText();
+            String password = passwordField.getText();
+            User user = User.validateLogin(username,password);
+            if(user != null) {
+                userInstance.setUser(user);
+                try {
+                    changeScene();
+                } catch (Exception err) {
+                    err.printStackTrace();
+                }
+            }else if(user.getId().isEmpty() && user.getSessionToken().isEmpty() ){
+                loginOffline();
+            }
+            else{
+                labelErrorLogin.setVisible(true);
+            }
+        }
+        else{
             labelErrorLogin.setVisible(true);
         }
+
 
     }
 

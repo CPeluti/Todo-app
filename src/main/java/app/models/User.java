@@ -2,6 +2,7 @@ package app.models;
 
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
@@ -12,6 +13,7 @@ import kong.unirest.json.JSONObject;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +47,7 @@ public class User{
     }
 
 
-    public static void create(String email, String password, String name){
+    public static int create(String email, String password, String name){
 
         String dataString =
                 "{" +
@@ -58,12 +60,15 @@ public class User{
 
                 "}";
 
-        Unirest.post("https://api-todo-unb.herokuapp.com/users/create")
+        HttpResponse<JsonNode> httpResponse = Unirest.post("https://api-todo-unb.herokuapp.com/users/create")
                 .header("Content-Type","application/json")
                 .body(dataString)
                 .asJson();
-
-
+        JSONObject json = httpResponse.getBody().getObject();
+        if(json.has("status") && json.getString("status").equals("409")){
+            return 1;
+        }
+        return 0;
     }
 
     public static void update(User user){
@@ -163,9 +168,9 @@ public class User{
 
     public static void exportToJson(User user,String url){
 
-        try{
-            Gson gson = new Gson();
-            gson.toJson(user,new FileWriter(url));
+        try(Writer writer = new FileWriter("backup.json")){
+            Gson gson = new GsonBuilder().create();
+            gson.toJson(user,writer);
         }catch (IOException e){
             e.printStackTrace();
         }
