@@ -31,4 +31,8 @@
 }
 .text{
     -fx-padding: 10;
+
+}
+.checkFavourite{
+    -fx-shape: "svg path";
 }
