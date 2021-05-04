@@ -92,7 +92,7 @@ public class MainController {
     private UserInstance userInstance = UserInstance.getInstance();
     private ArrayList<String> iconsList = new ArrayList<>();
 
-
+    //evento do botao de salvar tarefa. cria tarefa, faz requisicão para a api, e mostra a tarefa na interface
     public void saveTask(ActionEvent actionEvent) {
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -137,11 +137,11 @@ public class MainController {
             displayTasks();
         }
     }
-
+    //fecha a interface de criação de tarefa
     public void closeTaskTab(ActionEvent actionEvent) {
         taskCreator.setVisible(false);
     }
-
+    //evento do botão de criar tarefa
     public void onClickBtnAddTask(ActionEvent actionEvent){
         ArrayList<Category> categories = userInstance.getUser().getCategories();
         taskCreator.setVisible(true);
@@ -155,20 +155,19 @@ public class MainController {
         }
 
     }
-
+    //evento de mostrar a label do botao de criar categoria
     public void showMsgMakeCategory(MouseEvent event) {
         lbMsgMakeCategory.setVisible(true);
     }
-
     public void notShowMsgMakeCategory(MouseEvent event) {
         lbMsgMakeCategory.setVisible(false);
     }
-
+    //evento do botao de criar categoria
     public void btnMakeCategory(MouseEvent event) {
         pnNewCategory.setVisible(true);
         pnNewCategory.setDisable(false);
     }
-
+    //evento do botão de salvar categoria. cria categoria , faz requisicão para a api, e mostra a categoria na navbar
     public void saveNewCategory(ActionEvent event) {
 
         // checks if we are editing the category
@@ -227,7 +226,7 @@ public class MainController {
         editing = false;
 
     }
-
+    //fecha interface de criar categoria
     public void cancelNewCategory(ActionEvent event) {
         //close button
         txtCategoryDescription.clear();
@@ -236,12 +235,12 @@ public class MainController {
         pnNewCategory.setDisable(false);
         editing = false;
     }
-
+    //fecha interface de selecionar icone
     public void cancelIcon(ActionEvent event) {
 
         pnIcons.setVisible(false);
     }
-
+    //abre interface de selecionar o icone da categoria
     public void selectIcon(ActionEvent event) {
 
         GridPane gpIcons = new GridPane();
@@ -369,7 +368,7 @@ public class MainController {
         spIcons.setDisable(false);
 
     }
-
+    //abre menu de editar tarefas( é aberto ao clicar no titulo da tarefa)
     private void openEditTask(Tasks task){
         int taskIndex = userInstance.getUser().getTasks().indexOf(task);
         editTaskTitle.setText(task.getTitle());
@@ -404,9 +403,9 @@ public class MainController {
             displayTasks();
         });
     }
-
+    //fecha o menu de editar tarefas
     public void closeEditTask(){menuTask.setVisible(false);}
-
+    //cria tarefa e adiciona ao gridpane/scrollpane
     private void createTask(Tasks task,int row,GridPane gp){
         String css = this.getClass().getResource("/app/styles/task.css").toExternalForm();
         AnchorPane ap = new AnchorPane();
@@ -439,13 +438,16 @@ public class MainController {
         deadline.setText(task.getDeadline());
         deadline.getStylesheets().add(css);
 
+
         CheckBox favourite = new CheckBox();
         favourite.setSelected(task.isFavourite());
         favourite.getStylesheets().add(css);
+        favourite.getStyleClass().add("checkFavourite");
         favourite.setOnAction(e -> {
             task.setFavourite(favourite.isSelected());
             task.update(userInstance);
         });
+
 
         bp.setLeft(check);
         bp.setCenter(title);
@@ -460,7 +462,7 @@ public class MainController {
 
 
     }
-
+    //mostra tarefas no scrollpane
     public void displayTasks(){
 
         this.taskScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -471,6 +473,7 @@ public class MainController {
         cc.setHgrow(Priority.ALWAYS);
         gp.getColumnConstraints().addAll(cc);
         int row = 0;
+        //mostra de acordo com a categoria selecionada
         switch(selectedCategory){
             case 0:
                 for(Tasks task: userInstance.getUser().getTasks()) {
@@ -509,7 +512,7 @@ public class MainController {
         taskScroll.setContent(gp);
 
     }
-
+    //carrega interface onde fica o scrollpane
     public void display(){
         rgThreeDots.setShape(new SVGPath());
         rgThreeDots.setDisable(true);
@@ -526,7 +529,7 @@ public class MainController {
                 categoryTitle.setStyle("-fx-font-weight: bold");
                 lbCategoryDescription.setText(category.getDescription());
                 lbCategoryDescription.setStyle("-fx-text-fill: white");
-
+                //se categoria não for default
                 if(category.getId()>3){
                     rgThreeDots.setDisable(false);
 
@@ -534,15 +537,15 @@ public class MainController {
                     threeDots.setContent("M96 184c39.8 0 72 32.2 72 72s-32.2 72-72 72-72-32.2-72-72 32.2-72 72-72zM24 80c0 39.8 32.2 72 72 72s72-32.2 72-72S135.8 8 96 8 24 40.2 24 80zm0 352c0 39.8 32.2 72 72 72s72-32.2 72-72-32.2-72-72-72-72 32.2-72 72z");
                     rgThreeDots.setShape(threeDots);
                     rgThreeDots.setStyle("-fx-background-color: white; -fx-pref-width: 20; -fx-pref-height: 30; -fx-cursor: HAND" );
-
+                    //se mouse sair da caixa de editar categoria, fecha menu
                     pnEdit.setOnMouseExited(e->{
                         pnEdit.setVisible(false);
                     });
-
+                    //se mouse clicar nos tres pontos, abre menu
                     rgThreeDots.setOnMouseClicked(e -> {
                         pnEdit.setVisible(true);
                     });
-
+                    //se mouse clicar no botão de editar categoria
                     lbEditCategory.setOnMouseClicked(event -> {
                         pnEdit.setVisible(false);
 
@@ -563,6 +566,7 @@ public class MainController {
                         idEditing = category.getId();
 
                     });
+                    //se mouse clicar no botão de deletar categoria
                     lbDeleteCategory.setOnMouseClicked(event -> {
                         pnEdit.setVisible(false);
                         if(category.getId()>3){
@@ -584,7 +588,7 @@ public class MainController {
         }
 
     }
-
+    //carrega categorias na navbar
     private void displayCategories() {
 
         GridPane gpNavBar = new GridPane();
@@ -607,6 +611,7 @@ public class MainController {
             rgNavBar.setShape(selectedIcon);
             rgNavBar.getStyleClass().add("icon");
 
+            //ajusta icones manualmente
             //icons bookmark(1), clipboard(5), lightbulb(15), award(30), bolt(47), brush(55), burn(56), dna(64), dollar sign(66)
             if (path.equals(iconsList.get(1)) || path.equals(iconsList.get(5)) || path.equals(iconsList.get(15)) || path.equals(iconsList.get(30)) || path.equals(iconsList.get(47)) || path.equals(iconsList.get(55)) || path.equals(iconsList.get(56)) || path.equals(iconsList.get(64)) || path.equals(iconsList.get(66))) {
                 rgNavBar.setMinSize(25, REQUIRED_HEIGHT);
@@ -658,6 +663,7 @@ public class MainController {
         this.spCategories.setContent(gpNavBar);
     }
 
+    //carrega o menu de editar o perfil do usuario
     private void displayUserMenu(){
         if(userInstance.getUser().getImageUrl().isEmpty()){
             userMenuIcon.setFill(new ImagePattern(new Image(this.getClass().getResource("/app/icons/149071.png").toString())));
@@ -707,9 +713,11 @@ public class MainController {
         userMenuIcon.setStyle("-fx-cursor: HAND");
     }
 
+    //inicializa a screen
     public void initialize(){
         pnNewCategory.setVisible(false);
         pnIcons.setVisible(false);
+        //setta o icone do usuario na navbar
         if(userInstance.getUser().getImageUrl().isEmpty()){
             userIcon.setFill(new ImagePattern(new Image(this.getClass().getResource("/app/icons/149071.png").toString())));
         }else{
@@ -1022,12 +1030,13 @@ public class MainController {
         String icon76 = "M571.31 251.31l-22.62-22.62c-6.25-6.25-16.38-6.25-22.63 0L480 274.75l-46.06-46.06c-6.25-6.25-16.38-6.25-22.63 0l-22.62 22.62c-6.25 6.25-6.25 16.38 0 22.63L434.75 320l-46.06 46.06c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L480 365.25l46.06 46.06c6.25 6.25 16.38 6.25 22.63 0l22.62-22.62c6.25-6.25 6.25-16.38 0-22.63L525.25 320l46.06-46.06c6.25-6.25 6.25-16.38 0-22.63zM552 0H307.65c-14.54 0-27.26 9.8-30.95 23.87l-84.79 322.8-58.41-106.1A32.008 32.008 0 0 0 105.47 224H24c-13.25 0-24 10.74-24 24v48c0 13.25 10.75 24 24 24h43.62l88.88 163.73C168.99 503.5 186.3 512 204.94 512c17.27 0 44.44-9 54.28-41.48L357.03 96H552c13.25 0 24-10.75 24-24V24c0-13.26-10.75-24-24-24z";
         iconsList.add(icon76);
 
+        //carrega os "componentes"
         displayCategories();
         display();
         displayTasks();
         displayUserMenu();
     }
-
+    //exporta User para um arquivo json
     public void exportNewInfoToAPI(ActionEvent actionEvent) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectDirectory = directoryChooser.showDialog(new Stage());
