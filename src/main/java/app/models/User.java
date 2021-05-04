@@ -2,29 +2,29 @@ package app.models;
 
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
+import com.google.gson.GsonBuilder;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class User{
-    private String id;
-    private String name;
-    private String lastName;
-    private String email;
-    private String imageUrl;
-    private String sessionToken;
-    private ArrayList<Category> categories= new ArrayList<>();
-    private ArrayList<Tasks> tasks;
+    public String id;
+    public String name;
+    public String lastName;
+    public String email;
+    public String imageUrl;
+    public String sessionToken;
+    public ArrayList<Category> categories= new ArrayList<>();
+    public ArrayList<Tasks> tasks;
 
 
 
@@ -162,24 +162,12 @@ public class User{
     }
 
     public static void exportToJson(User user,String url){
-
-        try{
-            Gson gson = new Gson();
-            gson.toJson(user,new FileWriter(url));
+        try(Writer writer = new FileWriter(url+"\\backup.json")){
+            Gson gson = new GsonBuilder().create();
+            gson.toJson(user,writer);
         }catch (IOException e){
             e.printStackTrace();
         }
-    }
-    public static User importFromJson(String url){
-        Gson gson = new Gson();
-        try {
-            FileReader file = new FileReader(url);
-            JsonReader jsonReader = new JsonReader(file);
-            return gson.fromJson(jsonReader,User.class);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public String getName() {

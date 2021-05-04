@@ -14,8 +14,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,7 +27,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
 
-
+import static app.models.User.exportToJson;
 
 public class MainController {
 
@@ -32,6 +36,8 @@ public class MainController {
     public TextField userName;
     public TextField userLastname;
     public Button updateUser;
+    public AnchorPane tasks;
+    public Button exportToAPI;
 
     public MainController() throws IOException {
     }
@@ -693,6 +699,19 @@ public class MainController {
 
             }
         });
+
+        //When the user icon is clicked it opens a file chooser, which you can choose one for your Profile Picture.
+        userMenuIcon.setOnMouseClicked(e ->
+        {
+            FileChooser fileChooser = new FileChooser();
+            File selectImage = fileChooser.showOpenDialog(new Stage());
+            Image image = new Image(selectImage.toURI().toString());
+            userMenuIcon.setFill(new ImagePattern(image));
+            userIcon.setFill(new ImagePattern(image));
+            userInstance.getUser().setImageUrl(image.getUrl());
+            User.update(userInstance.getUser());
+        } );
+
     }
 
     public void initialize(){
@@ -1014,8 +1033,13 @@ public class MainController {
         display();
         displayTasks();
         displayUserMenu();
+    }
 
-
+    public void exportNewInfoToAPI(ActionEvent actionEvent) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectDirectory = directoryChooser.showDialog(new Stage());
+        exportToJson(userInstance.getUser(), String.valueOf(selectDirectory));
+        System.out.println(selectDirectory);
     }
 
 }

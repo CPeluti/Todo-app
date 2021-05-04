@@ -12,4 +12,5 @@ module Todo.app.main {
     exports app;
 
     opens app.controllers to javafx.fxml;
+    opens app.models to com.google.gson;
 }

@@ -153,6 +153,7 @@
          <TextField fx:id="userLastname" layoutX="207.0" layoutY="121.0" text="sobrenome" />
          <Label layoutX="207.0" layoutY="105.0" text="Sobrenome" />
          <Button fx:id="updateUser" layoutX="288.0" layoutY="165.0" mnemonicParsing="false" text="Salvar" />
+      <Button fx:id="exportToAPI" layoutX="288.0" layoutY="14.0" mnemonicParsing="false" onAction="#exportNewInfoToAPI" prefHeight="25.0" prefWidth="72.0" style="-fx-background-color: #E64162;" text="Exportar" />
      </Pane>
 
     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="42.0" stylesheets="@../styles/category.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
