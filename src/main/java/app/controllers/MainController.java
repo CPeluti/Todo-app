@@ -1,100 +1,590 @@
 package app.controllers;
 
+import app.models.Category;
+import app.models.Tasks;
+import app.models.User;
 import app.models.UserCategory;
+import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
-import kong.unirest.json.JSONObject;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class CategoriesController<main> {
+import static app.models.User.exportToJson;
 
-    private static final double REQUIRED_WIDTH = 32.0;
-    private static final double REQUIRED_HEIGHT = 32.0;
-    public AnchorPane main;
+public class MainController {
 
-    private Singleton singleton = Singleton.getInstance();
-    ArrayList<String> iconsList = new ArrayList<>();
+    public Pane userMenu;
+    public Circle userMenuIcon;
+    public TextField userName;
+    public TextField userLastname;
+    public Button updateUser;
+    public AnchorPane tasks;
+    public Button exportToAPI;
 
-    FileWriter file = new FileWriter("categories.json");
-
-    public ScrollPane spCategories;
-
-    @FXML
-    private Label btnNewCategory;
-
-    @FXML
-    private Label lbMsgMakeCategory;
-
-    @FXML
-    private AnchorPane pnNewCategory;
-
-    @FXML
-    private TextField txtCategoryName;
-
-    @FXML
-    private TextArea txtCategoryDescription;
-
-    @FXML
-    private Button btnSaveNewCategory;
-
-    @FXML
-    private Button btnCancelNewCategory;
-
-    @FXML
-    private GridPane gpNavBar;
-
-    @FXML
-    private ColumnConstraints columnCategory;
-
-    @FXML
-    private Button btsSelectIcon;
-
-    @FXML
-    private AnchorPane apFileChooser;
-
-
-    private SVGPath iconSvg;
-
-    @FXML
-    private AnchorPane pnIcons;
-
-    @FXML
-    private ScrollPane spIcons;
-
-    @FXML
-    private Button btnCancelIcon;
-
-    @FXML
-    private Region rgIconSelected;
-
-    public CategoriesController() throws IOException {
+    public MainController() throws IOException {
     }
 
+    public TextField editTaskTitle;
+    public Region deleteTask;
+    public TextField taskDescription;
+    public Button btnSaveEditTask;
 
-    @FXML
-    void showMsgMakeCategory(MouseEvent event) {
+
+    int idEditing;
+    boolean editing = false;
+    private int selectedCategory=0;
+    private static final double REQUIRED_WIDTH = 32.0;
+    private static final double REQUIRED_HEIGHT = 32.0;
+
+    public AnchorPane menuTask;
+    public Button addNewTask;
+    public Region titleIcon;
+    public Label categoryTitle;
+    public ScrollPane taskScroll;
+
+
+    public DatePicker dateId;
+    public TextField taskId;
+    public AnchorPane taskCreator;
+    public Button savingTask;
+    public TextField descriptionId;
+    public TextField time;
+    public ComboBox<String> categoryId;
+
+
+
+
+    public AnchorPane main;
+    public Circle userIcon;
+    public ScrollPane spCategories;
+    public Label lbMsgMakeCategory;
+    public AnchorPane pnNewCategory;
+    public TextField txtCategoryName;
+    public TextArea txtCategoryDescription;
+    public SVGPath iconSvg;
+    public AnchorPane pnIcons;
+    public ScrollPane spIcons;
+    public Region rgIconSelected;
+    public Region rgThreeDots;
+    public Pane pnEdit;
+    public Label lbEditCategory;
+    public Label lbDeleteCategory;
+    public Label lbCategoryDescription;
+
+    private UserInstance userInstance = UserInstance.getInstance();
+    private ArrayList<String> iconsList = new ArrayList<>();
+
+
+    public void saveTask(ActionEvent actionEvent) {
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        TemporalAccessor timeX = timeFormat.parse(time.getText());
+        String taskTitle = taskId.getText();
+        String taskCategory = categoryId.getValue();
+        String taskDescription = descriptionId.getText();
+        int identification = (int) (new Date().getTime() / 1000);
+
+        if (!time.getText().equals(timeFormat.format(timeX)) || time.getText().equals("")) {
+            time.setStyle("-fx-border-color: #ff0000");
+        }
+        else if (dateId.getValue().toString().equals("")) {
+            dateId.setStyle("-fx-border-color: #ff0000");
+        }
+        else if (taskId.getText().equals("")) {
+            taskId.setStyle("-fx-border-color: red");
+        }
+        else if (categoryId.getValue().equals("")) {
+            categoryId.setStyle("-fx-border-color: red");
+        }
+        else if ( descriptionId.getText().equals("")) {
+            descriptionId.setStyle("-fx-border-color: red");
+        }
+        else {
+            LocalDate datetmp = dateId.getValue();
+            String taskTime = time.getText();
+            String date = datetmp.format(dateFormat);
+            String taskDate = date + " " + taskTime;
+            int categoryId = 0;
+            for(Category category : userInstance.getUser().getCategories()){
+                if(category.getType().equals(taskCategory)){
+                    categoryId = category.getId();
+                }
+            }
+            Tasks tasks = new Tasks(identification, taskTitle, categoryId, false, false, taskDate, taskDescription, false);
+
+            this.userInstance.getUser().addTasks(tasks);
+            tasks.create(userInstance);
+            taskCreator.setVisible(false);
+            taskCreator.setDisable(false);
+            displayTasks();
+        }
+    }
+
+    public void closeTaskTab(ActionEvent actionEvent) {
+        taskCreator.setVisible(false);
+    }
+
+    public void onClickBtnAddTask(ActionEvent actionEvent){
+        ArrayList<Category> categories = userInstance.getUser().getCategories();
+        taskCreator.setVisible(true);
+
+        if(!categories.isEmpty()){
+            ArrayList<String> categoriesTitle = new ArrayList<>();
+            for(Category category: categories){
+                categoriesTitle.add(category.getType());
+            }
+            categoryId.setItems(FXCollections.observableArrayList(categoriesTitle));
+        }
+
+    }
+
+    public void showMsgMakeCategory(MouseEvent event) {
         lbMsgMakeCategory.setVisible(true);
     }
 
-    @FXML
-    void notShowMsgMakeCategory(MouseEvent event) {
+    public void notShowMsgMakeCategory(MouseEvent event) {
         lbMsgMakeCategory.setVisible(false);
     }
 
-
     public void btnMakeCategory(MouseEvent event) {
         pnNewCategory.setVisible(true);
+        pnNewCategory.setDisable(false);
     }
 
+    public void saveNewCategory(ActionEvent event) {
+
+        // checks if we are editing the category
+        if(editing){
+            for(Category cat : userInstance.getUser().getCategories()){
+                if(idEditing == cat.getId()){
+                    String nameCategory = txtCategoryName.getText();
+                    String descriptionCategory = txtCategoryDescription.getText();
+                    String icon = iconSvg.getContent();
+
+                    cat.setType(nameCategory);
+                    cat.setIcon(icon);
+                    cat.setDescription(descriptionCategory);
+                    userInstance.getUser().getCategories().set(userInstance.getUser().getCategories().indexOf(cat), cat);
+
+                    cat.update(userInstance);
+
+                    displayTasks();
+                    displayCategories();
+                    display();
+                }
+            }
+        }
+        else{
+            // checks if any of the text fields are empty
+            if (!(txtCategoryName.getText().equals("") || txtCategoryDescription.getText().equals("") || iconSvg == null)) {
+                // take data from the text fields
+                String nameCategory = txtCategoryName.getText();
+                String descriptionCategory = txtCategoryDescription.getText();
+                String icon = iconSvg.getContent();
+
+                // create a new UserCategory object and put it in the list of categories
+                UserCategory newCategory = new UserCategory(nameCategory,icon,descriptionCategory,(int) (new Date().getTime() / 1000));
+                userInstance.getUser().addCategory(newCategory);
+
+                // create a new JSON object to put the new category in the JSON archive
+
+
+                // Send to API
+                newCategory.create(userInstance);
+
+                // calls the method to show the categories on the screen
+                displayCategories();
+            }
+
+
+        }
+        txtCategoryDescription.clear();
+        txtCategoryName.clear();
+        rgIconSelected.setShape(new SVGPath());
+
+        pnNewCategory.setVisible(false);
+        pnNewCategory.setDisable(false);
+
+
+        editing = false;
+
+    }
+
+    public void cancelNewCategory(ActionEvent event) {
+        //close button
+        txtCategoryDescription.clear();
+        txtCategoryName.clear();
+        pnNewCategory.setVisible(false);
+        pnNewCategory.setDisable(false);
+        editing = false;
+    }
+
+    public void cancelIcon(ActionEvent event) {
+
+        pnIcons.setVisible(false);
+    }
+
+    public void selectIcon(ActionEvent event) {
+
+        GridPane gpIcons = new GridPane();
+        gpIcons.setVgap(10);
+        gpIcons.setStyle("-fx-background-color:  #ECECEC; -fx-border-color:  #ECECEC");
+        ColumnConstraints columnIcon = new ColumnConstraints(32, 50, 50);
+        columnIcon.setHgrow(Priority.ALWAYS);
+        gpIcons.getColumnConstraints().addAll(columnIcon, columnIcon, columnIcon, columnIcon, columnIcon, columnIcon, columnIcon);
+        int row = 0;
+        int column = 0;
+
+        for (String path : iconsList) {
+
+            if (column == 7) {
+                column = 0;
+                row++;
+            }
+
+            SVGPath icon = new SVGPath();
+            icon.setContent(path);
+
+            Region rgIcon = new Region();
+            rgIcon.setShape(icon);
+            rgIcon.getStyleClass().add("icon");
+            // icons bookmark(1), clipboard(5), lightbulb(15), award(30), bolt(47), brush(55), burn(56), dna(64), dollar sign(66)
+            if (path.equals(iconsList.get(1)) || path.equals(iconsList.get(5)) || path.equals(iconsList.get(15)) || path.equals(iconsList.get(30)) || path.equals(iconsList.get(47)) || path.equals(iconsList.get(55)) || path.equals(iconsList.get(56)) || path.equals(iconsList.get(64)) || path.equals(iconsList.get(66))) {
+                rgIcon.setMinSize(25, REQUIRED_HEIGHT);
+                rgIcon.setPrefSize(25, REQUIRED_HEIGHT);
+                rgIcon.setMaxSize(25, REQUIRED_HEIGHT);
+
+                rgIcon.setOnMouseClicked((e) -> {
+                    iconSvg = icon;
+                    pnIcons.setVisible(false);
+
+                    rgIconSelected.setShape(icon);
+                    rgIconSelected.setMinSize(25, REQUIRED_HEIGHT);
+                    rgIconSelected.setPrefSize(25, REQUIRED_HEIGHT);
+                    rgIconSelected.setMaxSize(25, REQUIRED_HEIGHT);
+                    rgIconSelected.getStyleClass().add("iconSelected");
+
+                });
+            } else if (path.equals(iconsList.get(12))) { // icon hourglass(12)
+                rgIcon.setMinSize(23, REQUIRED_HEIGHT);
+                rgIcon.setPrefSize(23, REQUIRED_HEIGHT);
+                rgIcon.setMaxSize(23, REQUIRED_HEIGHT);
+
+                rgIcon.setOnMouseClicked((e) -> {
+                    iconSvg = icon;
+                    pnIcons.setVisible(false);
+
+                    rgIconSelected.setShape(icon);
+                    rgIconSelected.setMinSize(23, REQUIRED_HEIGHT);
+                    rgIconSelected.setPrefSize(23, REQUIRED_HEIGHT);
+                    rgIconSelected.setMaxSize(23, REQUIRED_HEIGHT);
+                    rgIconSelected.getStyleClass().add("iconSelected");
+                });
+            }
+            // icon football(9)
+            else if (path.equals(iconsList.get(9))) {
+                rgIcon.setMinSize(REQUIRED_WIDTH, 28);
+                rgIcon.setPrefSize(REQUIRED_WIDTH, 28);
+                rgIcon.setMaxSize(REQUIRED_WIDTH, 28);
+
+                rgIcon.setOnMouseClicked((e) -> {
+                    iconSvg = icon;
+                    pnIcons.setVisible(false);
+
+                    rgIconSelected.setShape(icon);
+                    rgIconSelected.setMinSize(REQUIRED_WIDTH, 28);
+                    rgIconSelected.setPrefSize(REQUIRED_WIDTH, 28);
+                    rgIconSelected.setMaxSize(REQUIRED_WIDTH, 28);
+                    rgIconSelected.getStyleClass().add("iconSelected");
+                });
+            }
+            // icon keyboard(13), money bill(16), bed(38), bicycle(41), bone(49), camera(57), camera retro(58), dumbbell(69)
+            else if (path.equals(iconsList.get(13)) || path.equals(iconsList.get(16)) || path.equals(iconsList.get(38)) || path.equals(iconsList.get(41)) || path.equals(iconsList.get(49)) || path.equals(iconsList.get(57)) || path.equals(iconsList.get(58)) || path.equals(iconsList.get(69))) {
+                rgIcon.setMinSize(REQUIRED_WIDTH, 23);
+                rgIcon.setPrefSize(REQUIRED_WIDTH, 23);
+                rgIcon.setMaxSize(REQUIRED_WIDTH, 23);
+
+                rgIcon.setOnMouseClicked((e) -> {
+                    iconSvg = icon;
+                    pnIcons.setVisible(false);
+
+                    rgIconSelected.setShape(icon);
+                    rgIconSelected.setMinSize(REQUIRED_WIDTH, 23);
+                    rgIconSelected.setPrefSize(REQUIRED_WIDTH, 23);
+                    rgIconSelected.setMaxSize(REQUIRED_WIDTH, 23);
+                    rgIconSelected.getStyleClass().add("iconSelected");
+                });
+            } else {
+                rgIcon.setMinSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
+                rgIcon.setPrefSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
+                rgIcon.setMaxSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
+
+                rgIcon.setOnMouseClicked((e) -> {
+                    iconSvg = icon;
+                    pnIcons.setVisible(false);
+
+                    rgIconSelected.setMinSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
+                    rgIconSelected.setPrefSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
+                    rgIconSelected.setMaxSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
+                    rgIconSelected.setShape(icon);
+                    rgIconSelected.getStyleClass().add("iconSelected");
+                });
+            }
+
+            gpIcons.add(rgIcon, column, row);
+            column++;
+
+
+        }
+
+
+        this.spIcons.setStyle("-fx-background-color:  #ECECEC; -fx-border-color:  #ECECEC");
+
+        this.spIcons.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        this.spIcons.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        this.spIcons.setContent(gpIcons);
+
+        pnIcons.setVisible(true);
+        pnIcons.setDisable(false);
+        spIcons.setVisible(true);
+        spIcons.setDisable(false);
+
+    }
+
+    private void openEditTask(Tasks task){
+        int taskIndex = userInstance.getUser().getTasks().indexOf(task);
+        editTaskTitle.setText(task.getTitle());
+        taskDescription.setText(task.getDescription());
+        SVGPath svg = new SVGPath();
+        svg.setContent("M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z");
+        deleteTask.setShape(svg);
+        deleteTask.setStyle("-fx-background-color: red; -fx-pref-width: 25;-fx-pref-height: 25;-fx-cursor: HAND");
+        menuTask.setVisible(true);
+        deleteTask.setOnMouseClicked(e->{
+            if(task.isDeleted()) {
+                task.delete(userInstance);
+                userInstance.getUser().getTasks().remove(task);
+            }else {
+                task.setDeleted(true);
+            }
+
+            closeEditTask();
+            displayTasks();
+        });
+        btnSaveEditTask.setOnAction(e->{
+
+            if(!editTaskTitle.getText().equals("")){
+                task.setTitle(editTaskTitle.getText());
+            }
+            if(!taskDescription.getText().equals("")){
+                task.setDescription(taskDescription.getText());
+            }
+            task.update(userInstance);
+            userInstance.getUser().getTasks().set(taskIndex,task);
+            closeEditTask();
+            displayTasks();
+        });
+    }
+
+    public void closeEditTask(){menuTask.setVisible(false);}
+
+    private void createTask(Tasks task,int row,GridPane gp){
+        String css = this.getClass().getResource("/app/styles/task.css").toExternalForm();
+        AnchorPane ap = new AnchorPane();
+        ap.getStylesheets().add(css);
+        ap.getStyleClass().add("task");
+
+        BorderPane bp = new BorderPane();
+        bp.getStylesheets().add(css);
+        bp.getStyleClass().add("border-pane");
+
+        BorderPane rbp = new BorderPane();
+
+        CheckBox check = new CheckBox();
+        check.setSelected(task.isDone());
+        check.getStylesheets().add(css);
+        check.setOnAction(e->{
+            task.setDone(check.isSelected());
+            task.update(userInstance);
+        });
+
+        Label title = new Label();
+        title.setText(task.getTitle());
+        title.getStylesheets().add(css);
+        title.setStyle("-fx-cursor: HAND");
+        title.setOnMouseClicked(e->{
+            openEditTask(task);
+        });
+
+        Label deadline = new Label();
+        deadline.setText(task.getDeadline());
+        deadline.getStylesheets().add(css);
+
+        CheckBox favourite = new CheckBox();
+        favourite.setSelected(task.isFavourite());
+        favourite.getStylesheets().add(css);
+        favourite.setOnAction(e -> {
+            task.setFavourite(favourite.isSelected());
+            task.update(userInstance);
+        });
+
+        bp.setLeft(check);
+        bp.setCenter(title);
+
+        rbp.setCenter(deadline);
+        rbp.setRight(favourite);
+
+        bp.setRight(rbp);
+
+        ap.getChildren().add(bp);
+        gp.add(ap, 0, row);
+
+
+    }
+
+    public void displayTasks(){
+
+        this.taskScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        this.taskScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        GridPane gp = new GridPane();
+        gp.setVgap(15);
+        ColumnConstraints cc = new ColumnConstraints(500,60,Double.MAX_VALUE);
+        cc.setHgrow(Priority.ALWAYS);
+        gp.getColumnConstraints().addAll(cc);
+        int row = 0;
+        switch(selectedCategory){
+            case 0:
+                for(Tasks task: userInstance.getUser().getTasks()) {
+                    if (task.isFavourite() && !task.isDeleted()) {
+                        createTask(task,row,gp);
+                        row++;
+                    }
+                }
+                break;
+            case 2:
+                for(Tasks task: userInstance.getUser().getTasks()) {
+                    if (task.isDone() && !task.isDeleted()) {
+                        createTask(task,row,gp);
+                        row++;
+                    }
+                }
+                break;
+            case 3:
+                for(Tasks task: userInstance.getUser().getTasks()) {
+                    if (task.isDeleted()) {
+                        createTask(task,row,gp);
+                        row++;
+                    }
+                }
+                break;
+            default:
+                for(Tasks task: userInstance.getUser().getTasks()) {
+                    if (task.getCategory() == selectedCategory && !task.isDeleted()) {
+                        createTask(task,row,gp);
+                        row++;
+                    }
+                }
+                break;
+        }
+
+        taskScroll.setContent(gp);
+
+    }
+
+    public void display(){
+        rgThreeDots.setShape(new SVGPath());
+        rgThreeDots.setDisable(true);
+
+        for(Category category: userInstance.getUser().getCategories()){
+            if(selectedCategory == category.getId()){
+
+                SVGPath svg = new SVGPath();
+                String path = category.getIcon();
+                svg.setContent(path);
+                titleIcon.setShape(svg);
+                titleIcon.setStyle("-fx-background-color: white; -fx-pref-width: 40; -fx-pref-height: 40");
+                categoryTitle.setText(category.getType());
+                categoryTitle.setStyle("-fx-font-weight: bold");
+                lbCategoryDescription.setText(category.getDescription());
+                lbCategoryDescription.setStyle("-fx-text-fill: white");
+
+                if(category.getId()!= 0 && category.getId()!= 1 && category.getId()!= 2 && category.getId()!= 3){
+                    rgThreeDots.setDisable(false);
+
+                    SVGPath threeDots = new SVGPath();
+                    threeDots.setContent("M96 184c39.8 0 72 32.2 72 72s-32.2 72-72 72-72-32.2-72-72 32.2-72 72-72zM24 80c0 39.8 32.2 72 72 72s72-32.2 72-72S135.8 8 96 8 24 40.2 24 80zm0 352c0 39.8 32.2 72 72 72s72-32.2 72-72-32.2-72-72-72-72 32.2-72 72z");
+                    rgThreeDots.setShape(threeDots);
+                    rgThreeDots.setStyle("-fx-background-color: white; -fx-pref-width: 20; -fx-pref-height: 30; -fx-cursor: HAND" );
+                    pnEdit.setVisible(false);
+                    pnEdit.setOnMouseExited(e->{
+                        pnEdit.setVisible(false);
+
+                    });
+
+                    rgThreeDots.setOnMouseClicked((e) -> {
+                        pnEdit.setVisible(true);
+                    });
+
+                    lbEditCategory.setOnMouseClicked((event) -> {
+                        pnEdit.setVisible(false);
+
+                        pnNewCategory.setVisible(true);
+                        pnNewCategory.setDisable(false);
+                        txtCategoryName.setDisable(false);
+                        txtCategoryName.setText(category.getType());
+                        txtCategoryName.setDisable(false);
+                        txtCategoryDescription.setText(category.getDescription());
+
+                        SVGPath icon2edit = new SVGPath();
+                        icon2edit.setContent(category.getIcon());
+                        rgIconSelected.setShape(icon2edit);
+                        rgIconSelected.setStyle("-fx-background-color: gray");
+                        iconSvg = icon2edit;
+
+                        editing = true;
+                        idEditing = category.getId();
+
+                    });
+                    lbDeleteCategory.setOnMouseClicked((event) -> {
+                        pnEdit.setVisible(false);
+                        if(category.getId()>3){
+                            category.delete(userInstance);
+                            userInstance.getUser().getCategories().remove(category);
+                            this.selectedCategory = 0;
+                            displayTasks();
+                            displayCategories();
+                            display();
+                        }
+
+                    });
+
+
+                }
+
+            }
+
+        }
+
+    }
 
     private void displayCategories() {
 
@@ -107,7 +597,7 @@ public class CategoriesController<main> {
         int column = 0;
 
 
-        for (UserCategory usercategory : singleton.getListUserCategories()) {
+        for (Category usercategory : userInstance.getUser().getCategories()) {
 
 
             SVGPath selectedIcon = new SVGPath();
@@ -116,7 +606,7 @@ public class CategoriesController<main> {
 
             Region rgNavBar = new Region();
             rgNavBar.setShape(selectedIcon);
-            rgNavBar.setStyle("-fx-background-color: gray;");
+            rgNavBar.getStyleClass().add("icon");
 
             //icons bookmark(1), clipboard(5), lightbulb(15), award(30), bolt(47), brush(55), burn(56), dna(64), dollar sign(66)
             if (path.equals(iconsList.get(1)) || path.equals(iconsList.get(5)) || path.equals(iconsList.get(15)) || path.equals(iconsList.get(30)) || path.equals(iconsList.get(47)) || path.equals(iconsList.get(55)) || path.equals(iconsList.get(56)) || path.equals(iconsList.get(64)) || path.equals(iconsList.get(66))) {
@@ -143,19 +633,18 @@ public class CategoriesController<main> {
                 rgNavBar.setMaxSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
             }
 
+            if(usercategory.getId() == this.selectedCategory){
+                rgNavBar.setStyle("-fx-background-color: linear-gradient(to bottom, #C49AE6,#5A7CF5);");
+            }
+
 
             // event that occurs when the icon is clicked
             // when selected it calls for another function so it can find which category this icon belongs to
-            selectedIcon.setOnMouseClicked((e) -> {
-                System.out.println("selected");
-                AnchorPane taskTabtmp1 = null;
-                try {
-                    //configure each taskTab so it can retrieve the exact tasks of the category in specific
-                    taskTabtmp1 = FXMLLoader.load(getClass().getResource("/app/views/showTasks.fxml"));
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                main.getChildren().addAll(taskTabtmp1);
+            rgNavBar.setOnMouseClicked((e) -> {
+                this.selectedCategory = usercategory.getId();
+                displayCategories();
+                displayTasks();
+                display();
             });
 
             gpNavBar.add(rgNavBar, column, row);
@@ -170,225 +659,66 @@ public class CategoriesController<main> {
         this.spCategories.setContent(gpNavBar);
     }
 
-    @FXML
-    void saveNewCategory(ActionEvent event) {
-
-
-        // checks if any of the text fields are empty
-        if (txtCategoryName.getText().equals("") || txtCategoryDescription.getText().equals("") || iconSvg == null) {
-
-        } else {
-
-
-            // take data from the text fields
-            String nameCategory = txtCategoryName.getText();
-            String descriptionCategory = txtCategoryDescription.getText();
-            //String icon = txtIcon.getText();
-            String icon = iconSvg.getContent();
-
-            // create a new UserCategory object and put it in the list of categories
-            UserCategory newCategory = new UserCategory();
-            newCategory.type = nameCategory;
-            newCategory.icon = icon;
-            newCategory.description = descriptionCategory;
-            newCategory.id = (int) (new Date().getTime() / 1000);
-            newCategory.user = singleton.getUser();
-            singleton.addToCategoryArray(newCategory);
-
-            // create a new JSON object to put the new category in the JSON archive
-
-            JSONObject newCategory2Json = new JSONObject();
-
-            newCategory2Json.put("type", nameCategory);
-            newCategory2Json.put("icon", icon);
-            newCategory2Json.put("description", descriptionCategory);
-            try {
-
-                file.write(newCategory2Json.toString());
-                file.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            /*
-            Gson newCategory2Json = new Gson();
-
-            String json = newCategory2Json.toJson(newCategory);
-
-            try{
-                FileWriter file = new FileWriter("categories.json");
-                file.write(json);
-                file.close();
-            }
-            catch (IOException e){
-                e.printStackTrace();
-            }
-            System.out.println(json);*/
-
-            // Send to API
-            UserCategory.create(newCategory, singleton);
-
-            // calls the method to show the categories on the screen
-            displayCategories();
+    private void displayUserMenu(){
+        if(userInstance.getUser().getImageUrl().isEmpty()){
+            userMenuIcon.setFill(new ImagePattern(new Image(this.getClass().getResource("/app/icons/149071.png").toString())));
+        }else{
+            userMenuIcon.setFill(new ImagePattern( new Image(userInstance.getUser().getImageUrl())));
         }
+        userMenu.setTranslateY(-200);
+        TranslateTransition openMenu = new TranslateTransition(new Duration(150),userMenu);
+        TranslateTransition closeMenu = new TranslateTransition(new Duration(150),userMenu);
 
-        txtCategoryDescription.clear();
-        txtCategoryName.clear();
-        rgIconSelected.setShape(new SVGPath());
+        updateUser.setOnAction(e->{
+            if(!userName.getText().equals("")) {
+                userInstance.getUser().setName(userName.getText());
+            }
+            if(!userLastname.getText().equals("")){
+                userInstance.getUser().setLastName(userLastname.getText());
+            }
+            closeMenu.setToY(-(userMenu.getHeight()));
+            closeMenu.play();
+            User.update(userInstance.getUser());
+        });
+        userIcon.setOnMouseClicked(e->{
+            if(userMenu.getTranslateY()!=0){
+                userName.setText(userInstance.getUser().getName());
+                userLastname.setText(userInstance.getUser().getLastName());
+                openMenu.setToY(0);
+                openMenu.play();
 
-        pnNewCategory.setVisible(false);
-        pnNewCategory.setDisable(false);
+            }else{
+                closeMenu.setToY(-(userMenu.getHeight()));
+                closeMenu.play();
 
+            }
+        });
+
+        //When the user icon is clicked it opens a file chooser, which you can choose one for your Profile Picture.
+        userMenuIcon.setOnMouseClicked(e ->
+        {
+            FileChooser fileChooser = new FileChooser();
+            File selectImage = fileChooser.showOpenDialog(new Stage());
+            Image image = new Image(selectImage.toURI().toString());
+            userMenuIcon.setFill(new ImagePattern(image));
+            userIcon.setFill(new ImagePattern(image));
+            userInstance.getUser().setImageUrl(image.getUrl());
+            User.update(userInstance.getUser());
+        } );
+        userMenuIcon.setStyle("-fx-cursor: HAND");
     }
 
-
-    @FXML
-    void cancelNewCategory(ActionEvent event) {
-        //close button
-        txtCategoryDescription.clear();
-        txtCategoryName.clear();
+    public void initialize(){
         pnNewCategory.setVisible(false);
-        pnNewCategory.setDisable(false);
-    }
-
-    @FXML
-    void cancelIcon(ActionEvent event) {
-
         pnIcons.setVisible(false);
-    }
-
-    @FXML
-    void selectIcon(ActionEvent event) {
-
-        GridPane gpIcons = new GridPane();
-        gpIcons.setVgap(10);
-        gpIcons.setStyle("-fx-background-color:  #ECECEC; -fx-border-color:  #ECECEC");
-        ColumnConstraints columnIcon = new ColumnConstraints(32, 50, 50);
-        columnIcon.setHgrow(Priority.ALWAYS);
-        gpIcons.getColumnConstraints().addAll(columnIcon, columnIcon, columnIcon, columnIcon, columnIcon, columnIcon, columnIcon);
-        int row = 0;
-        int column = 0;
-
-        for (String path : iconsList) {
-
-            if (column == 7) {
-                column = 0;
-                row++;
-            }
-
-            SVGPath icon = new SVGPath();
-            icon.setContent(path);
-
-            Region rgIcon = new Region();
-            rgIcon.setShape(icon);
-            rgIcon.setStyle("-fx-background-color: gray;");
-            // icons bookmark(1), clipboard(5), lightbulb(15), award(30), bolt(47), brush(55), burn(56), dna(64), dollar sign(66)
-            if (path.equals(iconsList.get(1)) || path.equals(iconsList.get(5)) || path.equals(iconsList.get(15)) || path.equals(iconsList.get(30)) || path.equals(iconsList.get(47)) || path.equals(iconsList.get(55)) || path.equals(iconsList.get(56)) || path.equals(iconsList.get(64)) || path.equals(iconsList.get(66))) {
-                rgIcon.setMinSize(25, REQUIRED_HEIGHT);
-                rgIcon.setPrefSize(25, REQUIRED_HEIGHT);
-                rgIcon.setMaxSize(25, REQUIRED_HEIGHT);
-
-                rgIcon.setOnMouseClicked((e) -> {
-                    iconSvg = icon;
-                    pnIcons.setVisible(false);
-
-                    rgIconSelected.setShape(icon);
-                    rgIconSelected.setMinSize(25, REQUIRED_HEIGHT);
-                    rgIconSelected.setPrefSize(25, REQUIRED_HEIGHT);
-                    rgIconSelected.setMaxSize(25, REQUIRED_HEIGHT);
-                    rgIconSelected.setStyle("-fx-background-color: gray;");
-                });
-            } else if (path.equals(iconsList.get(12))) { // icon hourglass(12)
-                rgIcon.setMinSize(23, REQUIRED_HEIGHT);
-                rgIcon.setPrefSize(23, REQUIRED_HEIGHT);
-                rgIcon.setMaxSize(23, REQUIRED_HEIGHT);
-
-                rgIcon.setOnMouseClicked((e) -> {
-                    iconSvg = icon;
-                    pnIcons.setVisible(false);
-
-                    rgIconSelected.setShape(icon);
-                    rgIconSelected.setMinSize(23, REQUIRED_HEIGHT);
-                    rgIconSelected.setPrefSize(23, REQUIRED_HEIGHT);
-                    rgIconSelected.setMaxSize(23, REQUIRED_HEIGHT);
-                    rgIconSelected.setStyle("-fx-background-color: gray;");
-                });
-            }
-            // icon football(9)
-            else if (path.equals(iconsList.get(9))) {
-                rgIcon.setMinSize(REQUIRED_WIDTH, 28);
-                rgIcon.setPrefSize(REQUIRED_WIDTH, 28);
-                rgIcon.setMaxSize(REQUIRED_WIDTH, 28);
-
-                rgIcon.setOnMouseClicked((e) -> {
-                    iconSvg = icon;
-                    pnIcons.setVisible(false);
-
-                    rgIconSelected.setShape(icon);
-                    rgIconSelected.setMinSize(REQUIRED_WIDTH, 28);
-                    rgIconSelected.setPrefSize(REQUIRED_WIDTH, 28);
-                    rgIconSelected.setMaxSize(REQUIRED_WIDTH, 28);
-                    rgIconSelected.setStyle("-fx-background-color: gray;");
-                });
-            }
-            // icon keyboard(13), money bill(16), bed(38), bicycle(41), bone(49), camera(57), camera retro(58), dumbbell(69)
-            else if (path.equals(iconsList.get(13)) || path.equals(iconsList.get(16)) || path.equals(iconsList.get(38)) || path.equals(iconsList.get(41)) || path.equals(iconsList.get(49)) || path.equals(iconsList.get(57)) || path.equals(iconsList.get(58)) || path.equals(iconsList.get(69))) {
-                rgIcon.setMinSize(REQUIRED_WIDTH, 23);
-                rgIcon.setPrefSize(REQUIRED_WIDTH, 23);
-                rgIcon.setMaxSize(REQUIRED_WIDTH, 23);
-
-                rgIcon.setOnMouseClicked((e) -> {
-                    iconSvg = icon;
-                    pnIcons.setVisible(false);
-
-                    rgIconSelected.setShape(icon);
-                    rgIconSelected.setMinSize(REQUIRED_WIDTH, 23);
-                    rgIconSelected.setPrefSize(REQUIRED_WIDTH, 23);
-                    rgIconSelected.setMaxSize(REQUIRED_WIDTH, 23);
-                    rgIconSelected.setStyle("-fx-background-color: gray;");
-                });
-            } else {
-                rgIcon.setMinSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
-                rgIcon.setPrefSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
-                rgIcon.setMaxSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
-
-                rgIcon.setOnMouseClicked((e) -> {
-                    iconSvg = icon;
-                    pnIcons.setVisible(false);
-
-                    rgIconSelected.setMinSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
-                    rgIconSelected.setPrefSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
-                    rgIconSelected.setMaxSize(REQUIRED_WIDTH, REQUIRED_HEIGHT);
-                    rgIconSelected.setShape(icon);
-                    rgIconSelected.setStyle("-fx-background-color: gray;");
-                });
-            }
-
-            gpIcons.add(rgIcon, column, row);
-            column++;
-
-
+        if(userInstance.getUser().getImageUrl().isEmpty()){
+            userIcon.setFill(new ImagePattern(new Image(this.getClass().getResource("/app/icons/149071.png").toString())));
+        }else{
+            userIcon.setFill(new ImagePattern( new Image(userInstance.getUser().getImageUrl())));
         }
 
 
-        this.spIcons.setStyle("-fx-background-color:  #ECECEC; -fx-border-color:  #ECECEC");
-
-        this.spIcons.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        //this.spIcons.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
-        this.spIcons.setContent(gpIcons);
-
-        pnIcons.setVisible(true);
-        spIcons.setVisible(true);
-
-    }
-
-    public void initialize() {
-        pnNewCategory.setVisible(false);
-        pnIcons.setVisible(false);
-
+        //Add icons
         // Icon 1- Agenda
         String icon1 = "M436 160c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-20V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h320c26.5 0 48-21.5 48-48v-48h20c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-20v-64h20c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-20v-64h20zm-68 304H48V48h320v416zM208 256c35.3 0 64-28.7 64-64s-28.7-64-64-64-64 28.7-64 64 28.7 64 64 64zm-89.6 128h179.2c12.4 0 22.4-8.6 22.4-19.2v-19.2c0-31.8-30.1-57.6-67.2-57.6-10.8 0-18.7 8-44.8 8-26.9 0-33.4-8-44.8-8-37.1 0-67.2 25.8-67.2 57.6v19.2c0 10.6 10 19.2 22.4 19.2z";
         iconsList.add(icon1);
@@ -692,6 +1022,22 @@ public class CategoriesController<main> {
         // Icon 76 - Square Root Alt
         String icon76 = "M571.31 251.31l-22.62-22.62c-6.25-6.25-16.38-6.25-22.63 0L480 274.75l-46.06-46.06c-6.25-6.25-16.38-6.25-22.63 0l-22.62 22.62c-6.25 6.25-6.25 16.38 0 22.63L434.75 320l-46.06 46.06c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L480 365.25l46.06 46.06c6.25 6.25 16.38 6.25 22.63 0l22.62-22.62c6.25-6.25 6.25-16.38 0-22.63L525.25 320l46.06-46.06c6.25-6.25 6.25-16.38 0-22.63zM552 0H307.65c-14.54 0-27.26 9.8-30.95 23.87l-84.79 322.8-58.41-106.1A32.008 32.008 0 0 0 105.47 224H24c-13.25 0-24 10.74-24 24v48c0 13.25 10.75 24 24 24h43.62l88.88 163.73C168.99 503.5 186.3 512 204.94 512c17.27 0 44.44-9 54.28-41.48L357.03 96H552c13.25 0 24-10.75 24-24V24c0-13.26-10.75-24-24-24z";
         iconsList.add(icon76);
+
+        displayCategories();
+        display();
+        displayTasks();
+        displayUserMenu();
     }
+
+    public void exportNewInfoToAPI(ActionEvent actionEvent) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectDirectory = directoryChooser.showDialog(new Stage());
+        exportToJson(userInstance.getUser(), String.valueOf(selectDirectory));
+        System.out.println(selectDirectory);
+    }
+
+
 }
+
+
 

@@ -1,29 +1,232 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.UserController">
+<AnchorPane fx:id="tasks" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="bg" stylesheets="@../styles/tasks.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.MainController">
 
-      <AnchorPane prefHeight="600.0" prefWidth="42.0" styleClass="navbar">
-         <fx:include source="categories.fxml" />
-          <fx:include source="tasksViews.fxml"/>
-      <Button fx:id="addNewTask" layoutX="704.0" layoutY="517.0" mnemonicParsing="false" onAction="#openNewTaskBox" onMouseEntered="#messageNewTask" onMouseExited="#messageNewTaskout" style="-fx-background-radius: 50px; -fx-background-color: #71CCFF; -fx-border-radius: 50px; -fx-max-height: 50px; -fx-min-height: 50px; -fx-min-width: 50px; -fx-max-width: 50px;" text="+" textFill="WHITE">
-         <font>
+    <AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+    <Button fx:id="addNewTask" layoutX="704.0" layoutY="517.0" mnemonicParsing="false" onAction="#onClickBtnAddTask" styleClass="addTaskBtn" text="+" textFill="WHITE">
+        <font>
             <Font name="Consolas Bold" size="24.0" />
+        </font>
+    </Button>
+
+    <ScrollPane fx:id="taskScroll" layoutX="160.0" layoutY="120.0" prefHeight="480.0" prefWidth="530.0" stylesheets="@../styles/tasks.css" />
+
+    <AnchorPane fx:id="taskCreator" layoutX="171.0" layoutY="115.0" prefHeight="370.0" prefWidth="458.0" style="-fx-background-color: #dac9fd; -fx-background-radius: 50px; -fx-border-radius: 50px 55px;" visible="false">
+        <effect>
+            <DropShadow />
+        </effect>
+        <GridPane layoutX="34.0" layoutY="14.0" prefHeight="329.0" prefWidth="391.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0000163180505" minWidth="11.056566694021683" prefWidth="11.056566694021683" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="364.2642082955842" minWidth="106.67921553680048" prefWidth="175.83016029105352" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="283.2830662467635" minWidth="10.0" prefWidth="129.64155147847194" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="283.2830662467635" minWidth="10.0" prefWidth="112.30188958455608" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <TextField fx:id="descriptionId" style="fx-background-radius: 50px;" GridPane.columnSpan="4" GridPane.rowIndex="5">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </TextField>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="155.80675506591797" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                <font>
+                    <Font name="Segoe MDL2 Assets" size="20.0" />
+                </font>
+            </Text>
+            <TextField id="taskname" fx:id="taskId" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="392.0" style="fx-background-radius: 50px;" GridPane.columnSpan="4" GridPane.rowIndex="1">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </TextField>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Título da Tarefa" wrappingWidth="161.751953125" GridPane.columnIndex="1" GridPane.valignment="CENTER">
+                <font>
+                    <Font name="Segoe MDL2 Assets" size="20.0" />
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Categoria" wrappingWidth="128.916015625" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                <font>
+                    <Font name="Segoe MDL2 Assets" size="20.0" />
+                </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Data Limite" textAlignment="CENTER" wrappingWidth="203.98501586914062" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                <font>
+                    <Font name="Segoe MDL2 Assets" size="20.0" />
+                </font>
+            </Text>
+            <DatePicker fx:id="dateId" prefHeight="34.0" prefWidth="118.0" promptText="dd/MM/aaaa" style="-fx-border-radius: 50px; -fx-background-color: white;" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
+            <Button fx:id="savingTask" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" graphicTextGap="0.0" maxHeight="51.0" maxWidth="113.0" minHeight="41.0" minWidth="40.0" mnemonicParsing="false" onAction="#saveTask" prefHeight="41.0" prefWidth="40.0" styleClass="saveTaskButton" text="OK" textAlignment="JUSTIFY" textFill="WHITE" textOverrun="CENTER_ELLIPSIS" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="15.0" />
+                </font>
+                <effect>
+                    <DropShadow />
+                </effect>
+            </Button>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Descrição" textOrigin="CENTER" wrappingWidth="291.1444625854492" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                <font>
+                    <Font name="Segoe MDL2 Assets" size="20.0" />
+                </font>
+            </Text>
+            <Label prefHeight="24.0" prefWidth="128.0" text="Horário Limite" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+                <font>
+                    <Font name="Segoe MDL2 Assets" size="20.0" />
+                </font>
+            </Label>
+            <TextField fx:id="time" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="0.0" prefWidth="118.0" promptText="HH:MM:SS" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </TextField>
+            <ComboBox fx:id="categoryId" prefHeight="49.0" prefWidth="392.0" style="-fx-background-color: white;" GridPane.columnSpan="4" GridPane.rowIndex="3" />
+            <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#closeTaskTab" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: transparent;" styleClass="button" text="X" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="22.0" />
+                </font>
+            </Button>
+        </GridPane>
+    </AnchorPane>
+      <BorderPane fx:id="bpDisplay" layoutX="145.0" layoutY="28.0" prefHeight="50.0" prefWidth="339.0" styleClass="bordePaneTitle" stylesheets="@../styles/tasks.css">
+         <center>
+          <Label fx:id="categoryTitle" prefHeight="29.0" prefWidth="475.0" styleClass="title" text="Title of the category" BorderPane.alignment="CENTER" />
+         </center>
+         <left>
+          <Region fx:id="titleIcon" prefHeight="40.0" prefWidth="40.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="10.0" />
+               </BorderPane.margin></Region>
+         </left>
+         <right>
+            <Region fx:id="rgThreeDots" maxHeight="25.0" maxWidth="10.0" prefHeight="25.0" prefWidth="10.0" BorderPane.alignment="CENTER" />
+         </right>
+      </BorderPane>
+        <Pane fx:id="pnEdit" layoutX="484.0" layoutY="67.0" prefHeight="48.0" prefWidth="62.0" style="-fx-background-color: white;" stylesheets="@../styles/category.css" visible="false">
+            <Label fx:id="lbEditCategory" layoutY="-1.0" prefHeight="25.0" prefWidth="63.0" styleClass="buttonCategory" text="Editar">
+                <padding>
+                    <Insets left="5.0" />
+                </padding>
+            </Label>
+            <Label fx:id="lbDeleteCategory" layoutX="-1.0" layoutY="24.0" prefHeight="25.0" prefWidth="63.0" styleClass="buttonCategory" text="Excluir">
+                <padding>
+                    <Insets left="5.0" />
+                </padding>
+            </Label>
+        </Pane>
+      <Label fx:id="lbCategoryDescription" layoutX="203.0" layoutY="70.0" prefHeight="17.0" prefWidth="379.0" text="Descricao" />
+
+</AnchorPane>
+     <Pane fx:id="userMenu" prefHeight="200.0" prefWidth="413.0" style="-fx-background-color: white;" stylesheets="@../styles/user.css">
+         <Circle fx:id="userMenuIcon" fill="DODGERBLUE" layoutX="124.0" layoutY="105.0" radius="60.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+         <TextField fx:id="userName" layoutX="207.0" layoutY="74.0" text="nome" />
+         <Label layoutX="207.0" layoutY="55.0" prefHeight="18.0" prefWidth="63.0" text="nome" />
+         <TextField fx:id="userLastname" layoutX="207.0" layoutY="121.0" text="sobrenome" />
+         <Label layoutX="207.0" layoutY="105.0" text="Sobrenome" />
+         <Button fx:id="updateUser" layoutX="288.0" layoutY="165.0" mnemonicParsing="false" text="Salvar" />
+      <Button fx:id="exportToAPI" layoutX="288.0" layoutY="14.0" mnemonicParsing="false" onAction="#exportNewInfoToAPI" prefHeight="25.0" prefWidth="72.0" style="-fx-background-color: #E64162;" text="Exportar" />
+     </Pane>
+
+    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="42.0" stylesheets="@../styles/category.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+        <AnchorPane prefHeight="600.0" prefWidth="42.0" styleClass="navbar">
+
+                  <Label fx:id="btnNewCategory" layoutX="3.0" layoutY="542.0" onMouseClicked="#btnMakeCategory" onMouseEntered="#showMsgMakeCategory" onMouseExited="#notShowMsgMakeCategory" style="-fx-cursor: HAND" styleClass="addCategoryBtn" text="+" />
+            <ScrollPane fx:id="spCategories" hbarPolicy="NEVER" layoutX="3.0" layoutY="65.0" prefHeight="468.0" prefWidth="36.0" style="-fx-background-color: #ECECEC;" />
+         <Circle fx:id="userIcon" fill="DODGERBLUE" layoutX="21.0" layoutY="42.0" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="userIcon">
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor></Circle>
+        </AnchorPane>
+        <Label fx:id="lbMsgMakeCategory" layoutX="31.0" layoutY="523.0" styleClass="msgNewCategory" text="Criar Nova Categoria" visible="false" />
+        <AnchorPane fx:id="pnNewCategory" disable="true" layoutX="300.0" layoutY="200.0" prefHeight="247.0" prefWidth="244.0" style="-fx-background-color: #ac7feb;" styleClass="newCategoryPane" visible="false">
+            <effect>
+                <DropShadow height="89.2" radius="50.03" width="112.92">
+                    <color>
+                        <Color opacity="0.5130434632301331" />
+                    </color>
+                </DropShadow>
+            </effect>
+            <TextField fx:id="txtCategoryName" layoutX="26.0" layoutY="44.0" promptText="Nome" />
+            <Label layoutX="26.0" layoutY="14.0" text="Crie uma nova categoria" textFill="#f8f6f6">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Label>
+            <Button fx:id="btnSaveNewCategory" layoutX="162.0" layoutY="205.0" mnemonicParsing="false" onAction="#saveNewCategory" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: #571da8;" styleClass="btnSaveCategory" text="Salvar" />
+            <TextArea fx:id="txtCategoryDescription" layoutX="26.0" layoutY="76.0" prefHeight="73.0" prefWidth="186.0" promptText="Descrição" />
+            <Button fx:id="btnCancelNewCategory" layoutX="210.0" layoutY="12.0" mnemonicParsing="false" onAction="#cancelNewCategory" styleClass="btnCancelCategory" text="X" />
+            <Button fx:id="btsSelectIcon" layoutX="26.0" layoutY="210.0" mnemonicParsing="false" onAction="#selectIcon" style="-fx-background-color: #571da8;" styleClass="btnSaveCategory" text="Escolher ícone" />
+            <Label layoutX="26.0" layoutY="165.0" text="Ícone: " textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Label>
+            <Pane layoutX="75.0" layoutY="156.0" prefHeight="38.0" prefWidth="38.0" style="-fx-background-color: #ECECEC; -fx-background-radius: 10;">
+                <Region fx:id="rgIconSelected" layoutX="4.0" layoutY="4.0" prefHeight="30.0" prefWidth="30.0" />
+            </Pane>
+        </AnchorPane>
+        <AnchorPane fx:id="pnIcons" disable="true" layoutX="250.0" layoutY="150.0" prefHeight="344.0" prefWidth="379.0" style="-fx-background-color: #ECECEC;" styleClass="newCategoryPane" visible="false">
+            <effect>
+                <DropShadow height="89.2" radius="50.03" width="112.92">
+                    <color>
+                        <Color opacity="0.5130434632301331" />
+                    </color>
+                </DropShadow>
+            </effect>
+            <Label layoutX="131.0" layoutY="16.0" prefHeight="20.0" prefWidth="140.0" text="Escolha um ícone " textAlignment="CENTER" textFill="#222020">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Label>
+            <Button fx:id="btnCancelIcon" layoutX="341.0" layoutY="13.0" mnemonicParsing="false" onAction="#cancelIcon" style="-fx-background-color: #ECECEC;" text="X" textFill="#1e1d1d">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Button>
+            <ScrollPane fx:id="spIcons" layoutX="21.0" layoutY="53.0" prefHeight="268.0" prefWidth="339.0" style="-fx-background-color: #ECECEC;" />
+        </AnchorPane>
+
+    </AnchorPane>
+
+    <AnchorPane id="menuTask" fx:id="menuTask" layoutX="171.0" layoutY="115.0" prefHeight="247.0" prefWidth="458.0" style="-fx-background-color: #dac9fd; -fx-background-radius: 50;" stylesheets="@../styles/tasks.css" visible="false">
+        <TextField fx:id="editTaskTitle" alignment="CENTER" layoutX="124.0" layoutY="20.0" prefHeight="26.0" prefWidth="210.0" style="-fx-background-color: transparent;" text="title" />
+        <Region fx:id="deleteTask" layoutX="363.0" layoutY="192.0" prefHeight="41.0" prefWidth="42.0" style="-fx-background-color: red;" />
+        <TextField fx:id="taskDescription" alignment="TOP_LEFT" layoutX="39.0" layoutY="70.0" prefHeight="98.0" prefWidth="391.0" style="-fx-background-color: white;" text="title" />
+        <Label layoutX="39.0" layoutY="46.0" text="Descrição:" />
+        <Button fx:id="btnSaveEditTask" layoutX="41.0" layoutY="198.0" mnemonicParsing="false" onAction="#saveNewCategory" prefHeight="30.0" prefWidth="63.0" style="-fx-background-color: #571da8;" styleClass="btnSaveTask" text="Salvar" />
+      <Button alignment="BOTTOM_RIGHT" layoutX="392.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeEditTask" prefHeight="46.0" prefWidth="30.0" style="-fx-background-color: transparent; -fx-cursor: HAND" styleClass="button" text="X" textAlignment="RIGHT" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="22.0" />
          </font>
       </Button>
-      <Label fx:id="newTaskLabel" alignment="CENTER" layoutX="574.0" layoutY="532.0" style="-fx-background-color: #71CCFF; -fx-background-radius: 50 50 50 50;" styleClass="msgNewCategory" text="Criar Nova Tarefa" textAlignment="RIGHT" textFill="WHITE" visible="false">
-         <font>
-            <Font name="System Bold" size="11.773585319519043" />
-         </font>
-      </Label>
-      <Button fx:id="tmp" onAction="#openNewTaskList" layoutX="750.0" layoutY="8.0" mnemonicParsing="false" style="-fx-background-radius: 50px; -fx-background-color: #71CCFF; -fx-border-radius: 50px; -fx-max-height: 50px; -fx-min-height: 50px; -fx-min-width: 50px; -fx-max-width: 50px;" text="+" textFill="WHITE">
-         <font>
-            <Font name="Consolas Bold" size="24.0" />
-         </font>
-      </Button>
-      </AnchorPane>
+    </AnchorPane>
 </AnchorPane>

@@ -1,0 +1,34 @@
+.task{
+    -fx-padding: 0px;
+    -fx-background-color: white;
+    -fx-pref-height: 45;
+    -fx-pref-width: 500;
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+}
+.border-pane{
+    -fx-pref-height: 50;
+    -fx-pref-width: 500;
+    -fx-padding: 15;
+
+}
+.check-box{
+    -fx-padding: 0;
+    -fx-cursor: HAND;
+}
+.check-box .box{
+    -fx-pref-width: 25;
+    -fx-pref-height: 25;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+
+}
+.check-box:selected .mark{
+    -fx-background-color: white;
+}
+.check-box:selected .box{
+    -fx-background-color: green;
+}
+.text{
+    -fx-padding: 10;
+}

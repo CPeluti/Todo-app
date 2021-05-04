@@ -1,35 +1,29 @@
 package app.models;
 
-import app.controllers.Singleton;
-import kong.unirest.HttpResponse;
-import kong.unirest.JsonNode;
+import app.controllers.UserInstance;
+import app.interfaces.Storable;
 import kong.unirest.Unirest;
-import kong.unirest.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.*;
 
 
-public class Tasks{
-	public int id;
-	public String title;//conteudo
-	public String category;//categoria
-	public  boolean done = false;//completada
-	public  boolean favourite = false;// favorito
-	public String deadline;//data formato da data vai ser dd/mm/aaaa ou dd/MM/yyyy HH:mm:ss
-	public String description;// descricao
-	public boolean deleted = false;//tarefa deletada?
+public class Tasks implements Storable {
+	private int id;
+	private String title;//conteudo
+	private int category;//categoria
+	private  boolean done = false;//completada
+	private  boolean favourite = false;// favorito
+	private String deadline;//data formato da data vai ser dd/mm/aaaa ou dd/MM/yyyy HH:mm:ss
+	private String description;// descricao
+	private boolean deleted = false;//tarefa deletada?
 
-	public double getId() { return id; }
+	public int getId() { return id; }
 
 	public String getTitle() {
 		return title;
 	}
 
-	public  String getCategory() {
+	public  int getCategory() {
 		return category;
 	}
 
@@ -53,8 +47,39 @@ public class Tasks{
 		return deleted;
 	}
 
-	public Tasks(int id, String title, String category, boolean done, boolean favourite, String deadline, String description, boolean deleted) {
-		super();
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setCategory(int category) {
+		this.category = category;
+	}
+
+	public void setDone(boolean done) {
+		this.done = done;
+	}
+
+	public void setFavourite(boolean favourite) {
+		this.favourite = favourite;
+	}
+
+	public void setDeadline(String deadline) {
+		this.deadline = deadline;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public Tasks(int id, String title, int category, boolean done, boolean favourite, String deadline, String description, boolean deleted) {
 		this.id = id;
 		this.title = title;
 		this.category = category;
@@ -64,86 +89,55 @@ public class Tasks{
 		this.description = description;
 		this.deleted = deleted;
 	}
-
-
-	public static void remainingTime(String deadline) throws Exception { //tempo restante
-		LocalDateTime now = LocalDateTime.now();
-		Date timeEnd = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(deadline);
-		Instant instant = now.toInstant(ZoneOffset.UTC); //essas duas linhas pega o formato LocalDateTime para o Date
-		Date timeNow = Date.from(instant);
-		
-		long timeLeft = timeEnd.getTime() - timeNow.getTime();
-		long daysLeft = timeLeft/(60*60*24*1000);
-		long hoursLeft = (timeLeft - daysLeft*(60*60*24*1000))/(60*60*1000);
-		long minutesLeft = (timeLeft - daysLeft*(60*60*24*1000) - hoursLeft*(60*60*1000))/(60*1000);
-		long secondsLeft = (timeLeft - minutesLeft*(60*1000) - daysLeft*(60*60*24*1000) - hoursLeft*(60*60*1000))/1000;
-		
-		System.out.format("%d Days %d Hours %d Minutes %d Seconds", daysLeft, hoursLeft, minutesLeft, secondsLeft);
-	}
-
-	public static void create(Tasks task, Singleton singleton) {
-	    User user = singleton.getUser();
-	    System.out.println(user.sessionToken);
+	public void create(UserInstance userInstance) {
+	    User user = userInstance.getUser();
+	    System.out.println(user.getSessionToken());
 	    Map<String, String> header = new HashMap<>();
 	    header.put("Content-Type","application/json");
-	    header.put("Authorization", "bearer " + user.sessionToken);
+	    header.put("Authorization", "bearer " + user.getSessionToken());
 
 	    String getTask = "{" +
-                    "\"id\":\""+ task.id+ "\","+
-                    "\"title\":\""+ task.title+ "\","+
-                    "\"category\":\""+ task.category+ "\","+
-                    "\"done\":\""+ task.done+ "\","+
-                    "\"favourite\":\""+ task.favourite+ "\","+
-                    "\"deadline\":\""+ task.deadline + "\","+
-                    "\"description\":\""+ task.description+ "\","+
-                    "\"deleted\":\""+ task.deleted +"\"" +
+                    "\"id\":\""+ this.id+ "\","+
+                    "\"title\":\""+ this.title+ "\","+
+                    "\"category\":\""+ this.category+ "\","+
+                    "\"done\":\""+ this.done+ "\","+
+                    "\"favourite\":\""+ this.favourite+ "\","+
+                    "\"deadline\":\""+ this.deadline + "\","+
+                    "\"description\":\""+ this.description+ "\","+
+                    "\"deleted\":\""+ this.deleted +"\"" +
                 "}";
-	    System.out.println(getTask);
-	    HttpResponse<JsonNode> res = Unirest.post("https://api-todo-unb.herokuapp.com/tasks/{userId}").routeParam("userId",user.id).headers(header).body(getTask).asJson();
-	    JSONObject jsonTask = res.getBody().getObject();
-	    System.out.println(jsonTask);
+	    Unirest.post("https://api-todo-unb.herokuapp.com/tasks/{userId}").routeParam("userId",user.getId()).headers(header).body(getTask).asJson();
 	}
 
-	public Tasks lookForTask(int id, ArrayList<Tasks> list) {
-		for (Tasks find: list) {
-			if (find.getId() == id) {
-				return find;
-			}
-		}
-		return null;
-	}
+	public void delete(UserInstance userInstance){
+		User user = userInstance.getUser();
+		String url = "https://api-todo-unb.herokuapp.com/tasks/" + user.getId();
+		String dataString = "{\"taskId\":\""+this.getId()+"\"}";
 
-	public void delete(int id, Singleton singleton){
-		User user = singleton.getUser();
-		String url = "https://api-todo-unb.herokuapp.com/tasks/" + user.id;
-		String dataString = "{\"taskId\":\""+id+"\"}";
-
-		HttpResponse<JsonNode> data = Unirest.delete(url)
+		Unirest.delete(url)
 				.header("Content-Type","application/json")
 				.header("Authorization", "bearer " + user.getSessionToken())
 				.body(dataString)
 				.asJson();
-		JSONObject json = data.getBody().getObject();
 	}
 
-	public void update(Tasks taskChanges, Singleton singleton) {
-		User user = singleton.getUser();
-		String url = "https://api-todo-unb.herokuapp.com/tasks/" + user.id;
+	public void update(UserInstance userInstance) {
+		User user = userInstance.getUser();
+		String url = "https://api-todo-unb.herokuapp.com/tasks/" + user.getId();
 		String getTask = "{" +
-				"\"id\":\""+ taskChanges.id+ "\","+
-				"\"title\":\""+ taskChanges.title+ "\","+
-				"\"category\":\""+ taskChanges.category+ "\","+
-				"\"done\":\""+ taskChanges.done+ "\","+
-				"\"favourite\":\""+ taskChanges.favourite+ "\","+
-				"\"deadline\":\""+ taskChanges.deadline + "\","+
-				"\"description\":\""+ taskChanges.description+ "\","+
-				"\"deleted\":\""+ taskChanges.deleted +"\"" +
+				"\"id\":\""+ this.id+ "\","+
+				"\"title\":\""+ this.title+ "\","+
+				"\"category\":\""+ this.category+ "\","+
+				"\"done\":\""+ this.done+ "\","+
+				"\"favourite\":\""+ this.favourite+ "\","+
+				"\"deadline\":\""+ this.deadline + "\","+
+				"\"description\":\""+ this.description+ "\","+
+				"\"deleted\":\""+ this.deleted +"\"" +
 				"}";
-		HttpResponse<JsonNode> data = Unirest.put(url)
+		Unirest.put(url)
 				.header("Content-Type","application/json")
 				.header("Authorization", "bearer " + user.getSessionToken())
 				.body(getTask)
 				.asJson();
-		JSONObject json = data.getBody().getObject();
 	}
 }

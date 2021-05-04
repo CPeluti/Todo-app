@@ -1,0 +1,34 @@
+.text-field{
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-background-color: white;
+}
+
+.bg{
+    -fx-background-color: linear-gradient(to bottom, #C49AE6,#5A7CF5);
+}
+.button{
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-background-color: white;
+    -fx-pref-width: 100;
+    -fx-alignment: center;
+    -fx-cursor: HAND;
+}
+.signin{
+    -fx-text-fill: black;
+    -fx-cursor: HAND;
+}
+.signin:hover{
+    -fx-text-fill: blue;
+}
+.continueBtn{
+    -fx-cursor: HAND;
+    -fx-background-color: #7724a3;
+    -fx-text-fill: white;
+    -fx-pref-width: 150;
+}
+.pane{
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+}

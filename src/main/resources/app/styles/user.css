@@ -1,0 +1,9 @@
+.button{
+    -fx-cursor: HAND ;
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+    -fx-pref-width: 80;
+    -fx-background-color: #7724a3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
